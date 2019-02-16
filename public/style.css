@@ -20,7 +20,6 @@
 }
 #header-title {
     width: 30%;
-    padding-left: 20px;
     font-size: 25px;
 }
 #logo {
@@ -34,6 +33,11 @@
     font-family: Comfortaa;
     font-weight: bold;
     font-size: 60px;
+}
+.m-title {
+    font-family: Comfortaa;
+    font-weight: normal;
+    font-size: 150%;
 }
 .nav-sep {
     position: relative;
