@@ -25,18 +25,17 @@ function queryGitHubAPI(requestURL)
     {
         if(apiData == null)
         {
+            const queryRUL = GITHUB_API + requestURL + authenticate;
 
-                const queryRUL = GITHUB_API + requestURL + authenticate;
-
-                got(queryRUL, { json: true }).then(response =>
-                {
-                    resolve(response.body);
-                    cache.put(requestURL, response.body);
-                }).catch(error =>
-                {
-                    resolve(response.body);
-                    cache.put(requestURL, response.body);
-                });
+            got(queryRUL, { json: true }).then(response =>
+            {
+                resolve(response.body);
+                cache.put(requestURL, response.body);
+            }).catch(error =>
+            {
+                resolve(response.body);
+                cache.put(requestURL, response.body);
+            });
 
         }
         else
@@ -47,11 +46,11 @@ function queryGitHubAPI(requestURL)
 }
 
 
-
 routes.get('/*', (request, result) =>
 {
     const gitHubAPIURL = request.url;
 
+    result.setHeader('Content-Type', 'application/json');
     queryGitHubAPI(gitHubAPIURL).then(function(data)
     {
         result.write(JSON.stringify(data));
