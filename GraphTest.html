@@ -24,6 +24,7 @@
     </script>
     <script src="js/githubAPI.js"></script>
     <script src="js/friendsGraph.js"></script>
+    <script src="js/profileGen.js"></script>
 
 
     <script type="text/javascript" src="js/vis/vis.js"></script>
@@ -34,10 +35,15 @@
 <body>
 
 <h2 id="graphLabel"></h2>
-<div id="myGraph" style="width:100%"></div>
+<div id="myGraph" style="width:50%"></div>
+<div id="profileGen" style="width:50%"></div>
 
 <script>
     createFriendsGraph("jrtechs", "myGraph", "graphLabel");
+</script>
+
+<script>
+    profileGen("ylberveliu", "profileGen");
 </script>
 
 </body>

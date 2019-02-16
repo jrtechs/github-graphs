@@ -30,8 +30,7 @@ const API_ORGANIZATIONS = "/orgs";
  * @param successCallBack callback to complete when data is returned
  * @param errorCallBack callback which is invoked on error
  */
-function queryAPIByUser(apiPath, user, successCallBack, errorCallBack)
-{
+function queryAPIByUser(apiPath, user, successCallBack, errorCallBack) {
     const urlpath = APIROOT + API_USER_PATH + user + apiPath;
     console.log(urlpath);
     $.ajax({
