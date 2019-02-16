@@ -223,6 +223,17 @@ function addSelfToGraph(username)
 }
 
 
+function bringUpProfileView(id)
+{
+    for(var i = 0; i < nodes.length; i++)
+    {
+        if(nodes[i].id === id)
+        {
+            profileGen(nodes[i].name, "profileGen");
+        }
+    }
+}
+
 /**
  * Creates a graph
  * @param username
@@ -248,6 +259,15 @@ function createFriendsGraph(username, containerName, graphsTitle)
                             edges: edges
                         };
                     var network = new vis.Network(container, data, options);
+
+                    network.on("click", function (params) {
+                        params.event = "[original event]";
+                        document.getElementById('eventSpan').innerHTML = '<h2>Click event:</h2>' + JSON.stringify(params, null, 4);
+                        if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
+                        {
+                            bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                        }
+                    });
                 });
             });
         })
