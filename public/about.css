@@ -9,17 +9,26 @@
     top: 20%;
     height: 80px;
     background-color: rgb(208, 208, 208);
-    border-radius: 20px 20px 0px 0px;
-    
+    border-radius: 20px 20px 0px 0px
 }
 #content-body {
     position: relative;
     background-color: rgb(242, 242, 242);
     border-radius: 0px 0px 20px 20px;
 }
-.plink {
-
+.card-deck {
+    position: relative;
+    padding-top: 20px;
 }
-body {
-    background-color: #232323;
+.rounder {
+    border-radius: 20px !important;
+}
+.avatar {
+    border-radius: 10px 10px 10px 10px !important;
+    top: 10px;
+    position: relative;
+    width: 70%;
+}
+.plink {
+    color: rgb(250, 152, 33);
 }

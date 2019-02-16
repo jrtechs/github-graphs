@@ -32,7 +32,6 @@ const API_ORGANIZATIONS = "/orgs";
  */
 function queryAPIByUser(apiPath, user, successCallBack, errorCallBack) {
     const urlpath = APIROOT + API_USER_PATH + user + apiPath;
-    console.log(urlpath);
     $.ajax({
         type:'GET',
         url: urlpath,

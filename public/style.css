@@ -20,20 +20,46 @@
 }
 #header-title {
     width: 30%;
-    padding-left: 20px;
     font-size: 25px;
 }
 #logo {
     height: 60px;
 }
+#error-code {
+    font-family: Comfortaa;
+    font-size: 200px;
+    color: rgb(208, 208, 208);
+}
 #navigation {
     width: 70%;
     padding-right: 20px !important;
+}
+.error {
+    color: rgb(208, 208, 208);
+}
+#dcimg {
+    width: 300px;
 }
 .big-title {
     font-family: Comfortaa;
     font-weight: bold;
     font-size: 60px;
+    text-wrap: avoid;
+}
+.m-title {
+    font-family: Comfortaa;
+    font-weight: normal;
+    font-size: 150%;
+}
+.text-title {
+    height: 60px;
+    background-color: rgb(208, 208, 208);
+    border-radius: 20px 0px 0px 0px;
+}
+.text-content {
+    height: 335px;
+    background-color: rgb(242, 242, 242);
+    border-radius: 0px 0px 0px 20px;
 }
 .nav-sep {
     position: relative;
@@ -52,9 +78,24 @@
     text-decoration: none;
 }
 .nav-item a:hover {
-    color: rgb(57, 163, 225);
+    color: rgb(250, 152, 33);
     text-decoration: none;
 }
+.side-img {
+    display: grid;
+    position: relative;
+    width: 50%;
+    border-radius: 0px 20px 20px 0px;
+}
+.side-txt {
+    display: grid;
+    position: relative;
+    width: 50%;
+}
+.main {
+    position: relative;
+    top: 20px;
+}
 body {
-    background-color: rgb(242, 242, 242);
+    background-color: #232323;
 }

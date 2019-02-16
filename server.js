@@ -25,9 +25,6 @@ const routes = require('./routes');
 app.use('/', routes);
 
 
-
-
-
 app.listen(configLoader.getConfiguration().port, () =>
     console.log(`App listening on port ${configLoader.getPort()}!`)
 );
