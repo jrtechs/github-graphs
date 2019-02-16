@@ -51,6 +51,16 @@
     font-weight: normal;
     font-size: 150%;
 }
+.text-title {
+    height: 60px;
+    background-color: rgb(208, 208, 208);
+    border-radius: 20px 0px 0px 0px;
+}
+.text-content {
+    height: 335px;
+    background-color: rgb(242, 242, 242);
+    border-radius: 0px 0px 0px 20px;
+}
 .nav-sep {
     position: relative;
     left: 10px;
@@ -70,6 +80,21 @@
 .nav-item a:hover {
     color: rgb(250, 152, 33);
     text-decoration: none;
+}
+.side-img {
+    display: grid;
+    position: relative;
+    width: 50%;
+    border-radius: 0px 20px 20px 0px;
+}
+.side-txt {
+    display: grid;
+    position: relative;
+    width: 50%;
+}
+.main {
+    position: relative;
+    top: 20px;
 }
 body {
     background-color: #232323;
