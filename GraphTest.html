@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <style type="text/css">
+        body {
+            font: 10pt arial;
+        }
+        #myGraph {
+            width: 800px;
+            height: 800px;
+            border: 1px solid lightgray;
+            background-color:#333333;
+        }
+    </style>
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="js/githubAPI.js"></script>
+    <script src="js/friendsGraph.js"></script>
+
+
+    <script type="text/javascript" src="js/vis/vis.js"></script>
+    <link href="js/vis/vis-network.min.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+<body>
+
+<h2 id="graphLabel"></h2>
+<div id="myGraph" style="width:100%"></div>
+
+<script>
+    createFriendsGraph("jrtechs", "myGraph", "graphLabel");
+</script>
+
+</body>
+</html>
