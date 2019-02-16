@@ -28,6 +28,11 @@ module.exports=
         getClientSecret: function()
         {
             return config.clientSecret;
+        },
+
+        getSessionSecret: function()
+        {
+            return config.sessionSecret;
         }
 
     };
