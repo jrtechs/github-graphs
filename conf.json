@@ -1,0 +1,7 @@
+{
+  "port": 7000,
+  "sessionSecret": "superDuperSecret",
+
+  "clientID": "github client id",
+  "clientSecret": "clientSecret"
+}

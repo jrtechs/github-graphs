@@ -1,0 +1,22 @@
+#content {
+    top: 120px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+#content-title {
+    position: relative;
+    top: 20%;
+    height: 80px;
+    background-color: rgb(208, 208, 208);
+    border-radius: 20px 20px 0px 0px;
+    
+}
+#content-body {
+    position: relative;
+    background-color: rgb(242, 242, 242);
+    border-radius: 0px 0px 20px 20px;
+}
+body {
+    background-color: #232323;
+}

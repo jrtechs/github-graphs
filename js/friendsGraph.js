@@ -4,22 +4,57 @@ var nodes;
 var edges;
 
 
+const options = {
+    nodes: {
+        borderWidth:4,
+        size:30,
+        color: {
+            border: '#222222',
+            background: '#666666'
+        },
+        font:{color:'#eeeeee'}
+    },
+    edges: {
+        color: 'lightgray'
+    }
+};
 
-function addFollowers(username)
+function alreadyInGraph(userID)
+{
+    for(var i = 0; i < nodes.length; i++)
+    {
+        if(nodes[i].id === userID)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+function addPersonToGraph(profileData)
+{
+    nodes.push(
+        {
+            id:profileData.id,
+            name:profileData.login,
+            shape: 'circularImage',
+            image:profileData.avatar_url
+        });
+}
+
+function addFriends(username, apiPath)
 {
     return new Promise(function(resolve, reject)
     {
-        queryAPIByUser(API_FOLLOWERS, username, function(data)
+        queryAPIByUser(apiPath, username, function(data)
         {
             for(var i = 0; i < data.length; i++)
             {
-                nodes.push(
-                    {
-                        id:data[i].id,
-                        shape: 'circularImage',
-                        image:data[i].avatar_url
-                    });
-
+                if(!alreadyInGraph(data[i].id))
+                {
+                    addPersonToGraph(data[i]);
+                }
             }
             resolve();
         },
@@ -30,63 +65,115 @@ function addFollowers(username)
     });
 }
 
-function addFollowing(username)
+
+
+function addConnection(person1, person2)
+{
+    edges.push(
+        {
+            from: person1.id,
+            to: person2.id
+        });
+}
+
+
+function processUserConnections(userName)
 {
     return new Promise(function(resolve, reject)
     {
+        queryAPIByUser(API_FOLLOWING, userName,
+            function(data)
+            {
+                for(var i = 0; i < data.length; i++)
+                {
+
+                }
+
+                queryAPIByUser(API_FOLLOWERS, userName, function(data2)
+                    {
+                        for(var i = 0; i < data2.length; i++)
+                        {
+
+                        }
+                        resolve();
+                    },
+                    function(error)
+                    {
+                        reject(error);
+                    });
+            },
+            function(error)
+            {
+                reject(error);
+            })
+    });
+}
+
+function createConnections()
+{
+    return new Promise(function(resolve, reject)
+    {
+        var prom = [];
+        for(var i = 0; i < nodes.length; i++)
+        {
+            prom.push(processUserConnections(nodes[i].name));
+        }
+
+        Promise.all(prom).then(function()
+        {
+            resolve();
+        }).catch(function(error)
+        {
+            reject(error);
+        });
+    });
+}
+
+
+function addSelfToGraph(username)
+{
+    return new Promise(function(resolve, reject)
+    {
+        queryAPIByUser("", username, function(data)
+        {
+            addPersonToGraph(data);
+            resolve();
+        },
+        function(error)
+        {
+           reject(error);
+        });
 
     });
 }
+
 
 
 function createFriendsGraph(username, containerName, graphsTitle)
 {
     nodes = [];
     edges = [];
-    var network = null;
-
-    addFollowers(username).then(function()
+    addSelfToGraph(username).then(function()
     {
-        var container = document.getElementById(containerName);
-        var data = {
-            nodes: nodes,
-            edges: edges
-        };
-        var options = {
-            nodes: {
-                borderWidth:4,
-                size:30,
-                color: {
-                    border: '#222222',
-                    background: '#666666'
-                },
-                font:{color:'#eeeeee'}
-            },
-            edges: {
-                color: 'lightgray'
-            }
-        };
-        network = new vis.Network(container, data, options);
+        addFriends(username, API_FOLLOWERS).then(function()
+        {
+            addFriends(username, API_FOLLOWING).then(function()
+            {
+                createConnections().then(function()
+                {
+                    var container = document.getElementById(containerName);
+                    var data =
+                        {
+                            nodes: nodes,
+                            edges: edges
+                        };
+                    var network = new vis.Network(container, data, options);
+                });
+            });
+        })
+    }).catch(function(error)
+    {
+        console.log(error);
+        $("#" + graphsTitle).html("Error Fetching Data From API");
     });
-
-    // // create connections between people
-    // // value corresponds with the amount of contact between two people
-    // edges = [
-    //     {from: 1, to: 2},
-    //     {from: 2, to: 3},
-    //     {from: 2, to: 4},
-    //     {from: 4, to: 5},
-    //     {from: 4, to: 10},
-    //     {from: 4, to: 6},
-    //     {from: 6, to: 7},
-    //     {from: 7, to: 8},
-    //     {from: 8, to: 9},
-    //     {from: 8, to: 10},
-    //     {from: 10, to: 11},
-    //     {from: 11, to: 12},
-    //     {from: 12, to: 13},
-    //     {from: 13, to: 14},
-    //     {from: 9, to: 16}
-    // ];
-
 }
