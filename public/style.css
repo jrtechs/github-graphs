@@ -26,16 +26,25 @@
     height: 60px;
 }
 #error-code {
-    background-color: rgb(208, 208, 208);
+    font-family: Comfortaa;
+    font-size: 200px;
+    color: rgb(208, 208, 208);
 }
 #navigation {
     width: 70%;
     padding-right: 20px !important;
 }
+.error {
+    color: rgb(208, 208, 208);
+}
+#dcimg {
+    width: 300px;
+}
 .big-title {
     font-family: Comfortaa;
     font-weight: bold;
     font-size: 60px;
+    text-wrap: avoid;
 }
 .m-title {
     font-family: Comfortaa;
