@@ -13,42 +13,38 @@ const authenticate = "?client_id=" + configLoader.getClientID() +
     "&client_secret=" + configLoader.getClientSecret();
 
 
+//caching program to make the application run faster
+const cache = require('memory-cache');
+
+
 function queryGitHubAPI(requestURL)
 {
+    const apiData = cache.get(requestURL);
+
     return new Promise(function(reject, resolve)
     {
-        const queryRUL = GITHUB_API + requestURL + authenticate;
+        if(apiData == null)
+        {
 
-        got(queryRUL, { json: true }).then(response =>
+                const queryRUL = GITHUB_API + requestURL + authenticate;
+
+                got(queryRUL, { json: true }).then(response =>
+                {
+                    resolve(response.body);
+                    cache.put(requestURL, response.body);
+                }).catch(error =>
+                {
+                    resolve(response.body);
+                    cache.put(requestURL, response.body);
+                });
+
+        }
+        else
         {
-            resolve(response.body);
-        }).catch(error =>
-        {
-            resolve(response.body)
-        });
+            resolve(apiData);
+        }
     })
 }
-
-//https://api.github.com/users/whatever?client_id=xxxx&client_secret=yyyy
-// function authenticateWithGitHub()
-// {
-//     const authURL = GITHUB_API + "/users/" + configLoader.getAPIUser() + "?client_id=" + configLoader.getClientID() +
-//         "&client_secret=" + configLoader.getClientSecret();
-//
-//     return new Promise(function(resolve, reject)
-//     {
-//         got(authURL, { json: true }).then(response =>
-//         {
-//             console.log(response);
-//             resolve(response);
-//         }).catch(error => {
-//             reject(error);
-//             console.log(error.response.body);
-//         });
-//     })
-//
-// }
-
 
 
 
