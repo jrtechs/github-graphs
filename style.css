@@ -1,0 +1,41 @@
+#header-bar {
+    height: 70px;
+    width: 100%;
+    background-color: rgb(208, 208, 208);
+}
+#header-title {
+    width: 30%;
+    padding-left: 20px;
+    font-size: 25px;
+}
+#icon {
+    height: 60px;
+}
+#navigation {
+    width: 70%;
+    padding-right: 20px !important;
+
+}
+.nav-sep {
+    position: relative;
+    left: 10px;
+    top: 6px;
+    padding-left: 20px;
+    border-left: 2px solid #232323;
+    height: 30px;
+}
+a {
+    color: #232323;
+    text-decoration: none;
+}
+a:hover {
+    color: rgb(57, 163, 225);
+    text-decoration: none;
+}
+.nav-item {
+    padding: 5px;
+    font-size: 20px;
+}
+body {
+    background-color: rgb(242, 242, 242);
+}
