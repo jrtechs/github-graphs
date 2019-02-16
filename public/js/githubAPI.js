@@ -7,7 +7,7 @@
  */
 
 
-const APIROOT = "https://api.github.com";
+const APIROOT = "api";
 
 const API_USER_PATH = "/users/";
 
