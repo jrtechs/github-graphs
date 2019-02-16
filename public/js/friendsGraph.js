@@ -4,7 +4,7 @@ var nodes;
 var edges;
 
 
-const options = {
+var options = {
     nodes: {
         borderWidth:4,
         size:30,
