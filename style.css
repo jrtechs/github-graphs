@@ -1,5 +1,20 @@
+@font-face {
+    font-family: Comfortaa;
+    src: url(./fonts/Comfortaa-Regular.ttf);
+    font-weight: normal;
+}
+@font-face {
+    font-family: Comfortaa;
+    src: url(./fonts/Comfortaa-Light.ttf);
+    font-weight: lighter;
+}
+@font-face {
+    font-family: Comfortaa;
+    src: url(./fonts/Comfortaa-Bold.ttf);
+    font-weight: bold;
+}
 #header-bar {
-    height: 70px;
+    height: 10%;
     width: 100%;
     background-color: rgb(208, 208, 208);
 }
@@ -8,13 +23,17 @@
     padding-left: 20px;
     font-size: 25px;
 }
-#icon {
-    height: 60px;
+#logo {
+    height: 40px;
 }
 #navigation {
     width: 70%;
     padding-right: 20px !important;
-
+}
+.big-title {
+    font-family: Comfortaa;
+    font-weight: bold;
+    font-size: 60px;
 }
 .nav-sep {
     position: relative;
@@ -24,6 +43,10 @@
     border-left: 2px solid #232323;
     height: 30px;
 }
+.nav-item {
+    padding: 5px;
+    font-size: 20px;
+}
 a {
     color: #232323;
     text-decoration: none;
@@ -31,10 +54,6 @@ a {
 a:hover {
     color: rgb(57, 163, 225);
     text-decoration: none;
-}
-.nav-item {
-    padding: 5px;
-    font-size: 20px;
 }
 body {
     background-color: rgb(242, 242, 242);
