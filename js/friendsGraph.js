@@ -37,6 +37,7 @@ function addPersonToGraph(profileData)
     nodes.push(
         {
             id:profileData.id,
+            name:profileData.login,
             shape: 'circularImage',
             image:profileData.avatar_url
         });
@@ -66,12 +67,65 @@ function addFriends(username, apiPath)
 
 
 
+function addConnection(person1, person2)
+{
+    edges.push(
+        {
+            from: person1.id,
+            to: person2.id
+        });
+}
+
+
+function processUserConnections(userName)
+{
+    return new Promise(function(resolve, reject)
+    {
+        queryAPIByUser(API_FOLLOWING, userName,
+            function(data)
+            {
+                for(var i = 0; i < data.length; i++)
+                {
+
+                }
+
+                queryAPIByUser(API_FOLLOWERS, userName, function(data2)
+                    {
+                        for(var i = 0; i < data2.length; i++)
+                        {
+
+                        }
+                        resolve();
+                    },
+                    function(error)
+                    {
+                        reject(error);
+                    });
+            },
+            function(error)
+            {
+                reject(error);
+            })
+    });
+}
 
 function createConnections()
 {
     return new Promise(function(resolve, reject)
     {
-        resolve();
+        var prom = [];
+        for(var i = 0; i < nodes.length; i++)
+        {
+            prom.push(processUserConnections(nodes[i].name));
+        }
+
+        Promise.all(prom).then(function()
+        {
+            resolve();
+        }).catch(function(error)
+        {
+            reject(error);
+        });
     });
 }
 

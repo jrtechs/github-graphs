@@ -1,0 +1,25 @@
+{
+  "name": "github-graphs",
+  "version": "0.0.1",
+  "description": "Generates graphs of github things.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrtechs/github-graphs.git"
+  },
+  "author": "Jeffery Russell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrtechs/github-graphs/issues"
+  },
+  "homepage": "https://github.com/jrtechs/github-graphs#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "fs": "0.0.1-security"
+  }
+}
