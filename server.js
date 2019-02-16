@@ -21,9 +21,10 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-
 const routes = require('./routes');
 app.use('/', routes);
+
+
 
 
 
