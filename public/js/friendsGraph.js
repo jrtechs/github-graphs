@@ -82,7 +82,7 @@ function addFriends(username, apiPath, page)
                 }
             }
 
-            if(data.length === 30)
+            if(page < 50 && data.length === 30)
             {
                 addFriends(username, apiPath, page+ 1).then(function()
                 {
@@ -161,7 +161,7 @@ function processConnections(user, apiPoint, page)
                 {
                     addConnection(user, data[i])
                 }
-                if(data.length === 30)
+                if(page < 50 && data.length === 30)
                 {
                     processConnections(user, apiPoint, page + 1).then(function()
                     {

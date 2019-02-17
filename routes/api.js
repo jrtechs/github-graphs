@@ -42,12 +42,13 @@ function queryGitHubAPI(requestURL)
                 cache.put(requestURL, response.body);
             }).catch(error =>
             {
-                reject(error);
-                cache.put(requestURL, response.body);
+                resolve(error);
+                cache.put(requestURL, error);
             });
         }
         else
         {
+            console.log("Fetched From Cahce");
             resolve(apiData);
         }
     })
@@ -68,12 +69,21 @@ routes.get('/*', (request, result) =>
         result.end();
     }).catch(function(error)
     {
-        if(error.hasOwnProperty("id") || error[0].hasOwnProperty("id"))
+        try
         {
-            result.write(JSON.stringify(error));
+            if(error.hasOwnProperty("id") || error[0].hasOwnProperty("id"))
+            {
+                result.write(JSON.stringify(error));
+            }
         }
+        catch(error) {};
         result.end();
-    })
+    });
+
+    if(cache.size() > 500000)
+    {
+        cache.clear();
+    }
 });
 
 module.exports = routes;
