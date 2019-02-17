@@ -64,30 +64,15 @@
         </div>
 
         <script>
-
-            document.addEventListener("keydown", event => {
-                if (event.key === "Enter") {
-                    fetchUserInput();
-                }
-            })
         
-            function fetchUserInput()
-            {
-                const inputedName = $("#txtUsername").val();
-                createGraphs(inputedName);
-            }
-        
-            function createGraphs(username)
-            {
+            function createGraphs(username) {
                 options.width = $("#myGraph").width() + "px";
                 options.height = "700px";
                 createFriendsGraph(username, "myGraph", "graphLabel");
                 profileGen(username, "profileGen");
-                $("#searchBarTop").html("");
             }
         
-            if(findGetParameter("name") !== null)
-            {
+            if(findGetParameter("name") !== null) {
                 createGraphs(findGetParameter("name"))
             }
             
