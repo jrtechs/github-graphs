@@ -126,7 +126,7 @@ function createProfileTimeLine(username, containerName)
         {id: 1, content: 'Repositories', value: 2}
     ]);
 
-    console.log("up up duper");
+
     Promise.all(prom).then(function()
     {
         // note that months are zero-based in the JavaScript Date object

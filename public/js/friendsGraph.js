@@ -64,12 +64,15 @@ function addPersonToGraph(profileData)
  * @param apiPath
  * @returns {Promise<any>}
  */
-function addFriends(username, apiPath)
+function addFriends(username, apiPath, page)
 {
+    console.log(username + " page=" + page);
     return new Promise(function(resolve, reject)
     {
-        queryAPIByUser(apiPath, username, function(data)
+        queryAPIByUser(apiPath + "?page=" + page, username, function(data)
         {
+            console.log(data);
+            console.log(data.length);
             for(var i = 0; i < data.length; i++)
             {
                 if(!alreadyInGraph(data[i].id))
@@ -77,7 +80,18 @@ function addFriends(username, apiPath)
                     addPersonToGraph(data[i]);
                 }
             }
-            resolve();
+
+            if(data.length === 30)
+            {
+                addFriends(username, apiPath, page+ 1).then(function()
+                {
+                    resolve();
+                })
+            }
+            else
+            {
+                resolve();
+            }
         },
         function(error)
         {
@@ -96,6 +110,7 @@ function addFriends(username, apiPath)
  */
 function edgeInGraph(id1, id2)
 {
+    console.log("edge check");
     for(var i = 0;i < edges.length; i++)
     {
         if(edges[i].from === id1 && edges[i].to === id2)
@@ -133,6 +148,37 @@ function addConnection(person1, person2)
 }
 
 
+function processConnections(user, apiPoint, page)
+{
+    return new Promise(function(resolve, reject)
+    {
+        queryAPIByUser(apiPoint + "?page=" + page, user.name,
+            function(data)
+            {
+                for(var i = 0; i < data.length; i++)
+                {
+                    addConnection(user, data[i])
+                }
+                if(data.length === 30)
+                {
+                    processConnections(user, apiPoint, page + 1).then(function()
+                    {
+                        resolve();
+                    });
+                }
+                else
+                {
+                    resolve();
+                }
+            }, function(error)
+            {
+                console.log(error);
+                resolve();
+            })
+    })
+}
+
+
 /**
  * Processes all the connections of a user and adds them to the graph
  *
@@ -143,31 +189,41 @@ function processUserConnections(user)
 {
     return new Promise(function(resolve, reject)
     {
-        queryAPIByUser(API_FOLLOWING, user.name,
-            function(data)
-            {
-                for(var i = 0; i < data.length; i++)
-                {
-                    addConnection(user, data[i])
-                }
 
-                queryAPIByUser(API_FOLLOWERS, user.name, function(data2)
-                    {
-                        for(var i = 0; i < data2.length; i++)
-                        {
-                            addConnection(user, data2[i]);
-                        }
-                        resolve();
-                    },
-                    function(error)
-                    {
-                        reject(error);
-                    });
-            },
-            function(error)
+        processConnections(user, API_FOLLOWING, 1).then(function()
+        {
+            processConnections(user, API_FOLLOWERS, 1).then(function()
             {
-                reject(error);
+                resolve();
             })
+        })
+        // queryAPIByUser(API_FOLLOWING, user.name,
+        //     function(data)
+        //     {
+        //         for(var i = 0; i < data.length; i++)
+        //         {
+        //             addConnection(user, data[i])
+        //         }
+        //
+        //         queryAPIByUser(API_FOLLOWERS, user.name, function(data2)
+        //             {
+        //                 for(var i = 0; i < data2.length; i++)
+        //                 {
+        //                     addConnection(user, data2[i]);
+        //                 }
+        //                 resolve();
+        //             },
+        //             function(error)
+        //             {
+        //                 // reject(error);
+        //                 resolve();
+        //             });
+        //     },
+        //     function(error)
+        //     {
+        //         // reject(error);
+        //         resolve();
+        //     })
     });
 }
 
@@ -247,10 +303,9 @@ function createFriendsGraph(username, containerName, graphsTitle)
     edges = [];
     addSelfToGraph(username).then(function()
     {
-        console.log("added self");
-        addFriends(username, API_FOLLOWERS).then(function()
+        addFriends(username, API_FOLLOWERS,1).then(function()
         {
-            addFriends(username, API_FOLLOWING).then(function()
+            addFriends(username, API_FOLLOWING,1).then(function()
             {
                 createConnections().then(function()
                 {
