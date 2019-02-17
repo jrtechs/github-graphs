@@ -52,7 +52,10 @@ function createOrgTable(orgName, tableContainer)
         }
 
         $("#" + tableContainer).html(html);
-        $('#dataTable').DataTable();
+
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        } );
     }).catch(function(error)
     {
         //console.log("Unable to create table");

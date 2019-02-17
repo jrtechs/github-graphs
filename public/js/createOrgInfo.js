@@ -15,6 +15,7 @@ function createOrgInfo(orgName, container) {
         $("#" + container).html(html);
         $('#dataTable').DataTable();   
     }, function(error) {
-        console.log("Unable to load table data");
+        alert("Organization Does Not Exist");
+        window.location.href = "./GraphGenerator.html";
     });
 }
