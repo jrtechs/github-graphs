@@ -22,6 +22,8 @@ function createOrgTable(orgName, tableContainer)
             }
 
             $("#" + tableContainer).html(html);
+            $('#dataTable').DataTable();
+
         },
         function(error)
         {
