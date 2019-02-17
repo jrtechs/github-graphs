@@ -38,6 +38,7 @@ function queryAPIByUser(apiPath, user, successCallBack, errorCallBack) {
         crossDomain: true,
         dataType: "json",
         success: successCallBack,
-        error:errorCallBack
+        error:errorCallBack,
+        timeout: 1500
     });
 }

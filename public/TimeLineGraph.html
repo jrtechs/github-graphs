@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -13,13 +13,61 @@
             crossorigin="anonymous">
     </script>
     <script src="js/githubAPI.js"></script>
-    <script src="js/friendsGraph.js"></script>
+    <script src="js/profileTimeLine.js"></script>
     <script src="js/profileGen.js"></script>
     <script src="js/utilities.js"></script>
 
     <script type="text/javascript" src="js/vis/vis.js"></script>
-    <link href="js/vis/vis-network.min.css" rel="stylesheet" type="text/css" />
+    <link href="js/vis/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
 
+
+    <style type="text/css">
+        .vis-timeline {
+            border: 2px solid blue;
+            /*font-family:  purisa, 'comic sans', cursive;*/
+            font-size: 12pt;
+            background: #E8E8E8;
+        }
+        .vis-item {
+            border-color: #0B002B;
+            background-color: #88BAFF;
+            font-size: 15pt;
+            color: black;
+            box-shadow: 5px 5px 20px rgba(47,27,0, 0.5);
+        }
+        .vis-item,
+        .vis-item.vis-line {
+            border-width: 3px;
+        }
+        .vis-item.vis-dot {
+            border-width: 10px;
+            border-radius: 10px;
+        }
+        .vis-item.vis-selected {
+            border-color: #2C3E50;
+            background-color: #498FBE;
+        }
+        .vis-time-axis .vis-text {
+            color: #0B002B;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+        .vis-time-axis .vis-text.vis-major {
+            font-weight: bold;
+        }
+        .vis-time-axis .vis-grid.vis-minor {
+            border-width: 2px;
+            border-color: #88BAFF;
+        }
+        .vis-labelset .vis-label
+        {
+            color: black;
+        }
+        .vis-time-axis .vis-grid.vis-major {
+            border-width: 2px;
+            border-color: #0B002B;
+        }
+    </style>
 </head>
 <body>
 <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
@@ -52,11 +100,11 @@
 
     <div class="row align-center" id="searchBarTop">
         <nav class="navbar navbar-light bg-light justify-content-between">
-          <a class="navbar-brand">Create Graph</a>
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Look Up</button>
-          </form>
+            <a class="navbar-brand">Create Graph</a>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Look Up</button>
+            </form>
         </nav>
     </div>
 
@@ -82,9 +130,7 @@
 
     function createGraphs(username)
     {
-        options.width = $("#myGraph").width() + "px";
-        options.height = "700px";
-        createFriendsGraph(username, "myGraph", "graphLabel");
+        createProfileTimeLine(username, "myGraph");
         profileGen(username, "profileGen");
         $("#searchBarTop").html("");
     }
