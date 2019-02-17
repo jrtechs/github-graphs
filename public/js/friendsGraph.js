@@ -260,9 +260,9 @@ function createFriendsGraph(username, containerName, graphsTitle)
                         };
                     var network = new vis.Network(container, data, options);
 
-                    network.on("click", function (params) {
+                    network.on("click", function (params)
+                    {
                         params.event = "[original event]";
-                        document.getElementById('eventSpan').innerHTML = '<h2>Click event:</h2>' + JSON.stringify(params, null, 4);
                         if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
                         {
                             bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
@@ -273,7 +273,7 @@ function createFriendsGraph(username, containerName, graphsTitle)
         })
     }).catch(function(error)
     {
-        console.log(error);
         $("#" + graphsTitle).html("Error Fetching Data From API");
+        alert("Invalid User");
     });
 }

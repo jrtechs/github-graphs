@@ -15,7 +15,7 @@
     <script src="js/githubAPI.js"></script>
     <script src="js/friendsGraph.js"></script>
     <script src="js/profileGen.js"></script>
-
+    <script src="js/utilities.js"></script>
 
     <script type="text/javascript" src="js/vis/vis.js"></script>
     <link href="js/vis/vis-network.min.css" rel="stylesheet" type="text/css" />
@@ -30,7 +30,7 @@
     </div>
     <ul id="navigation" class="nav justify-content-end">
         <li class="nav-item">
-            <a href="./GraphTest.html">
+            <a href="./FriendsGraph.html">
                 Generate graphs
             </a>
         </li>
@@ -50,12 +50,12 @@
 </div>
 <div class="main container">
 
-    <div class="row" id="searchBarTop">
+    <div class="row align-center" id="searchBarTop">
         <nav class="navbar navbar-light bg-light justify-content-between">
           <a class="navbar-brand">Create Graph</a>
           <form class="form-inline">
             <input class="form-control mr-sm-2" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" onclick='createGraphs()' type='button'>Look Up</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Look Up</button>
           </form>
         </nav>
     </div>
@@ -73,14 +73,25 @@
 </body>
 
 <script>
-    function createGraphs()
+
+    function fetchUserInput()
+    {
+        const inputedName = $("#txtUsername").val();
+        createGraphs(inputedName);
+    }
+
+    function createGraphs(username)
     {
         options.width = $("#myGraph").width() + "px";
         options.height = "700px";
-        const inputedName = $("#txtUsername").val();
-        createFriendsGraph(inputedName, "myGraph", "graphLabel");
-        profileGen(inputedName, "profileGen");
+        createFriendsGraph(username, "myGraph", "graphLabel");
+        profileGen(username, "profileGen");
         $("#searchBarTop").html("");
+    }
+
+    if(findGetParameter("name") !== null)
+    {
+        createGraphs(findGetParameter("name"))
     }
 </script>
 
