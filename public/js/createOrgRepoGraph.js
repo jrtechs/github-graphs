@@ -6,13 +6,17 @@ var edges;
 
 var options = {
     nodes: {
+        shape: 'dot',
+        size: 40,
         borderWidth:4,
-        size:30,
         color: {
             border: '#222222',
             background: '#666666'
         },
-        font:{color:'#eeeeee'}
+        font:{
+            color:'#eeeeee',
+            size: 12
+        },
     },
     edges: {
         color: 'lightgray'
@@ -48,17 +52,20 @@ function addSelfAsOrg(orgData) {
     nodes.push( {
         id:orgData.id,
         name:orgData.login,
-        image:orgData.avatar_url
+        image:orgData.avatar_url,
+        background: '#eeeeee',
+        size:100,
+        label: orgData.name,
     });
+    console.log(orgData.name);
 }
 
 function addSelfAsRepo(repoData) {
     nodes.push( {
         id:repoData.id,
         name:repoData.name,
-        image:repoData.avatar_url
+        label: repoData.name,
     });
-    console.log(repoData.name);
 }
 
 
@@ -271,21 +278,9 @@ function addOrgToGraph(orgname) {
 
 function addRepoToGraph(repo) {
     return new Promise(function(resolve, reject) {
-        console.log("in repo");
         console.log(repo);
         addSelfAsRepo(repo);
         resolve();
-        /*
-        queryAPIByRepo(repo.name, orgname, function(data) {
-            //total = (data.followers + data.following) * 2;
-            addSelfAsRepo(data);
-            resolve();
-            console.log("did it");
-        },
-        function(error) {
-           reject(error);
-        });*/
-
     });
 }
 
@@ -316,19 +311,22 @@ function createOrgRepoGraph(orgname, containerName, graphsTitle)
         addRepos(orgname, API_REPOS,1).then(function() {
             $("#" + progressID).html("");
 
-            var container = document.getElementById(containerName);
-            var data = {
-                nodes: nodes,
-                edges: edges
-            };
-            var network = new vis.Network(container, data, options);
-
-            network.on("click", function (params) {
-                params.event = "[original event]";
-                if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
-                    bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
-                }
-            });
+            createConnections().then( () => {
+                var container = document.getElementById(containerName);
+                var data = {
+                    nodes: nodes,
+                    edges: edges
+                };
+                var network = new vis.Network(container, data, options);
+    
+                network.on("click", function (params) {
+                    params.event = "[original event]";
+                    if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
+                        bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                    }
+                });
+            })
+            
         })
     }).catch(function(error) {
         alert("Invalid Organization");
