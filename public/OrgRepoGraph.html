@@ -17,6 +17,12 @@
     <script src="js/createOrgRepoGraph.js"></script>
     <script src="js/utilities.js"></script>
     <script src="js/profileGen.js"></script>
+    <script src="js/createOrgTable.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+
+
 
     <script type="text/javascript" src="js/vis/vis.js"></script>
     <link href="js/vis/vis-network.min.css" rel="stylesheet" type="text/css" />
@@ -57,10 +63,27 @@
             <div class="col-md-2 col-12">
                 <div id="profileGen"></div>
             </div>
-            <div class="col-md-8 col-12">
-                <h2 id="graphLabel"></h2>
+            <div class="col-md-6 col-12">
+                <div id="graphLoading"></div>
                 <div id="myGraph" class="w-100"></div>
                 <pre id="eventSpan"></pre>
+            </div>
+            <div class="col-md-4 col-12 bg-light">
+                <div class="w-100"></div>
+                <center><h1>Repositories</h1></center>
+                <table class="table table-striped" id="dataTable">
+                    <thead class="thead-dark">
+                    <tr>
+                        <td>Name</td>
+                        <td>Forks</td>
+                        <td>Language</td>
+                    </tr>
+                    </thead>
+                    <tbody id="repositoryTable">
+
+                    </tbody>
+                </table>
+
             </div>
         </div>
 
@@ -71,7 +94,7 @@
                 options.height = "700px";
 
                 createOrgRepoGraph(orgname, "myGraph", "graphLoading");
-                //orgRepoGen(orgname, "orgRepoGen");
+                createOrgTable(orgname, 'repositoryTable');
             }
         
             if(findGetParameter("name") !== null) {

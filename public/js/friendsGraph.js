@@ -66,14 +66,11 @@ function addPersonToGraph(profileData)
  */
 function addFriends(username, apiPath, page)
 {
-    console.log(username + " page=" + page);
     updateProgress();
     return new Promise(function(resolve, reject)
     {
         queryAPIByUser(apiPath + "?page=" + page, username, function(data)
         {
-            console.log(data);
-            console.log(data.length);
             for(var i = 0; i < data.length; i++)
             {
                 if(!alreadyInGraph(data[i].id))
@@ -111,7 +108,6 @@ function addFriends(username, apiPath, page)
  */
 function edgeInGraph(id1, id2)
 {
-    console.log("edge check");
     for(var i = 0;i < edges.length; i++)
     {
         if(edges[i].from === id1 && edges[i].to === id2)
@@ -151,7 +147,6 @@ function addConnection(person1, person2)
 
 function processConnections(user, apiPoint, page)
 {
-    updateProgress();
     return new Promise(function(resolve, reject)
     {
         queryAPIByUser(apiPoint + "?page=" + page, user.name,
@@ -196,6 +191,7 @@ function processUserConnections(user)
         {
             processConnections(user, API_FOLLOWERS, 1).then(function()
             {
+                updateProgress();
                 resolve();
             })
         })
@@ -261,7 +257,7 @@ function addSelfToGraph(username)
     {
         queryAPIByUser("", username, function(data)
         {
-            total = (data.followers + data.following) * 2;
+            total = (data.followers + data.following);
             addPersonToGraph(data);
             resolve();
         },
@@ -305,7 +301,6 @@ function createFriendsGraph(username, containerName, graphsTitle)
             {
                 createConnections().then(function()
                 {
-                    console.log("cleared div");
                     $("#" + progressID).html("");
 
                     var container = document.getElementById(containerName);

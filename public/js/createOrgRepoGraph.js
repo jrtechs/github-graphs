@@ -44,78 +44,6 @@ function alreadyInGraph(userID)
 
 
 /**
- * adds a person to the nodes list
- *
- * @param profileData
- */
-function addSelfAsOrg(orgData) {
-    nodes.push( {
-        id:0,
-        name:orgData.login,
-        image:orgData.avatar_url,
-        background: '#eeeeee',
-        size:100,
-        label: orgData.name,
-    });
-    console.log(orgData.name);
-}
-
-function addSelfAsRepo(repoData) {
-    nodes.push( {
-        id:repoData.id,
-        name:repoData.name,
-        label: repoData.name,
-    });
-
-    edges.push(
-        {
-            to: 0,
-            from: repoData.id
-        });
-}
-
-
-/**
- * Adds the followers/following of a person
- * to the graph
- *
- * @param username
- * @param apiPath
- * @returns {Promise<any>}
- */
-function addRepos(orgName, apiPath, page)
-{
-    console.log(orgName + " page=" + page);
-    updateProgress();
-    return new Promise(function(resolve, reject) {
-        queryAPIByOrg(apiPath + "?page=" + page, orgName, function(data) {
-            console.log(data);
-            console.log(data.length);
-            var prom = [];
-            for(var i = 0; i < data.length; i++) {
-                if(!alreadyInGraph(data[i].id)) {
-                    prom.push(addRepoToGraph(data[i]));
-                }
-            }
-            Promise.all(prom).then( () => {
-                if(data.length === 30) {
-                    addRepos(orgName, apiPath, page+ 1).then(function() {
-                        resolve();
-                    })
-                }
-                else {
-                    resolve();
-                }
-            })
-        },
-        function(error) {
-            reject(error);
-        })
-    });
-}
-
-
-/**
  * Greedy function which checks to see if a edge is in the graphs
  *
  * @param id1
@@ -204,11 +132,11 @@ function processUserConnections(user)
 {
     return new Promise(function(resolve, reject)
     {
-
         processConnections(user, API_FOLLOWING, 1).then(function()
         {
             processConnections(user, API_FOLLOWERS, 1).then(function()
             {
+                updateProgress();
                 resolve();
             })
         })
@@ -240,53 +168,6 @@ function createConnections()
             console.log(error);
             resolve();
         });
-    });
-}
-
-
-var total = 1;
-var indexed = 0;
-var progressID;
-
-
-function updateProgress()
-{
-    indexed++;
-
-    var percent = parseInt((indexed/total)*100);
-
-    $("#" + progressID).html("<div class=\"progress\">\n" +
-        "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
-        "</div>");
-
-    console.log();
-}
-
-/**
- * Adds the base  person to the graph.
- *
- * @param username
- * @returns {Promise<any>}
- */
-function addOrgToGraph(orgname) {
-    return new Promise(function(resolve, reject) {
-        queryAPIByOrg("", orgname, function(data) {
-            total = (data.public_repos) * 2;
-            addSelfAsOrg(data);
-            resolve();
-        },
-        function(error) {
-           reject(error);
-        });
-
-    });
-}
-
-function addRepoToGraph(repo) {
-    return new Promise(function(resolve, reject) {
-        console.log(repo);
-        addSelfAsRepo(repo);
-        resolve();
     });
 }
 
@@ -343,6 +224,7 @@ function addOrgUsers(orgname, page)
             }
             else
             {
+                total = 2*(data.length + (page * 30));
                 resolve();
             }
 
@@ -365,6 +247,23 @@ function bringUpProfileView(id)
     }
 }
 
+
+var total = 1;
+var indexed = 0;
+
+function updateProgress()
+{
+    indexed++;
+
+    var percent = parseInt((indexed/total)*100);
+
+    $("#graphLoading").html("<div class=\"progress\">\n" +
+        "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
+        "</div>");
+
+    console.log();
+}
+
 /**
  * Creates a graph
  * @param username
@@ -377,31 +276,26 @@ function createOrgRepoGraph(orgname, containerName, graphsTitle)
 
     nodes = [];
     edges = [];
-    addOrgToGraph(orgname).then(function() {
-        addRepos(orgname, API_REPOS,1).then(function()
-        {
-            addOrgUsers(orgname, 1).then(function()
-            {
-                $("#" + progressID).html("");
 
-                createConnections().then( () => {
-                    var container = document.getElementById(containerName);
-                    var data = {
-                        nodes: nodes,
-                        edges: edges
-                    };
-                    var network = new vis.Network(container, data, options);
+    addOrgUsers(orgname, 1).then(function()
+    {
 
-                    network.on("click", function (params) {
-                        params.event = "[original event]";
-                        if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
-                            bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
-                        }
-                    });
-                });
+        createConnections().then( () => {
+            var container = document.getElementById(containerName);
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var network = new vis.Network(container, data, options);
+            network.on("click", function (params) {
+                params.event = "[original event]";
+                if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
+                    bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                }
             });
-            
-        })
+
+            $("#graphLoading").html("");
+        });
     }).catch(function(error) {
         alert("Invalid Organization");
     });
