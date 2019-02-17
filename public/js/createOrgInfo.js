@@ -13,8 +13,13 @@ function createOrgInfo(orgName, container) {
         </div>"
 
         $("#" + container).html(html);
-        $('#dataTable').DataTable();   
+
+        setTimeout(function() {
+            $('#dataTable').DataTable();
+        }, 1500);
+
     }, function(error) {
-        console.log("Unable to load table data");
+        alert("Organization Does Not Exist");
+        window.location.href = "./GraphGenerator.html";
     });
 }

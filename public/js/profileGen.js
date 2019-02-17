@@ -65,7 +65,8 @@ function profileGen(username, container)
             $("#"+container).html(html);
         })
     }, () => {
-        console.error("error getting user info");
+        alert("User Does Not Exist");
+        window.location.href = "./GraphGenerator.html";
     });
 }
 

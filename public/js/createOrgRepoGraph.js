@@ -52,7 +52,6 @@ function alreadyInGraph(userID)
  */
 function edgeInGraph(id1, id2)
 {
-    console.log("edge check");
     for(var i = 0;i < edges.length; i++)
     {
         if(edges[i].from === id1 && edges[i].to === id2)

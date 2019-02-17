@@ -121,7 +121,26 @@
 </body>
 </html>
 <script>
-    function fetchUserInput() {
+    $('#txtOrgname').keydown(function(event)
+    {
+        if(event.keyCode == 13)
+        {
+            event.preventDefault();
+            toOrgRepos();
+        }
+    });
+
+    $('#txtUsername').keydown(function(event)
+    {
+        if(event.keyCode == 13)
+        {
+            event.preventDefault();
+            toFriends();
+        }
+    });
+
+    function fetchUserInput()
+    {
         const inputedName = $("#txtUsername").val();
 
         if(inputedName === "")
