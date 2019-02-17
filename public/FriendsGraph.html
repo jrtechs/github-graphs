@@ -50,57 +50,50 @@
             </ul>
         </div>
     </div>
-<div class="main container">
+    <div class="main container">
 
-    <div class="row align-center" id="searchBarTop">
-        <nav class="navbar navbar-light bg-light justify-content-between">
-          <a class="navbar-brand">Create Graph</a>
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Look Up</button>
-          </form>
-        </nav>
+        <div class="row">
+            <div class="col-md-8 col-12">
+                <h2 id="graphLabel"></h2>
+                <div id="myGraph" class="w-100"></div>
+                <pre id="eventSpan"></pre>
+            </div>
+            <div class="col-md-4 col-12 w-100">
+                <div id="profileGen"></div>
+            </div>
+        </div>
+
+        <script>
+
+            document.addEventListener("keydown", event => {
+                if (event.key === "Enter") {
+                    fetchUserInput();
+                }
+            })
+        
+            function fetchUserInput()
+            {
+                const inputedName = $("#txtUsername").val();
+                createGraphs(inputedName);
+            }
+        
+            function createGraphs(username)
+            {
+                options.width = $("#myGraph").width() + "px";
+                options.height = "700px";
+                createFriendsGraph(username, "myGraph", "graphLabel");
+                profileGen(username, "profileGen");
+                $("#searchBarTop").html("");
+            }
+        
+            if(findGetParameter("name") !== null)
+            {
+                createGraphs(findGetParameter("name"))
+            }
+            
+        </script>
     </div>
 
-    <div class="row">
-        <div class="col-md-8 col-12">
-            <h2 id="graphLabel"></h2>
-            <div id="myGraph" class="w-100"></div>
-            <pre id="eventSpan"></pre>
-        </div>
-        <div class="col-md-4 col-12 w-100">
-            <div id="profileGen"></div>
-        </div>
-    </div>
 </body>
-
-<script>
-
-    document.addEventListener("keydown", event => {
-        if (event.key === "Enter") {
-            fetchUserInput();
-        }
-    })
-
-    function fetchUserInput()
-    {
-        const inputedName = $("#txtUsername").val();
-        createGraphs(inputedName);
-    }
-
-    function createGraphs(username)
-    {
-        options.width = $("#myGraph").width() + "px";
-        options.height = "700px";
-        createFriendsGraph(username, "myGraph", "graphLabel");
-        profileGen(username, "profileGen");
-        $("#searchBarTop").html("");
-    }
-
-    if(findGetParameter("name") !== null)
-    {
-        createGraphs(findGetParameter("name"))
-    }
-</script>
 
 </html>
