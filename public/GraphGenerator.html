@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Generate - GitHub Graphs</title>
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -123,27 +124,43 @@
 <script>
     function fetchUserInput() {
         const inputedName = $("#txtUsername").val();
+
+        if(inputedName === "")
+        {
+            alert("Please enter a Github name in the text field.")
+        }
+
         return inputedName;
     }
 
-    function fetchOrgInput() {
+    function fetchOrgInput()
+    {
         const inputedOrg = $("#txtOrgname").val();
+        if(inputedOrg === "")
+        {
+            alert("Please enter a Github organization name in the text field.")
+        }
         return inputedOrg;
     }
 
-    function toFriends() {
+    function toFriends()
+    {
         var uname = fetchUserInput();
-        window.location.href = "./FriendsGraph.html?name=" + uname;
+        if(uname !== "")
+            window.location.href = "./FriendsGraph.html?name=" + uname;
     }
 
-    function toTimeline() {
+    function toTimeline()
+    {
         var uname = fetchUserInput();
-        window.location.href = "./TimeLineGraph.html?name=" + uname;
+        if(uname !== "")
+            window.location.href = "./TimeLineGraph.html?name=" + uname;
     }
 
     function toOrgRepos() {
-        var oname = fetchOrgInput();
-        window.location.href = "./OrgRepoGraph.html?name=" + oname;
+        var uname = fetchOrgInput();
+        if(uname !== "")
+            window.location.href = "./OrgRepoGraph.html?name=" + uname;
     }
 
 </script>
