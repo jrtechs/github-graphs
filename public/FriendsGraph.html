@@ -57,7 +57,7 @@
           <a class="navbar-brand">Create Graph</a>
           <form class="form-inline">
             <input class="form-control mr-sm-2" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Look Up</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput(key)' type='button'>Look Up</button>
           </form>
         </nav>
     </div>
@@ -75,6 +75,12 @@
 </body>
 
 <script>
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            fetchUserInput();
+        }
+    })
 
     function fetchUserInput()
     {
