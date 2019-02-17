@@ -151,7 +151,6 @@ function addConnection(person1, person2)
 
 function processConnections(user, apiPoint, page)
 {
-    updateProgress();
     return new Promise(function(resolve, reject)
     {
         queryAPIByUser(apiPoint + "?page=" + page, user.name,
@@ -196,6 +195,7 @@ function processUserConnections(user)
         {
             processConnections(user, API_FOLLOWERS, 1).then(function()
             {
+                updateProgress();
                 resolve();
             })
         })
@@ -261,7 +261,7 @@ function addSelfToGraph(username)
     {
         queryAPIByUser("", username, function(data)
         {
-            total = (data.followers + data.following) * 2;
+            total = (data.followers + data.following);
             addPersonToGraph(data);
             resolve();
         },

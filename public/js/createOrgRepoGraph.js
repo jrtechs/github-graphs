@@ -173,11 +173,11 @@ function processUserConnections(user)
 {
     return new Promise(function(resolve, reject)
     {
-
         processConnections(user, API_FOLLOWING, 1).then(function()
         {
             processConnections(user, API_FOLLOWERS, 1).then(function()
             {
+                updateProgress();
                 resolve();
             })
         })
@@ -211,26 +211,6 @@ function createConnections()
         });
     });
 }
-
-
-var total = 1;
-var indexed = 0;
-var progressID;
-
-
-function updateProgress()
-{
-    indexed++;
-
-    var percent = parseInt((indexed/total)*100);
-
-    $("#" + progressID).html("<div class=\"progress\">\n" +
-        "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
-        "</div>");
-
-    console.log();
-}
-
 
 
 function bringUpProfileView(id)
@@ -285,6 +265,7 @@ function addOrgUsers(orgname, page)
             }
             else
             {
+                total = 2*(data.length + (page * 30));
                 resolve();
             }
 
@@ -307,6 +288,23 @@ function bringUpProfileView(id)
     }
 }
 
+
+var total = 1;
+var indexed = 0;
+
+function updateProgress()
+{
+    indexed++;
+
+    var percent = parseInt((indexed/total)*100);
+
+    $("#graphLoading").html("<div class=\"progress\">\n" +
+        "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
+        "</div>");
+
+    console.log();
+}
+
 /**
  * Creates a graph
  * @param username
@@ -322,7 +320,6 @@ function createOrgRepoGraph(orgname, containerName, graphsTitle)
 
     addOrgUsers(orgname, 1).then(function()
     {
-        $("#" + progressID).html("");
 
         createConnections().then( () => {
             var container = document.getElementById(containerName);
@@ -331,13 +328,14 @@ function createOrgRepoGraph(orgname, containerName, graphsTitle)
                 edges: edges
             };
             var network = new vis.Network(container, data, options);
-
             network.on("click", function (params) {
                 params.event = "[original event]";
                 if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
                     bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
                 }
             });
+
+            $("#graphLoading").html("");
         });
     }).catch(function(error) {
         alert("Invalid Organization");
