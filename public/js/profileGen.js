@@ -9,11 +9,11 @@ function profileGen(username, container)
         }
         parseOrgs(user.login).then( (orgsReturn) => {
             let html = 
-            "<div class=\"card\" style=\"w-100\"> \
+            "<div class=\"card\" style=\"w-100; background-color:rgb(255,255,255);\"> \
                 <img class=\"card-img-top\" src=\""+user.avatar_url+"\"></img> \
-                <div class=\"row mx-0\"> \
+                <div class=\"row mx-0\" style=\"background-color:rgb(255,255,255);\"> \
                     <div class=\"col-8\"> \
-                        <div class=\"card-body\">"+
+                        <div class=\"card-body\" style=\"background-color:rgb(255,255,255);\">"+
                             (user.name != null ? "<h5 class=\"card-title\">"+user.name+"</h5>" : "") +" \
                             <h6 class=\"card-subtitle\">"+user.login+"</h5> \
                         </div> \
@@ -29,8 +29,8 @@ function profileGen(username, container)
                         </button> \
                     </div> \
                 </div> \
-                <div class=\"card border-secondary mb-3 mx-auto text-left\" style=\"width:90%\"> \
-                    <div class=\"card-body\"> \
+                <div class=\"card border-secondary mb-3 mx-auto text-left\" style=\"width:90%; \"> \
+                    <div class=\"card-body\" style=\"background-color:rgb(255,255,255);\"> \
                         <p class=\"card-text\"><a href=\""+user.html_url+"\" class=\"card-link\">"+user.html_url+"</a></p> \ " +
                         (user.blog != null ? "<p class=\"card-text \"><a href="+user.blog+" class=\"card-link\">"+user.blog+"</a></p>" : "")+" \
                     </div> \
