@@ -9,7 +9,7 @@ const GITHUB_API = "https://api.github.com";
 
 const configLoader = require('../configManager');
 
-const authenticate = "?client_id=" + configLoader.getClientID() +
+const authenticate = "client_id=" + configLoader.getClientID() +
     "&client_secret=" + configLoader.getClientSecret();
 
 
@@ -25,9 +25,17 @@ function queryGitHubAPI(requestURL)
     {
         if(apiData == null)
         {
-            const queryRUL = GITHUB_API + requestURL + authenticate;
+            var queryURL;
+            if(requestURL.includes("?page="))
+            {
+                queryURL = GITHUB_API + requestURL + "&" + authenticate;
+            }
+            else
+            {
+                queryURL = GITHUB_API + requestURL + "?" + authenticate;
+            }
 
-            got(queryRUL, { json: true }).then(response =>
+            got(queryURL, { json: true }).then(response =>
             {
                 resolve(response.body);
                 cache.put(requestURL, response.body);
@@ -50,7 +58,17 @@ function queryGitHubAPI(requestURL)
 
 routes.get('/*', (request, result) =>
 {
-    const gitHubAPIURL = request.url;
+    var gitHubAPIURL = request.url;
+
+    // if(request.query.hasOwnProperty("page"))
+    // {
+    //     gitHubAPIURL += "?page=" + request.query.page;
+    // }
+
+    console.log(request.query);
+
+    console.log(gitHubAPIURL);
+
 
     result.setHeader('Content-Type', 'application/json');
     queryGitHubAPI(gitHubAPIURL).then(function(data)
