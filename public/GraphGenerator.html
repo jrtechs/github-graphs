@@ -43,60 +43,79 @@
         </div>
     </div>
     <div class="main container">
-        <div id="search-bar">
-            <div class="row align-items-center text-center">
-                <div class="search-title">
-                    <h1 id="search" class="m-title">Search GitHub:</h1>
+        <div id="user-graphs">
+            <div id="search-bar">
+                <div class="row align-items-center text-center">
+                    <div class="search-title">
+                        <h1 id="search" class="m-title">Search GitHub:</h1>
+                    </div>
+                    <div class="col search-col">
+                        <form class="search-form">
+                            <input class="rounder form-control mr-sm-1" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
+                        </form>
+                    </div>
                 </div>
-                <div class="col search-col">
-                    <form class="search-form">
-                        <input class="rounder form-control mr-sm-1" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
-                    </form>
+            </div>
+            <div class="card-deck text-center">
+                <div class="card rounder">
+                    <div class="card-header">
+                        <h1 class="m-title">Interactive Friends Chart</h1>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Creates an web chart of the selected user and
+                            both their followers and anyone they are following
+                            themselves.
+                        </p>
+                        <button class="btn btn-outline-success rounder" onclick='toFriends()' type='button'>Generate</button>
+                    </div>
+                    <p></p>
+                </div>
+                <div class="card rounder">
+                    <div class="card-header">
+                        <h1 class="m-title">Repo Timeline</h1>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Displays a timeline of every repo belonging
+                            to the selected user in chronological order,
+                            along with information pertaining to each repo.
+                        </p>
+                        <button class="btn btn-outline-success rounder" onclick='toTimeline()' type='button'>Generate</button>
+                    </div>
+                    <p></p>
                 </div>
             </div>
         </div>
-        <div class="card-deck text-center">
-            <div class="card rounder">
-                <div class="card-header">
-                    <h1 class="m-title">Interactive Friends Chart</h1>
+        <div id="org-graph" class="mt-3">
+            <div id="search-bar">
+                <div class="row align-items-center text-center">
+                    <div class="search-title">
+                        <h1 id="search" class="m-title">Search GitHub:</h1>
+                    </div>
+                    <div class="col search-col">
+                        <form class="search-form">
+                            <input class="rounder form-control mr-sm-1" id='txtOrgname' type="search" placeholder="Organization Name" aria-label="Search">
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p>
-                        Creates an web chart of the selected user and
-                        both their followers and anyone they are following
-                        themselves.
-                    </p>
-                    <button class="btn btn-outline-success rounder" onclick='toFriends()' type='button'>Generate</button>
-                </div>
-                <p></p>
             </div>
-            <div class="card rounder">
-                <div class="card-header">
-                    <h1 class="m-title">Repo Timeline</h1>
+            <div class="card-deck text-center">
+                <div class="card rounder">
+                    <div class="card-header">
+                        <h1 class="m-title">Interactive Organization Chart</h1>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Creates a web chart of the specified organization
+                            and all associated repos.
+                        </p>
+                        <button class="btn btn-outline-success rounder" onclick='toOrganization()' type='button'>Generate</button>
+                    </div>
+                    <p></p>
                 </div>
-                <div class="card-body">
-                    <p>
-                        Displays a timeline of every repo belonging
-                        to the selected user in chronological order,
-                        along with information pertaining to each repo.
-                    </p>
-                    <button class="btn btn-outline-success rounder" onclick='toTimeline()' type='button'>Generate</button>
-                </div>
-                <p></p>
             </div>
-            <div class="card rounder">
-                <div class="card-header">
-                    <h1 class="m-title">Interactive Organization Chart</h1>
-                </div>
-                <div class="card-body">
-                    <p>
-                        Creates a web chart of the specified organization
-                        and all associated repos.
-                    </p>
-                    <button class="btn btn-outline-success rounder" onclick='toOrganization()' type='button'>Generate</button>
-                </div>
-                <p></p>
-            </div>
+        </div>
         </div>
     </div>
 </body>
@@ -107,6 +126,11 @@
         return inputedName;
     }
 
+    function fetchOrgInput() {
+        const inputedOrg = $("#txtOrgname").val();
+        return inputedOrg;
+    }
+
     function toFriends() {
         var uname = fetchUserInput();
         window.location.href = "./FriendsGraph.html?name=" + uname;
@@ -115,6 +139,11 @@
     function toTimeline() {
         var uname = fetchUserInput();
         window.location.href = "./TimeLineGraph.html?name=" + uname;
+    }
+
+    function toOrgRepos() {
+        var oname = fetchOrgInput();
+        window.location.href = "./OrgRepoGraph.html?name=" + oname;
     }
 
     if (findGetParameter("name") !== null) {
