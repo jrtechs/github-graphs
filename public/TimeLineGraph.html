@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="js/githubAPI.js"></script>
+    <script src="js/profileTimeLine.js"></script>
+    <script src="js/profileGen.js"></script>
+    <script src="js/utilities.js"></script>
+
+    <script type="text/javascript" src="js/vis/vis.js"></script>
+    <link href="js/vis/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+
+
+    <style type="text/css">
+        .vis-timeline {
+            border: 2px solid blue;
+            /*font-family:  purisa, 'comic sans', cursive;*/
+            font-size: 12pt;
+            background: #E8E8E8;
+        }
+        .vis-item {
+            border-color: #0B002B;
+            background-color: #88BAFF;
+            font-size: 15pt;
+            color: black;
+            box-shadow: 5px 5px 20px rgba(47,27,0, 0.5);
+        }
+        .vis-item,
+        .vis-item.vis-line {
+            border-width: 3px;
+        }
+        .vis-item.vis-dot {
+            border-width: 10px;
+            border-radius: 10px;
+        }
+        .vis-item.vis-selected {
+            border-color: #2C3E50;
+            background-color: #498FBE;
+        }
+        .vis-time-axis .vis-text {
+            color: #0B002B;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+        .vis-time-axis .vis-text.vis-major {
+            font-weight: bold;
+        }
+        .vis-time-axis .vis-grid.vis-minor {
+            border-width: 2px;
+            border-color: #88BAFF;
+        }
+        .vis-labelset .vis-label
+        {
+            color: black;
+        }
+        .vis-time-axis .vis-grid.vis-major {
+            border-width: 2px;
+            border-color: #0B002B;
+        }
+    </style>
+</head>
+<body>
+<div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
+    <div id="header-title">
+        <a href="./index.html">
+            <img id="logo" class="text-center" src="./logo.svg" />
+        </a>
+    </div>
+    <ul id="navigation" class="nav justify-content-end">
+        <li class="nav-item">
+            <a href="./FriendsGraph.html">
+                Generate graphs
+            </a>
+        </li>
+        <div class="nav-sep"></div>
+        <li class="nav-item">
+            <a href="https://github.com/jrtechs/github-graphs">
+                View on GitHub
+            </a>
+        </li>
+        <div class="nav-sep"></div>
+        <li class="nav-item">
+            <a href="./about.html">
+                About
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="main container">
+
+    <div class="row align-center" id="searchBarTop">
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand">Create Graph</a>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Look Up</button>
+            </form>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-12">
+            <h2 id="graphLabel"></h2>
+            <div id="myGraph" class="w-100"></div>
+            <pre id="eventSpan"></pre>
+        </div>
+        <div class="col-md-2 col-12 w-100">
+            <div id="profileGen"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    function fetchUserInput()
+    {
+        const inputedName = $("#txtUsername").val();
+        createGraphs(inputedName);
+    }
+
+    function createGraphs(username)
+    {
+        createProfileTimeLine(username, "myGraph");
+        profileGen(username, "profileGen");
+        $("#searchBarTop").html("");
+    }
+
+    if(findGetParameter("name") !== null)
+    {
+        createGraphs(findGetParameter("name"))
+    }
+</script>
+
+</html>
