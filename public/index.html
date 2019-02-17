@@ -7,6 +7,14 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous">
+    </script>
 </head>
 <body>
     <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
@@ -37,23 +45,48 @@
             </ul>
         </div>
     </div>
-    <div class="main container-fluid">
+    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="text-center">
+                    <img src="./img/DolphinCroissant.png" />
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="text-center">
+                    <img src="./img/DolphinCroissant.png" />
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="text-center">
+                    <img src="./img/DolphinCroissant.png" />
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#mainCarousel" role="button" data-slide="prev" m="1">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#mainCarousel" role="button" data-slide="next" m="1">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="main container-fluid" style="top: -100px;">
         <div class="home-content row align-items-center">
             <div class="side-txt col">
                 <div class="text-title text-center" style="padding: 10px;">
-                    <h1 class="m-title" style="padding-top: 5px;">How to get started:</h1>
+                    <h1 class="m-title" style="padding-top: 5px;">What can I do here?</h1>
                 </div>
                 <div class="text-content">
                     <p style="position: relative; padding: 10px;">
                         Head over to the 'Generate graphs' page and enter
-                        the username of a GitHub user. The space on that
-                        page will then populate with the requested GitHub
-                        user and all the related user, visualizing the
-                        connections between them.
+                        the username of a GitHub user. You can then select
+                        what kind of graph to generate based on that user.
                     </p>
                     <p style="position: relative; padding: 10px;">
                         If you'd like to see how everything works, follow
-                        the link to GitHub, where you can view all the work
+                        the link to GitHub, where you can view everything
                         that went into making this functional.
                     </p>
                     <p style="position: relative; padding: 10px;">
