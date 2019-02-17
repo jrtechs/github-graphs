@@ -33,11 +33,5 @@ module.exports=
         getSessionSecret: function()
         {
             return config.sessionSecret;
-        },
-
-        getAPIUser: function()
-        {
-            return config.user;
         }
-
     };
