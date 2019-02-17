@@ -11,6 +11,10 @@ const APIROOT = "api";
 
 const API_USER_PATH = "/users/";
 
+const API_ORG_PATH = "/orgs/";
+
+const API_REPOS = "/repos/";
+
 const API_FOLLOWING = "/following";
 
 const API_FOLLOWERS = "/followers";
@@ -43,3 +47,29 @@ function queryAPIByUser(apiPath, user, successCallBack, errorCallBack) {
         timeout: 4000
     });
 }
+
+function queryAPIByOrg(apiPath, org, successCallBack, errorCallBack) {
+    const urlpath = APIROOT + API_ORG_PATH + org + apiPath;
+    $.ajax({
+        type:'GET',
+        url: urlpath,
+        crossDomain: true,
+        dataType: "json",
+        success: successCallBack,
+        error:errorCallBack,
+        timeout: 4000
+    });
+}
+/*
+function queryAPIByRepo(apiPath, org, successCallBack, errorCallBack) {
+    const urlpath = APIROOT + API_ORG_PATH + org + apiPath;
+    $.ajax({
+        type:'GET',
+        url: urlpath,
+        crossDomain: true,
+        dataType: "json",
+        success: successCallBack,
+        error:errorCallBack,
+        timeout: 4000
+    });
+}*/

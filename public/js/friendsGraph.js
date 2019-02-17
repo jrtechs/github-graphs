@@ -291,9 +291,9 @@ function bringUpProfileView(id)
  * @param containerName
  * @param graphsTitle
  */
-function createFriendsGraph(username, containerName, graphsProgres)
+function createFriendsGraph(username, containerName, graphsTitle)
 {
-    progressID = graphsProgres;
+    progressID = graphsTitle;
 
     nodes = [];
     edges = [];
