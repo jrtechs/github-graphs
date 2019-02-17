@@ -4,7 +4,7 @@ function profileGen(username, container) {
             let html = 
             "<div class=\"card\" style=\"w-100\"> \
                 <img class=\"card-img-top\" src=\""+user.avatar_url+"\"></img> \
-                <div class=\"row\"> \
+                <div class=\"row mx-0\"> \
                     <div class=\"col-9\"> \
                         <div class=\"card-body\"> \
                             <h5 class=\"card-title\">"+user.name+"</h1> \
