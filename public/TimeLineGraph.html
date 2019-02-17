@@ -67,6 +67,14 @@
             border-width: 2px;
             border-color: #0B002B;
         }
+
+        .containerCustom {
+            width: 100%;
+            padding-right: 0px;
+            padding-left: 0px;
+            margin-right: 0px;
+            margin-left: 0px;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +104,7 @@
         </li>
     </ul>
 </div>
-<div class="main container">
+<div class="containerCustom">
 
     <div class="row align-center" id="searchBarTop">
         <nav class="navbar navbar-light bg-light justify-content-between">
@@ -108,11 +116,13 @@
         </nav>
     </div>
 
-    <div class="row">
+    <div class="row containerCustom">
         <div class="col-md-10 col-12">
             <h2 id="graphLabel"></h2>
             <div id="myGraph" class="w-100"></div>
             <pre id="eventSpan"></pre>
+
+            <div id="repositoryInformation" class="w-100"></div>
         </div>
         <div class="col-md-2 col-12 w-100">
             <div id="profileGen"></div>
