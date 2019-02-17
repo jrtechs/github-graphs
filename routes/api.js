@@ -33,8 +33,10 @@ function queryGitHubAPI(requestURL)
                 cache.put(requestURL, response.body);
             }).catch(error =>
             {
-                resolve(response.body);
-                cache.put(requestURL, response.body);
+                // resolve(response.body);
+                // cache.put(requestURL, response.body);
+                console.log(error);
+                reject(error);
             });
 
         }
