@@ -52,7 +52,6 @@ function alreadyInGraph(userID)
  */
 function edgeInGraph(id1, id2)
 {
-    console.log("edge check");
     for(var i = 0;i < edges.length; i++)
     {
         if(edges[i].from === id1 && edges[i].to === id2)
@@ -260,8 +259,6 @@ function updateProgress()
     $("#graphLoading").html("<div class=\"progress\">\n" +
         "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
         "</div>");
-
-    console.log();
 }
 
 /**
