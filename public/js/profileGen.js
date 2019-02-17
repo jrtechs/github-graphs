@@ -1,5 +1,12 @@
-function profileGen(username, container) {
-    queryAPIByUser("", username, (user) => {
+function profileGen(username, container)
+{
+    queryAPIByUser("", username, (user) =>
+    {
+        if(!user.hasOwnProperty("id"))
+        {
+            alert("User Does Not Exist");
+            window.location.href = "./GraphGenerator.html";
+        }
         parseOrgs(user.login).then( (orgsReturn) => {
             let html = 
             "<div class=\"card\" style=\"w-100\"> \
