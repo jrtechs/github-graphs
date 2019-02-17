@@ -61,14 +61,14 @@ routes.get('/*', (request, result) =>
     result.setHeader('Content-Type', 'application/json');
     queryGitHubAPI(gitHubAPIURL).then(function(data)
     {
-        if(data.hasOwnProperty("id"))
+        if(data.hasOwnProperty("id") || data[0].hasOwnProperty("id"))
         {
             result.write(JSON.stringify(data));
         }
         result.end();
     }).catch(function(error)
     {
-        if(error.hasOwnProperty("id"))
+        if(error.hasOwnProperty("id") || error[0].hasOwnProperty("id"))
         {
             result.write(JSON.stringify(error));
         }
