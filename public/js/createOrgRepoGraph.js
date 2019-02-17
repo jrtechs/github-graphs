@@ -43,47 +43,6 @@ function alreadyInGraph(userID)
 }
 
 
-
-/**
- * Adds the followers/following of a person
- * to the graph
- *
- * @param username
- * @param apiPath
- * @returns {Promise<any>}
- */
-function addRepos(orgName, apiPath, page)
-{
-    console.log(orgName + " page=" + page);
-    updateProgress();
-    return new Promise(function(resolve, reject) {
-        queryAPIByOrg(apiPath + "?page=" + page, orgName, function(data) {
-            console.log(data);
-            console.log(data.length);
-            var prom = [];
-            for(var i = 0; i < data.length; i++) {
-                if(!alreadyInGraph(data[i].id)) {
-                    prom.push(addRepoToGraph(data[i]));
-                }
-            }
-            Promise.all(prom).then( () => {
-                if(data.length === 30) {
-                    addRepos(orgName, apiPath, page+ 1).then(function() {
-                        resolve();
-                    })
-                }
-                else {
-                    resolve();
-                }
-            })
-        },
-        function(error) {
-            reject(error);
-        })
-    });
-}
-
-
 /**
  * Greedy function which checks to see if a edge is in the graphs
  *

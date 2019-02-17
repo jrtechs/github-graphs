@@ -9,25 +9,52 @@ function generateHtmlRow(repoData)
 }
 
 
+var repos = [];
+
+function fetchAllRepositories(orgName, page)
+{
+    return new Promise(function(resolve, reject)
+    {
+        queryAPIByOrg(API_REPOSITORIES + "?page=" + page, orgName,
+            function(data)
+            {
+                repos.push(...data);
+
+                if (data.length === 30)
+                {
+                    fetchAllRepositories(orgName, page + 1).then(function ()
+                    {
+                        resolve();
+                    })
+                }
+                else {
+                    resolve();
+                }
+            },
+            function(error)
+            {
+                //console.log("Unable to load table data");
+            });
+    });
+}
+
+
 function createOrgTable(orgName, tableContainer)
 {
     var html = "";
 
-    queryAPIByOrg(API_REPOSITORIES, orgName,
-        function(data)
+
+    fetchAllRepositories(orgName, 1).then(function()
+    {
+        for(var i=0; i < repos.length; i++)
         {
-            for(var i=0; i < data.length; i++)
-            {
-                html += generateHtmlRow(data[i]);
-            }
+            html += generateHtmlRow(repos[i]);
+        }
 
-            $("#" + tableContainer).html(html);
-            $('#dataTable').DataTable();
-
-        },
-        function(error)
-        {
-            console.log("Unable to load table data");
-        });
-
+        $("#" + tableContainer).html(html);
+        $('#dataTable').DataTable();
+    }).catch(function(error)
+    {
+        //console.log("Unable to create table");
+    });
 }
