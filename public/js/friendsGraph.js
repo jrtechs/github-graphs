@@ -193,7 +193,8 @@ function createConnections()
             resolve();
         }).catch(function(error)
         {
-            reject(error);
+            console.log(error);
+            resolve();
         });
     });
 }
@@ -246,6 +247,7 @@ function createFriendsGraph(username, containerName, graphsTitle)
     edges = [];
     addSelfToGraph(username).then(function()
     {
+        console.log("added self");
         addFriends(username, API_FOLLOWERS).then(function()
         {
             addFriends(username, API_FOLLOWING).then(function()
