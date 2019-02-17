@@ -354,7 +354,16 @@ function addOrgUsers(orgname, page)
     })
 }
 
-
+function bringUpProfileView(id)
+{
+    for(var i = 0; i < nodes.length; i++)
+    {
+        if(nodes[i].id === id)
+        {
+            profileGen(nodes[i].name, "profileGen");
+        }
+    }
+}
 
 /**
  * Creates a graph
