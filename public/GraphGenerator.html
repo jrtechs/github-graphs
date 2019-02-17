@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./search.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
 </head>
 <body>
     <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
@@ -58,12 +62,13 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        Creates a web chart of the selected user and
+                        Creates an web chart of the selected user and
                         both their followers and anyone they are following
                         themselves.
                     </p>
-                    <button class="btn btn-outline-success rounder my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Generate</button>
+                    <button class="btn btn-outline-success rounder" onclick='toFriends()' type='button'>Generate</button>
                 </div>
+                <p></p>
             </div>
             <div class="card rounder">
                 <div class="card-header">
@@ -75,10 +80,44 @@
                         to the selected user in chronological order,
                         along with information pertaining to each repo.
                     </p>
-                    <button class="btn btn-outline-success rounder my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Generate</button>
+                    <button class="btn btn-outline-success rounder" onclick='toTimeline()' type='button'>Generate</button>
                 </div>
+                <p></p>
+            </div>
+            <div class="card rounder">
+                <div class="card-header">
+                    <h1 class="m-title">Interactive Organization Chart</h1>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Creates a web chart of the specified organization
+                        and all associated repos.
+                    </p>
+                    <button class="btn btn-outline-success rounder" onclick='toOrganization()' type='button'>Generate</button>
+                </div>
+                <p></p>
             </div>
         </div>
     </div>
 </body>
 </html>
+<script>
+    function fetchUserInput() {
+        const inputedName = $("#txtUsername").val();
+        return inputedName;
+    }
+
+    function toFriends() {
+        var uname = fetchUserInput();
+        window.location.href = "./FriendsGraph.html?name=" + uname;
+    }
+
+    function toTimeline() {
+        var uname = fetchUserInput();
+        window.location.href = "./TimeLineGraph.html?name=" + uname;
+    }
+
+    if (findGetParameter("name") !== null) {
+        createGraphs(findGetParameter("name"))
+    }
+</script>
