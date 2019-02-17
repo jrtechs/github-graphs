@@ -13,7 +13,9 @@ const API_USER_PATH = "/users/";
 
 const API_ORG_PATH = "/orgs/";
 
-const API_REPOS = "/repos/";
+const API_ORG_MEMBERS = "/members";
+
+const API_REPOS = "/repos";
 
 const API_FOLLOWING = "/following";
 
