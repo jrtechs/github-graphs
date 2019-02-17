@@ -156,6 +156,10 @@
     background-color: rgb(208, 208, 208);
 }
 
+.card-header {
+    background-color: rgb(208, 208, 208);
+}
+
 .card-body {
     background-color: rgb(242, 242, 242);
 }
@@ -169,9 +173,28 @@
     top: 10px;
 }
 
+.footer {
+    background-color: rgb(208, 208, 208);
+    position: absolute;
+    height: 70px;
+    width: 100%;
+    bottom: 0px;
+}
+
+.footer-text {
+    position: relative;
+    top: 15px;
+    left: 70px;
+}
+
+.plink {
+    color: rgb(250, 152, 33);
+}
+
 body {
     background-color: #232323;
 }
+
 @media (max-width: 767px) {
     .big-title {
         font-size: 30px;
