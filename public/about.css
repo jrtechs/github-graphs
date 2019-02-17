@@ -47,3 +47,8 @@
 .plink {
     color: rgb(250, 152, 33);
 }
+@media (max-width: 767px) {
+    #content-title {
+        height: 40px;
+    }
+}
