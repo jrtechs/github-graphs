@@ -74,18 +74,21 @@ function timeLineClickEvent(properties)
             "                <div class=\"col-md-6\"><b>Liscense</b></div>\n" +
             "                <div class=\"col-md-6\">" +
             item.license.name +
-            "</div>\n" +
-            "            </li>\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Home Page</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            "<a href='" + item.homepage + "'>" +item.homepage + "</a>" +
-            "</div>\n" +
-            "            </li>\n" +
-            "        </ul>\n" +
-            "    </div>";
+            "</div></li>";
+            if(item.homepage !== null)
+            {
+                html +=
+                "            <li class=\"row\">\n" +
+                "                <div class=\"col-md-6\"><b>Home Page</b></div>\n" +
+                "                <div class=\"col-md-6\">" +
+                "<a href='" + item.homepage + "'>" +item.homepage + "</a>" +
+                "</div>\n" +
+                "            </li>\n" +
+                "        </ul>\n";
+            }
 
-        html += "<div class=\"col-6\">\n" +
+
+        html += "</div><div class=\"col-6\">\n" +
             "        <ul class=\"list-group\">\n" +
             "            <li class=\"row\">\n" +
             "                <div class=\"col-md-6\"><b>Repository URL</b></div>\n" +
