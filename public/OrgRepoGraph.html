@@ -18,6 +18,7 @@
     <script src="js/utilities.js"></script>
     <script src="js/profileGen.js"></script>
     <script src="js/createOrgTable.js"></script>
+    <script src="js/createOrgInfo.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
@@ -66,6 +67,7 @@
             <div class="col-md-6 col-12">
                 <h2 id="graphLabel"></h2>
                 <div id="myGraph" class="w-100"></div>
+                <div id="organizationInfo"></div>
                 <pre id="eventSpan"></pre>
             </div>
             <div class="col-md-4 col-12 bg-light">
@@ -95,6 +97,7 @@
 
                 createOrgRepoGraph(orgname, "myGraph", "graphLoading");
                 createOrgTable(orgname, 'repositoryTable');
+                createOrgInfo(orgname, 'organizationInfo')
             }
         
             if(findGetParameter("name") !== null) {
