@@ -45,7 +45,7 @@ function profileGen(username, container)
                         (user.company != null ? "<li class=\"list-group-item\">Company: "+user.company+"</li>" : "")+
                         (orgsReturn != [] ? "<li class=\"list-group-item\">"+orgsReturn+"</li>" : "")+ " \
                     </ul> \
-            </div>"
+            </div>";
             $("#"+container).html(html);
         })
     }, () => {
@@ -79,8 +79,7 @@ function parseOrgs(name) {
                 resolve(orgs_final.join(" "));
             })
         }, (error) => {
-            console.error("error getting orgs");
-            reject(error);
+            resolve([]);
         });
     })
 }
