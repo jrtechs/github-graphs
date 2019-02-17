@@ -11,14 +11,14 @@ function profileGen(username, container)
             let html = 
             "<div class=\"card\" style=\"w-100\"> \
                 <img class=\"card-img-top\" src=\""+user.avatar_url+"\"></img> \
-                <div class=\"row mx-0\"> \
-                    <div class=\"col-9\"> \
+                <div class=\"row\"> \
+                    <div class=\"col-8\"> \
                         <div class=\"card-body\"> \
                             <h5 class=\"card-title\">"+user.name+"</h1> \
                             <h6 class=\"card-subtitle\">"+user.login+"</h2> \
                         </div> \
                     </div> \
-                    <div class=\"col-sm\"> \
+                    <div class=\"col-4\"> \
                         <button type=\"button\" class=\"btn btn-link pt-3\"> \
                             <a href=\""+makeUrl(user.login)+"\"> \
                                 <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"> \
