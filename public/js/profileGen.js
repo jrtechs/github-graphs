@@ -11,11 +11,11 @@ function profileGen(username, container)
             let html = 
             "<div class=\"card\" style=\"w-100\"> \
                 <img class=\"card-img-top\" src=\""+user.avatar_url+"\"></img> \
-                <div class=\"row\"> \
+                <div class=\"row mx-0\"> \
                     <div class=\"col-8\"> \
-                        <div class=\"card-body\"> \
-                            <h5 class=\"card-title\">"+user.name+"</h1> \
-                            <h6 class=\"card-subtitle\">"+user.login+"</h2> \
+                        <div class=\"card-body\">"+
+                            (user.name != null ? "<h5 class=\"card-title\">"+user.name+"</h5>" : "") +" \
+                            <h6 class=\"card-subtitle\">"+user.login+"</h5> \
                         </div> \
                     </div> \
                     <div class=\"col-4\"> \
