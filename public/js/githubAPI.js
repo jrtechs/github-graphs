@@ -59,6 +59,7 @@ function queryAPIByOrg(apiPath, org, successCallBack, errorCallBack) {
         error:errorCallBack,
         timeout: 4000
     });
+    console.log("past");
 }
 /*
 function queryAPIByRepo(apiPath, org, successCallBack, errorCallBack) {
