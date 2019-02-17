@@ -34,6 +34,7 @@ function queryGitHubAPI(requestURL)
             {
                 queryURL = GITHUB_API + requestURL + "?" + authenticate;
             }
+            console.log(queryURL);
 
             got(queryURL, { json: true }).then(response =>
             {
@@ -41,15 +42,13 @@ function queryGitHubAPI(requestURL)
                 cache.put(requestURL, response.body);
             }).catch(error =>
             {
-                // resolve(response.body);
-                // cache.put(requestURL, response.body);
-                console.log(error);
-                reject(error);
+                resolve(error);
+                cache.put(requestURL, error);
             });
-
         }
         else
         {
+            console.log("Fetched From Cahce");
             resolve(apiData);
         }
     })
@@ -60,26 +59,31 @@ routes.get('/*', (request, result) =>
 {
     var gitHubAPIURL = request.url;
 
-    // if(request.query.hasOwnProperty("page"))
-    // {
-    //     gitHubAPIURL += "?page=" + request.query.page;
-    // }
-
-    console.log(request.query);
-
-    console.log(gitHubAPIURL);
-
-
     result.setHeader('Content-Type', 'application/json');
     queryGitHubAPI(gitHubAPIURL).then(function(data)
     {
-        result.write(JSON.stringify(data));
+        if(data.hasOwnProperty("id") || data[0].hasOwnProperty("id"))
+        {
+            result.write(JSON.stringify(data));
+        }
         result.end();
     }).catch(function(error)
     {
-        result.write(JSON.stringify(error));
+        try
+        {
+            if(error.hasOwnProperty("id") || error[0].hasOwnProperty("id"))
+            {
+                result.write(JSON.stringify(error));
+            }
+        }
+        catch(error) {};
         result.end();
-    })
+    });
+
+    if(cache.size() > 500000)
+    {
+        cache.clear();
+    }
 });
 
 module.exports = routes;
