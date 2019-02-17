@@ -1,0 +1,21 @@
+# File Location /lib/systemd/system
+#
+# After file creation run: systemctl daemon-reload
+# enable service on start up: systemctl enable jeff
+# start the service: systemctl start jrtechs
+
+
+[Unit]
+Description=Node app for github app
+Documentation=https://jrtechs.net
+After=network.target
+
+[Service]
+Type=simple
+User=jeff
+WorkingDirectory=/var/www/github-graphs.com/github-graphs
+ExecStart=/var/www/github-graphs.com/github-graphs/run.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

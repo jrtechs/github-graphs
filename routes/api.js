@@ -66,6 +66,10 @@ routes.get('/*', (request, result) =>
         {
             result.write(JSON.stringify(data));
         }
+        else
+        {
+            result.write("[]");
+        }
         result.end();
     }).catch(function(error)
     {
@@ -75,8 +79,15 @@ routes.get('/*', (request, result) =>
             {
                 result.write(JSON.stringify(error));
             }
+            else
+            {
+                result.write("[]");
+            }
+
         }
-        catch(error) {};
+        catch(error) {
+            result.write("[]");
+        };
         result.end();
     });
 
