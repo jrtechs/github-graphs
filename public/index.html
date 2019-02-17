@@ -12,42 +12,48 @@
     <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
         <div id="header-title">
             <a href="./index.html">
-                <img id="logo" class="text-center" src="./logo.svg" />
+                <img id="logo" src="./logo.svg" />
             </a>
         </div>
-        <ul id="navigation" class="nav justify-content-end">
-            <li class="nav-item">
-                <a href="./FriendsGraph.html">
-                    Generate graphs
-                </a>
-            </li>
-            <div class="nav-sep"></div>
-            <li class="nav-item">
-                <a href="https://github.com/jrtechs/github-graphs">
-                    View on GitHub
-                </a>
-            </li>
-            <div class="nav-sep"></div>
-            <li class="nav-item">
-                <a href="./about.html">
-                    About
-                </a>
-            </li>
-        </ul>
+        <div id="navigation">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="./FriendsGraph.html">
+                        Generate graphs
+                    </a>
+                </li>
+                <div class="nav-sep"></div>
+                <li class="nav-item">
+                    <a href="https://github.com/jrtechs/github-graphs">
+                        View on GitHub
+                    </a>
+                </li>
+                <div class="nav-sep"></div>
+                <li class="nav-item">
+                    <a href="./about.html">
+                        About
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="main container">
-        <div class="row">
-            <div class="side-txt">
-                <div class="text-title text-center" style="padding-top: 15px;">
+    <div class="main container-fluid text-center">
+        <div class="home-content row align-items-center">
+            <div class="side-txt col">
+                <div class="text-title text-center" style="padding: 10px;">
                     <h1 class="m-title">How to get started:</h1>
                 </div>
                 <div class="text-content">
-                    <p style="position: relative; padding-left: 10px; padding-right: 10px;">
-                        Head over to the 'Generate graphs' page and enter the username of the user you want to generate your graph around.
+                    <p style="position: relative; padding: 10px;">
+                        Head over to the 'Generate graphs' page and enter
+                        the username of a GitHub user. The space on that 
+                        page will then populate with the requested GitHub 
+                        user and all the related user, visualizing the 
+                        connections between them.
                     </p>
                 </div>
             </div>
-            <img class="side-img img-fluid" src="./img/graphExample.png" />
+            <img class="side-img img-fluid col" src="./img/graphExample.png" />
         </div>
     </div>
 </body>

@@ -20,6 +20,12 @@
     position: relative;
     padding-top: 20px;
 }
+.card {
+    background-color: rgb(208, 208, 208);
+}
+.card-body {
+    background-color: rgb(242, 242, 242);
+}
 .rounder {
     border-radius: 20px !important;
 }
@@ -29,6 +35,20 @@
     position: relative;
     width: 70%;
 }
+.links {
+    padding: 10px;
+}
+.links a {
+    text-decoration: none;
+}
+.link-ico {
+    width: 40px;
+}
 .plink {
     color: rgb(250, 152, 33);
+}
+@media (max-width: 767px) {
+    #content-title {
+        height: 40px;
+    }
 }

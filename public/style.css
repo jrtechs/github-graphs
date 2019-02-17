@@ -19,7 +19,6 @@
     background-color: rgb(208, 208, 208);
 }
 #header-title {
-    width: 30%;
     font-size: 25px;
 }
 #logo {
@@ -31,35 +30,24 @@
     color: rgb(208, 208, 208);
 }
 #navigation {
-    width: 70%;
-    padding-right: 20px !important;
-}
-.error {
-    color: rgb(208, 208, 208);
+    position: absolute;
+    right: 20px;
 }
 #dcimg {
     width: 300px;
+}
+.error {
+    color: rgb(208, 208, 208);
 }
 .big-title {
     font-family: Comfortaa;
     font-weight: bold;
     font-size: 60px;
-    text-wrap: avoid;
 }
 .m-title {
     font-family: Comfortaa;
     font-weight: normal;
     font-size: 150%;
-}
-.text-title {
-    height: 60px;
-    background-color: rgb(208, 208, 208);
-    border-radius: 20px 0px 0px 0px;
-}
-.text-content {
-    height: 335px;
-    background-color: rgb(242, 242, 242);
-    border-radius: 0px 0px 0px 20px;
 }
 .nav-sep {
     position: relative;
@@ -81,16 +69,31 @@
     color: rgb(250, 152, 33);
     text-decoration: none;
 }
+.home-content {
+    padding: 20px;
+    max-height: 40px;
+}
 .side-img {
-    display: grid;
+    display: block;
     position: relative;
     width: 50%;
-    border-radius: 0px 20px 20px 0px;
+    height: 100%;
+    max-height: 500px;
+    max-width: 500px;
 }
 .side-txt {
-    display: grid;
+    display: block;
     position: relative;
     width: 50%;
+    max-width: 500px;
+}
+.text-title {
+    background-color: rgb(208, 208, 208);
+    border-radius: 20px 20px 0px 0px;
+}
+.text-content {
+    background-color: rgb(242, 242, 242);
+    border-radius: 0px 0px 20px 20px;
 }
 .main {
     position: relative;
@@ -98,4 +101,35 @@
 }
 body {
     background-color: #232323;
+}
+@media (max-width: 767px) {
+    .big-title {
+        font-size: 30px;
+    }
+    .side-img {
+        display: none;
+    }
+    #navigation {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        width: 400px
+    }
+    .nav-item {
+        font-size: 19px;
+    }
+    #header-bar {
+        height: 100px;
+    }
+    #header-title {
+        left: 0px;
+        width: 20%;
+    }
+    #logo {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        height: 60px;
+    }
 }
