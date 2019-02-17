@@ -44,15 +44,21 @@ function alreadyInGraph(userID)
  *
  * @param profileData
  */
-function addPersonToGraph(profileData)
-{
-    nodes.push(
-        {
-            id:profileData.id,
-            name:profileData.login,
-            shape: 'circularImage',
-            image:profileData.avatar_url
-        });
+function addSelfAsOrg(orgData) {
+    nodes.push( {
+        id:orgData.id,
+        name:orgData.login,
+        image:orgData.avatar_url
+    });
+}
+
+function addSelfAsRepo(repoData) {
+    nodes.push( {
+        id:repoData.id,
+        name:repoData.name,
+        image:repoData.avatar_url
+    });
+    console.log(repoData.name);
 }
 
 
@@ -64,38 +70,32 @@ function addPersonToGraph(profileData)
  * @param apiPath
  * @returns {Promise<any>}
  */
-function addFriends(username, apiPath, page)
+function addRepos(orgName, apiPath, page)
 {
-    console.log(username + " page=" + page);
+    console.log(orgName + " page=" + page);
     updateProgress();
-    return new Promise(function(resolve, reject)
-    {
-        queryAPIByUser(apiPath + "?page=" + page, username, function(data)
-        {
+    return new Promise(function(resolve, reject) {
+        queryAPIByOrg(apiPath + "?page=" + page, orgName, function(data) {
             console.log(data);
             console.log(data.length);
-            for(var i = 0; i < data.length; i++)
-            {
-                if(!alreadyInGraph(data[i].id))
-                {
-                    addPersonToGraph(data[i]);
+            var prom = [];
+            for(var i = 0; i < data.length; i++) {
+                if(!alreadyInGraph(data[i].id)) {
+                    prom.push(addRepoToGraph(data[i]));
                 }
             }
-
-            if(page < 50 && data.length === 30)
-            {
-                addFriends(username, apiPath, page+ 1).then(function()
-                {
+            Promise.all(prom).then( () => {
+                if(data.length === 30) {
+                    addRepos(orgName, apiPath, page+ 1).then(function() {
+                        resolve();
+                    })
+                }
+                else {
                     resolve();
-                })
-            }
-            else
-            {
-                resolve();
-            }
+                }
+            })
         },
-        function(error)
-        {
+        function(error) {
             reject(error);
         })
     });
@@ -161,7 +161,7 @@ function processConnections(user, apiPoint, page)
                 {
                     addConnection(user, data[i])
                 }
-                if(page < 50 && data.length === 30)
+                if(data.length === 30)
                 {
                     processConnections(user, apiPoint, page + 1).then(function()
                     {
@@ -255,20 +255,36 @@ function updateProgress()
  * @param username
  * @returns {Promise<any>}
  */
-function addSelfToGraph(username)
-{
-    return new Promise(function(resolve, reject)
-    {
-        queryAPIByUser("", username, function(data)
-        {
-            total = (data.followers + data.following) * 2;
-            addPersonToGraph(data);
+function addOrgToGraph(orgname) {
+    return new Promise(function(resolve, reject) {
+        queryAPIByOrg("", orgname, function(data) {
+            total = (data.public_repos) * 2;
+            addSelfAsOrg(data);
             resolve();
         },
-        function(error)
-        {
+        function(error) {
            reject(error);
         });
+
+    });
+}
+
+function addRepoToGraph(repo) {
+    return new Promise(function(resolve, reject) {
+        console.log("in repo");
+        console.log(repo);
+        addSelfAsRepo(repo);
+        resolve();
+        /*
+        queryAPIByRepo(repo.name, orgname, function(data) {
+            //total = (data.followers + data.following) * 2;
+            addSelfAsRepo(data);
+            resolve();
+            console.log("did it");
+        },
+        function(error) {
+           reject(error);
+        });*/
 
     });
 }
@@ -278,8 +294,7 @@ function bringUpProfileView(id)
 {
     for(var i = 0; i < nodes.length; i++)
     {
-        if(nodes[i].id === id)
-        {
+        if(nodes[i].id === id) {
             profileGen(nodes[i].name, "profileGen");
         }
     }
@@ -291,45 +306,31 @@ function bringUpProfileView(id)
  * @param containerName
  * @param graphsTitle
  */
-function createFriendsGraph(username, containerName, graphsTitle)
+function createOrgRepoGraph(orgname, containerName, graphsTitle)
 {
     progressID = graphsTitle;
 
     nodes = [];
     edges = [];
-    addSelfToGraph(username).then(function()
-    {
-        addFriends(username, API_FOLLOWERS,1).then(function()
-        {
-            addFriends(username, API_FOLLOWING,1).then(function()
-            {
-                createConnections().then(function()
-                {
-                    console.log("cleared div");
-                    $("#" + progressID).html("");
+    addOrgToGraph(orgname).then(function() {
+        addRepos(orgname, API_REPOS,1).then(function() {
+            $("#" + progressID).html("");
 
-                    var container = document.getElementById(containerName);
-                    var data =
-                        {
-                            nodes: nodes,
-                            edges: edges
-                        };
-                    var network = new vis.Network(container, data, options);
+            var container = document.getElementById(containerName);
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var network = new vis.Network(container, data, options);
 
-                    network.on("click", function (params)
-                    {
-                        params.event = "[original event]";
-                        if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
-                        {
-                            bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
-                        }
-                    });
-                });
+            network.on("click", function (params) {
+                params.event = "[original event]";
+                if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
+                    bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                }
             });
         })
-    }).catch(function(error)
-    {
-        $("#" + graphsTitle).html("Error Fetching Data From API");
-        alert("Invalid User");
+    }).catch(function(error) {
+        alert("Invalid Organization");
     });
 }

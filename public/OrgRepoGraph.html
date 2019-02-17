@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -13,8 +13,7 @@
             crossorigin="anonymous">
     </script>
     <script src="js/githubAPI.js"></script>
-    <script src="js/friendsGraph.js"></script>
-    <script src="js/profileGen.js"></script>
+    <script src="js/createOrgRepoGraph.js"></script>
     <script src="js/utilities.js"></script>
 
     <script type="text/javascript" src="js/vis/vis.js"></script>
@@ -54,7 +53,7 @@
 
         <div class="row">
             <div class="col-md-8 col-12">
-                <h2 id="graphLoading"></h2>
+                <h2 id="graphLabel"></h2>
                 <div id="myGraph" class="w-100"></div>
                 <pre id="eventSpan"></pre>
             </div>
@@ -62,20 +61,24 @@
                 <div id="profileGen"></div>
             </div>
         </div>
-<script>
 
-    function createGraphs(username)
-    {
-        options.width = $("#myGraph").width() + "px";
-        options.height = "700px";
-        createFriendsGraph(username, "myGraph", "graphLoading");
-        profileGen(username, "profileGen");
-    }
+        <script>
+        
+            function createGraphs(orgname) {
+                options.width = $("#myGraph").width() + "px";
+                options.height = "700px";
 
-    if(findGetParameter("name") !== null)
-    {
-        createGraphs(findGetParameter("name"))
-    }
-</script>
+                createOrgRepoGraph(orgname, "myGraph", "graphLoading");
+                //orgRepoGen(orgname, "orgRepoGen");
+            }
+        
+            if(findGetParameter("name") !== null) {
+                createGraphs(findGetParameter("name"))
+            }
+            
+        </script>
+    </div>
+
+</body>
 
 </html>
