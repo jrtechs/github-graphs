@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./search.css" />
+</head>
+<body>
+    <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
+        <div id="header-title">
+            <a href="./index.html">
+                <img id="logo" src="./logo.svg" />
+            </a>
+        </div>
+        <div id="navigation">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="./graphgenerator.html">
+                        Generate graphs
+                    </a>
+                </li>
+                <div class="nav-sep"></div>
+                <li class="nav-item">
+                    <a href="https://github.com/jrtechs/github-graphs">
+                        View on GitHub
+                    </a>
+                </li>
+                <div class="nav-sep"></div>
+                <li class="nav-item">
+                    <a href="./about.html">
+                        About
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main container">
+        <div id="search-bar">
+            <div class="row align-items-center text-center">
+                <div class="search-title">
+                    <h1 id="search" class="m-title">Search GitHub:</h1>
+                </div>
+                <div class="col search-col">
+                    <form class="search-form">
+                        <input class="rounder form-control mr-sm-1" id='txtUsername' type="search" placeholder="GitHub Username" aria-label="Search">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck text-center">
+            <div class="card rounder">
+                <div class="card-header">
+                    <h1 class="m-title">Interactive Friends Chart</h1>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Creates a web chart of the selected user and
+                        both their followers and anyone they are following
+                        themselves.
+                    </p>
+                    <button class="btn btn-outline-success rounder my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Generate</button>
+                </div>
+            </div>
+            <div class="card rounder">
+                <div class="card-header">
+                    <h1 class="m-title">Repo Timeline</h1>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Displays a timeline of every repo belonging
+                        to the selected user in chronological order,
+                        along with information pertaining to each repo.
+                    </p>
+                    <button class="btn btn-outline-success rounder my-2 my-sm-0" onclick='fetchUserInput()' type='button'>Generate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

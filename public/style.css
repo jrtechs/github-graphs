@@ -3,52 +3,70 @@
     src: url(./fonts/Comfortaa-Regular.ttf);
     font-weight: normal;
 }
+
 @font-face {
     font-family: Comfortaa;
     src: url(./fonts/Comfortaa-Light.ttf);
     font-weight: lighter;
 }
+
 @font-face {
     font-family: Comfortaa;
     src: url(./fonts/Comfortaa-Bold.ttf);
     font-weight: bold;
 }
+
 #header-bar {
     height: 10%;
     width: 100%;
     background-color: rgb(208, 208, 208);
 }
+
 #header-title {
     font-size: 25px;
 }
+
 #logo {
     height: 60px;
 }
+
 #error-code {
     font-family: Comfortaa;
     font-size: 200px;
     color: rgb(208, 208, 208);
 }
+
 #navigation {
     position: absolute;
     right: 20px;
 }
+
 #dcimg {
     width: 300px;
 }
+
 .error {
     color: rgb(208, 208, 208);
 }
+
 .big-title {
     font-family: Comfortaa;
     font-weight: bold;
     font-size: 60px;
 }
+
+.l-title {
+    font-family: Comfortaa;
+    font-weight: normal;
+    font-size: 40px;
+}
+
 .m-title {
     font-family: Comfortaa;
     font-weight: normal;
     font-size: 150%;
 }
+
 .nav-sep {
     position: relative;
     left: 10px;
@@ -57,23 +75,28 @@
     border-left: 2px solid #232323;
     height: 30px;
 }
+
 .nav-item {
     padding: 5px;
     font-size: 20px;
 }
+
 .nav-item a {
     color: #232323;
     text-decoration: none;
 }
+
 .nav-item a:hover {
     color: rgb(250, 152, 33);
     text-decoration: none;
 }
+
 .home-content {
     padding: 20px;
     width: 100%;
     max-height: 40px;
 }
+
 .side-img {
     display: block;
     position: relative;
@@ -82,23 +105,45 @@
     max-height: 500px;
     max-width: 500px;
 }
+
 .side-txt {
     display: block;
     position: relative;
     width: 50%;
 }
+
 .text-title {
     background-color: rgb(208, 208, 208);
     border-radius: 20px 20px 0px 0px;
 }
+
 .text-content {
     background-color: rgb(242, 242, 242);
     border-radius: 0px 0px 20px 20px;
 }
+
+.card-deck {
+    position: relative;
+    padding-top: 20px;
+}
+
+.card {
+    background-color: rgb(208, 208, 208);
+}
+
+.card-body {
+    background-color: rgb(242, 242, 242);
+}
+
+.rounder {
+    border-radius: 20px !important;
+}
+
 .main {
     position: relative;
     top: 20px;
 }
+
 body {
     background-color: #232323;
 }
@@ -106,9 +151,11 @@ body {
     .big-title {
         font-size: 30px;
     }
+
     .side-img {
         display: none;
     }
+
     .side-txt {
         position: absolute;
         top: 10px;
@@ -116,6 +163,7 @@ body {
         transform: translate(-50%, 0%);
         width: 100%;
     }
+
     #navigation {
         position: absolute;
         top: 50px;
@@ -123,20 +171,29 @@ body {
         transform: translate(-50%, 0%);
         width: 400px
     }
+
     .nav-item {
         font-size: 19px;
     }
+
     #header-bar {
         height: 100px;
     }
+
     #header-title {
         left: 0px;
         width: 20%;
     }
+
     #logo {
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0%);
         height: 60px;
+    }
+
+    .card {
+        align-self: center;
+        width: 80%;
     }
 }
