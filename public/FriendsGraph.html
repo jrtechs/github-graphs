@@ -64,7 +64,7 @@
 
     <div class="row">
         <div class="col-md-8 col-12">
-            <h2 id="graphLabel"></h2>
+            <div id="graphLoading"></div>
             <div id="myGraph" class="w-100"></div>
             <pre id="eventSpan"></pre>
         </div>
@@ -92,7 +92,7 @@
     {
         options.width = $("#myGraph").width() + "px";
         options.height = "700px";
-        createFriendsGraph(username, "myGraph", "graphLabel");
+        createFriendsGraph(username, "myGraph", "graphLoading");
         profileGen(username, "profileGen");
         $("#searchBarTop").html("");
     }

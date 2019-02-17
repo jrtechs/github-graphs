@@ -67,6 +67,7 @@ function addPersonToGraph(profileData)
 function addFriends(username, apiPath, page)
 {
     console.log(username + " page=" + page);
+    updateProgress();
     return new Promise(function(resolve, reject)
     {
         queryAPIByUser(apiPath + "?page=" + page, username, function(data)
@@ -150,6 +151,7 @@ function addConnection(person1, person2)
 
 function processConnections(user, apiPoint, page)
 {
+    updateProgress();
     return new Promise(function(resolve, reject)
     {
         queryAPIByUser(apiPoint + "?page=" + page, user.name,
@@ -197,33 +199,6 @@ function processUserConnections(user)
                 resolve();
             })
         })
-        // queryAPIByUser(API_FOLLOWING, user.name,
-        //     function(data)
-        //     {
-        //         for(var i = 0; i < data.length; i++)
-        //         {
-        //             addConnection(user, data[i])
-        //         }
-        //
-        //         queryAPIByUser(API_FOLLOWERS, user.name, function(data2)
-        //             {
-        //                 for(var i = 0; i < data2.length; i++)
-        //                 {
-        //                     addConnection(user, data2[i]);
-        //                 }
-        //                 resolve();
-        //             },
-        //             function(error)
-        //             {
-        //                 // reject(error);
-        //                 resolve();
-        //             });
-        //     },
-        //     function(error)
-        //     {
-        //         // reject(error);
-        //         resolve();
-        //     })
     });
 }
 
@@ -256,6 +231,24 @@ function createConnections()
 }
 
 
+var total = 1;
+var indexed = 0;
+var progressID;
+
+
+function updateProgress()
+{
+    indexed++;
+
+    var percent = parseInt((indexed/total)*100);
+
+    $("#" + progressID).html("<div class=\"progress\">\n" +
+        "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
+        "</div>");
+
+    console.log();
+}
+
 /**
  * Adds the base  person to the graph.
  *
@@ -268,6 +261,7 @@ function addSelfToGraph(username)
     {
         queryAPIByUser("", username, function(data)
         {
+            total = (data.followers + data.following) * 2;
             addPersonToGraph(data);
             resolve();
         },
@@ -297,8 +291,10 @@ function bringUpProfileView(id)
  * @param containerName
  * @param graphsTitle
  */
-function createFriendsGraph(username, containerName, graphsTitle)
+function createFriendsGraph(username, containerName, graphsProgres)
 {
+    progressID = graphsProgres;
+
     nodes = [];
     edges = [];
     addSelfToGraph(username).then(function()
@@ -309,6 +305,9 @@ function createFriendsGraph(username, containerName, graphsTitle)
             {
                 createConnections().then(function()
                 {
+                    console.log("cleared div");
+                    $("#" + progressID).html("");
+
                     var container = document.getElementById(containerName);
                     var data =
                         {
