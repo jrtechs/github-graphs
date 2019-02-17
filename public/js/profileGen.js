@@ -1,21 +1,29 @@
 function profileGen(username, container) {
     queryAPIByUser("", username, (user) => {
-        parseOrgs(user.login).then(function(orgsReturn) {
+        parseOrgs(user.login).then( (orgsReturn) => {
             let html = 
-            "<div> \
-                <img src=\""+user.avatar_url+"\"></img> \
-                <h1>"+user.name+"</h1> \
-                <h2>"+user.login+"</h2> \
-                <p>Followers: "+user.followers+"</p> \
-                <p>Following: "+user.following+"</p> \
-                <p>"+(user.bio != null ? "Bio: "+user.bio : "")+"</p> \
-                <p>"+(user.location != null ? "Location: "+user.location : "")+"</p> \
-                <p>"+(user.email != null ? "Email: "+user.email : "")+"</p> \
-                <p>"+(user.blog != null ? "Site: "+user.blog : "")+"</p> \
-                <p>"+(user.company != null ? "Company: "+user.company : "")+"</p> \
-                <p>"+(user.organizations_url != null ? "Organizations: "+orgsReturn: "")+"</p> \
-                <a href=\""+user.html_url+"\">"+user.html_url+"</h2> \
-                <h2></h2> \
+            "<div class=\"card\" styl\"w-100\"> \
+                <img class=\"card-img-top\" src=\""+user.avatar_url+"\"></img> \
+                <div class=\"card-body\"> \
+                    <h5 class=\"card-title\">"+user.name+"</h1> \
+                    <h6 class=\"card-subtitle\">"+user.login+"</h2> \
+                </div> \
+                <div class=\"card-body\"> \
+                    <li class=\"list-group-item\"> \
+                        <p><a href=\""+user.html_url+" class=\"card-link\">"+user.html_url+"</a></p>"+
+                        (user.blog != null ? "<p><a href="+user.blog+" class=\"card-link\">"+user.blog+"</a></p>" : "")+" \
+                    </li> \
+                </div> \
+                <ul class=\"list-group list-group-flush\"> \
+                    <li class=\"list-group-item\">Followers: "+user.followers+"</li> \
+                    <li class=\"list-group-item\">Following: "+user.following+"</li> \
+                    <li class=\"list-group-item\">Repositories: "+user.public_repos+"</li>" +
+                    (user.bio != null ? "<li class=\"list-group-item\">Bio: "+user.bio+"</li>" : "")+
+                    (user.location != null ? "<li class=\"list-group-item\">Location: "+user.location+"</li>" : "")+
+                    (user.email != null ? "<li class=\"list-group-item\">Email: "+user.email+"</li>" : "")+
+                    (user.company != null ? "<li class=\"list-group-item\">Company: "+user.company+"</li>" : "")+
+                    (orgsReturn != [] ? "<li class=\"list-group-item\">"+orgsReturn+"</li>" : "")+ " \
+                </ul> \
             </div>"
             $("#"+container).html(html);
         })
@@ -24,45 +32,49 @@ function profileGen(username, container) {
     });
 }
 
-async function parseOrgs(name) {
-    const urlpath = `api/users/${name}/orgs`;
-    let orgs_final = [];
+function parseOrgs(name) {
+    return new Promise( (resolve, reject) => {
+        let urlpath = `api/users/${name}/orgs`;
+        let orgs_final = [];
+    
+        queryUrl(urlpath, (orgs) => {
+            var prom= [];
 
-    await queryUrl(urlpath, async (orgs) => {
-        orgs.map(org => {
-            return new Promise(function (res, rej) {
-                url = org.url;
-                queryUrl(url, (orgData) => {
-                    orgs_final.push("<a href=\"" + orgData.html_url + "\"><img src=\"" + orgData.avatar_url + "\"></img></a>");
-                    //console.log(orgs_final);
-                    res();
-                }, () => {
-                    console.error("error getting org info");
-                });
-            });
+            for(var i = 0;i < orgs.length; i++) {
+                prom.push( new Promise( (res, rej) => {
+                        url = orgs[i].url;
+                        queryUrl(url, (orgData) => {
+                            orgs_final.push("<a href=\""+orgData.html_url+"\"><img src=\""+orgData.avatar_url+"\" class=\"img-fluid\" style=\"max-width:49%\"></img></a>");
+                            res();
+                        }, (error) => {
+                            console.log(error);
+                            rej(error);
+                            console.error("error getting org info");
+                        });
+                    })
+                )
+            }
+            Promise.all(prom).then(function() {
+                resolve(orgs_final.join(" "));
+            })
+        }, (error) => {
+            console.error("error getting orgs");
+            reject(error);
         });
-        console.log(orgs);
-        await Promise.all(orgs);
-    }, () => {
-        console.error("error getting orgs");
-    });
-
-    console.log(orgs_final);
-    console.log(orgs_final.length);
-    console.log(orgs_final[0]);
-    return orgs_final.join(" ");
+    })
 }
 
 
 
 function queryUrl(url, successCallBack, errorCallBack) {
-    console.log(url);
+    url = url.split("https://api.github.com/").join("api/");
     $.ajax({
         type:'GET',
         url: url,
         crossDomain: true,
         dataType: "json",
         success: successCallBack,
-        error:errorCallBack
+        error:errorCallBack,
+        timeout: 3000
     });
 }
