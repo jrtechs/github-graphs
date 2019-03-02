@@ -1,9 +1,20 @@
-
+/** Nodes in the vis js graph */
 var nodes;
 
+/** Edges used to make the Vis JS graph*/
 var edges;
 
+/** Used for the loading bar */
+var total = 1;
+var indexed = 0;
+var progressID;
 
+/** Github id of the user being indexed */
+var baseID;
+
+/**
+ * Vis js graph options
+ */
 var options = {
     nodes: {
         borderWidth:4,
@@ -237,24 +248,17 @@ function createConnections()
 }
 
 
-var total = 1;
-var indexed = 0;
-var progressID;
-
-
 function updateProgress()
 {
     indexed++;
-
-    var percent = parseInt((indexed/total)*100);
+    const percent = parseInt((indexed/total)*100);
 
     $("#" + progressID).html("<div class=\"progress\">\n" +
         "  <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + percent + "%\" aria-valuenow=\"" + percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
         "</div>");
-
-    console.log();
 }
-var baseID;
+
+
 /**
  * Adds the base  person to the graph.
  *
@@ -276,11 +280,15 @@ function addSelfToGraph(username)
         {
            reject(error);
         });
-
     });
 }
 
 
+/**
+ * Used for the on graph click event
+ *
+ * @param github id
+ */
 function bringUpProfileView(id)
 {
     for(var i = 0; i < nodes.length; i++)
@@ -292,15 +300,16 @@ function bringUpProfileView(id)
     }
 }
 
+
 /**
  * Creates a graph
  * @param username
  * @param containerName
- * @param graphsTitle
+ * @param progressBarID
  */
-function createFriendsGraph(username, containerName, graphsTitle)
+function createFriendsGraph(username, containerName, progressBarID)
 {
-    progressID = graphsTitle;
+    progressID = progressBarID;
 
     nodes = [];
     edges = [];
@@ -324,7 +333,6 @@ function createFriendsGraph(username, containerName, graphsTitle)
 
                     network.on("click", function (params)
                     {
-                        params.event = "[original event]";
                         if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
                         {
                             bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
