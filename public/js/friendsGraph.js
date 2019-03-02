@@ -186,15 +186,25 @@ function processUserConnections(user)
 {
     return new Promise(function(resolve, reject)
     {
-
-        processConnections(user, API_FOLLOWING, 1).then(function()
+        if(user.id === baseID)
         {
-            processConnections(user, API_FOLLOWERS, 1).then(function()
+            processConnections(user, API_FOLLOWING, 1).then(function()
+            {
+                processConnections(user, API_FOLLOWERS, 1).then(function()
+                {
+                    updateProgress();
+                    resolve();
+                })
+            })
+        }
+        else
+        {
+            processConnections(user, API_FOLLOWING, 1).then(function()
             {
                 updateProgress();
                 resolve();
             })
-        })
+        }
     });
 }
 
@@ -244,7 +254,7 @@ function updateProgress()
 
     console.log();
 }
-
+var baseID;
 /**
  * Adds the base  person to the graph.
  *
@@ -257,6 +267,7 @@ function addSelfToGraph(username)
     {
         queryAPIByUser("", username, function(data)
         {
+            baseID = data.id;
             total = (data.followers + data.following);
             addPersonToGraph(data);
             resolve();

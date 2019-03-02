@@ -42,7 +42,6 @@ function queryAPIByUser(apiPath, user, successCallBack, errorCallBack) {
     $.ajax({
         type:'GET',
         url: urlpath,
-        crossDomain: true,
         dataType: "json",
         success: successCallBack,
         error:errorCallBack,
@@ -52,27 +51,26 @@ function queryAPIByUser(apiPath, user, successCallBack, errorCallBack) {
 
 function queryAPIByOrg(apiPath, org, successCallBack, errorCallBack) {
     const urlpath = APIROOT + API_ORG_PATH + org + apiPath;
+    console.log(urlpath);
     $.ajax({
         type:'GET',
         url: urlpath,
-        crossDomain: true,
         dataType: "json",
         success: successCallBack,
         error:errorCallBack,
         timeout: 4000
     });
-    console.log("past");
 }
-/*
-function queryAPIByRepo(apiPath, org, successCallBack, errorCallBack) {
-    const urlpath = APIROOT + API_ORG_PATH + org + apiPath;
+
+function queryUrl(url, successCallBack, errorCallBack) {
+    url = url.split("https://api.github.com/").join("api/");
     $.ajax({
         type:'GET',
-        url: urlpath,
+        url: url,
         crossDomain: true,
         dataType: "json",
         success: successCallBack,
         error:errorCallBack,
-        timeout: 4000
+        timeout: 3000
     });
-}*/
+}

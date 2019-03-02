@@ -91,7 +91,7 @@ routes.get('/*', (request, result) =>
         result.end();
     });
 
-    if(cache.size() > 500000)
+    if(cache.size() > 50000)
     {
         cache.clear();
     }

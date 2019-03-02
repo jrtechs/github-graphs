@@ -64,7 +64,8 @@ function profileGen(username, container)
             </div>";
             $("#"+container).html(html);
         })
-    }, () => {
+    }, () =>
+    {
         alert("User Does Not Exist");
         window.location.href = "./GraphGenerator.html";
     });
@@ -99,19 +100,6 @@ function parseOrgs(name) {
             resolve([]);
         });
     })
-}
-
-function queryUrl(url, successCallBack, errorCallBack) {
-    url = url.split("https://api.github.com/").join("api/");
-    $.ajax({
-        type:'GET',
-        url: url,
-        crossDomain: true,
-        dataType: "json",
-        success: successCallBack,
-        error:errorCallBack,
-        timeout: 3000
-    });
 }
 
 function graphUrl(user) {
