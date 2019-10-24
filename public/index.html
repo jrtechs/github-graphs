@@ -17,87 +17,58 @@
             crossorigin="anonymous">
     </script>
 </head>
-<body>
-    <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
-        <div id="header-title">
-            <a href="./index.html">
-                <img id="logo" src="./logo.svg" />
-            </a>
-        </div>
-        <div id="navigation">
-            <ul class="nav">
+<body class="home-page">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <a class="navbar-brand" href="/"><img src="img/githubgraph-logo.svg" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="main-menu" class="collapse navbar-collapse">
+            <ul class="navbar-nav flex-fill justify-content-end">
                 <li class="nav-item">
-                    <a href="./GraphGenerator.html">
-                        Generate graphs
-                    </a>
+                    <a class="nav-link" href="./GraphGenerator.html">Generate graphs</a>
                 </li>
-                <div class="nav-sep"></div>
                 <li class="nav-item">
-                    <a href="https://github.com/jrtechs/github-graphs">
-                        View on GitHub
-                    </a>
+                    <a class="nav-link" href="https://github.com/jrtechs/github-graphs/">View on GitHub</a>
                 </li>
-                <div class="nav-sep"></div>
                 <li class="nav-item">
-                    <a href="./about.html">
-                        About
-                    </a>
+                    <a class="nav-link" href="./about.html">About</a>
                 </li>
             </ul>
         </div>
-    </div>
-    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="image-vert text-center">
-                    <img class="img-fluid carousel-img" src="./img/friends.png" />
+    </nav>
+
+    <div class="main text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="py-5">
+                        <h1 class="mb-3 font-weight-bold">What can I do here?</h1>
+                        <p>
+                            Head over to the 'Generate graphs' page and enter
+                            the username of a GitHub user. You can then select
+                            what kind of graph to generate based on that user.
+                        </p>
+                        <p>
+                            If you'd like to see how everything works, follow
+                            the link to GitHub, where you can view everything
+                            that went into making this functional.
+                        </p>
+                        <p>
+                            If you're interested in knowing more about this
+                            project, additional information can be found on
+                            the About page.
+                        </p>
+                    </div>
+                    <div class="py-5">
+                        <a href="./GraphGenerator.html" class="btn btn-lg btn-primary mr-2">Make a graph</a>
+                        <a href="https://github.com/jrtechs/github-graphs/" target="_blank" class="btn btn-lg btn-secondary">View on Github</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="img/home-image.png" alt="" class="img-fluid d-lg-none">
                 </div>
             </div>
-            <div class="carousel-item">
-                <div class="image-vert text-center">
-                    <img class="img-fluid carousel-img" src="./img/repos.png" />
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="image-vert text-center">
-                    <img class="img-fluid carousel-img" src="./img/orgs.png" />
-                </div>
-            </div>
-        </div>
-        <a class="carousel-control-prev" href="#mainCarousel" role="button" data-slide="prev" m="1">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#mainCarousel" role="button" data-slide="next" m="1">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-    <div class="main container-fluid" style="top: -50px;">
-        <div class="home-content row align-items-center">
-            <div class="side-txt col">
-                <div class="text-title text-center" style="padding: 10px;">
-                    <h1 class="m-title" style="padding-top: 5px;">What can I do here?</h1>
-                </div>
-                <div class="text-content">
-                    <p style="position: relative; padding: 10px;">
-                        Head over to the 'Generate graphs' page and enter
-                        the username of a GitHub user. You can then select
-                        what kind of graph to generate based on that user.
-                    </p>
-                    <p style="position: relative; padding: 10px;">
-                        If you'd like to see how everything works, follow
-                        the link to GitHub, where you can view everything
-                        that went into making this functional.
-                    </p>
-                    <p style="position: relative; padding: 10px;">
-                        If you're interested in knowing more about this
-                        project, additional information can be found on 
-                        the About page.
-                    </p>
-                </div>
-            </div>
-            <img class="side-img img-fluid col" style="top: 50px;" src="./img/recording.gif" />
         </div>
     </div>
 </body>
