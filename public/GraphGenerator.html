@@ -15,34 +15,26 @@
     </script>
 </head>
 <body>
-    <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
-        <div id="header-title">
-            <a href="./index.html">
-                <img id="logo" src="./logo.svg" />
-            </a>
-        </div>
-        <div id="navigation">
-            <ul class="nav">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <a class="navbar-brand" href="/"><img src="img/githubgraph-logo.svg" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="main-menu" class="collapse navbar-collapse">
+            <ul class="navbar-nav flex-fill justify-content-end">
                 <li class="nav-item">
-                    <a href="./GraphGenerator.html">
-                        Generate graphs
-                    </a>
+                    <a class="nav-link" href="./GraphGenerator.html">Generate graphs</a>
                 </li>
-                <div class="nav-sep"></div>
                 <li class="nav-item">
-                    <a href="https://github.com/jrtechs/github-graphs">
-                        View on GitHub
-                    </a>
+                    <a class="nav-link" href="https://github.com/jrtechs/github-graphs/">View on GitHub</a>
                 </li>
-                <div class="nav-sep"></div>
                 <li class="nav-item">
-                    <a href="./about.html">
-                        About
-                    </a>
+                    <a class="nav-link" href="./about.html">About</a>
                 </li>
             </ul>
         </div>
-    </div>
+    </nav>
+
     <div class="main container">
         <div id="user-graphs">
             <div id="search-bar">
