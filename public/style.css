@@ -37,6 +37,11 @@ body {
     font-weight: 600;
 }
 
+.container-xl {
+    max-width: 1280px;
+    margin: auto;
+}
+
 
 .main {
     background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 420px, var(--white) 420px);
@@ -63,6 +68,50 @@ body {
         background-image: url(./img/home-image.png);
         background-repeat: no-repeat;
     }
+}
+
+@media screen and (min-width: 768px) {
+    .friends-graph-page #profileGen {
+        margin-top: -84px
+    }
+}
+
+.card .actions {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+}
+
+.card .actions .btns {
+    display: inline-block;
+    padding: 8px;
+    margin-left: 8px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: box-shadow .3s ease-out;
+}
+
+.card .actions .btns:hover {
+    box-shadow: 0px 10px 16px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.06);
+}
+
+.card .actions .btns svg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 24px;
+    width: 24px;
+    fill: var(--dark-2);
+    opacity: 0.64;
+    transition: opacity .3s ease-out;
+}
+
+.card .actions .btns:hover svg {
+    fill: var(--primary);
+    opacity: 1;
 }
 
 #error-code {
