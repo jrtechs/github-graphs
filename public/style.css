@@ -8,6 +8,7 @@
 
 body {
     font-size: 18px;
+    color: var(--dark-2);
 }
 
 
@@ -64,182 +65,22 @@ body {
     }
 }
 
-#header-bar {
-    height: 10%;
-    width: 100%;
-    background-color: rgb(208, 208, 208);
-}
-
-#header-title {
-    font-size: 25px;
-}
-
-#logo {
-    height: 60px;
-}
-
 #error-code {
     font-family: Comfortaa;
     font-size: 200px;
     color: rgb(208, 208, 208);
 }
 
-#navigation {
-    position: absolute;
-    right: 20px;
-}
-
 #dcimg {
     width: 300px;
-}
-
-.img-vert {
-    display: inline-block;
-    height: 100%;
 }
 
 .error {
     color: rgb(208, 208, 208);
 }
 
-.big-title {
-    font-family: Comfortaa;
-    font-weight: bold;
-    font-size: 60px;
-}
-
-.l-title {
-    font-family: Comfortaa;
-    font-weight: normal;
-    font-size: 40px;
-}
-
-.m-title {
-    font-family: Comfortaa;
-    font-weight: normal;
-    font-size: 150%;
-}
-
-.home-content {
-    padding: 20px;
-    width: 100%;
-    max-height: 40px;
-}
-
-.side-img {
-    display: block;
-    position: relative;
-    width: 50%;
-    height: 100%;
-    max-height: 400px;
-    max-width: 400px;
-}
-
-.side-txt {
-    display: block;
-    position: relative;
-    width: 50%;
-}
-
-.text-title {
-    background-color: rgb(208, 208, 208);
-    border-radius: 20px 20px 0px 0px;
-}
-
-.text-content {
-    background-color: rgb(242, 242, 242);
-    border-radius: 0px 0px 20px 20px;
-}
-
-.card-deck {
-    position: relative;
-    padding-top: 20px;
-}
-
-.card {
-    background-color: rgb(208, 208, 208);
-}
-
-.card-header {
-    background-color: rgb(208, 208, 208);
-}
-
-.card-body {
-    background-color: rgb(242, 242, 242);
-}
-
-.rounder {
-    border-radius: 20px !important;
-}
-
-.footer {
-    background-color: rgb(208, 208, 208);
-    position: absolute;
-    height: 70px;
-    width: 100%;
-    bottom: 0px;
-}
-
-.footer-text {
-    position: relative;
-    top: 15px;
-    left: 70px;
-}
-
 .plink {
     color: rgb(250, 152, 33);
-}
-
-@media (max-width: 767px) {
-    .big-title {
-        font-size: 30px;
-    }
-
-    .side-img {
-        display: none;
-    }
-
-    .side-txt {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        width: 100%;
-    }
-
-    #navigation {
-        position: absolute;
-        top: 50px;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        width: 400px
-    }
-
-    .nav-item {
-        font-size: 19px;
-    }
-
-    #header-bar {
-        height: 100px;
-    }
-
-    #header-title {
-        left: 0px;
-        width: 20%;
-    }
-
-    #logo {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        height: 60px;
-    }
-
-    .card {
-        align-self: center;
-        width: 80%;
-    }
-
 }
 
 .containerCustom {
