@@ -71,7 +71,8 @@ body {
 }
 
 @media screen and (min-width: 768px) {
-    .friends-graph-page #profileGen {
+    .friends-graph-page #profileGen,
+    .timeline-graph-page #profileGen {
         margin-top: -84px
     }
 }

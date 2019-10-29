@@ -41,78 +41,32 @@ function timeLineClickEvent(properties)
     {
         var item = repositoryData[properties.item];
 
-        var html = "<div class=\"card\">\n" +
-            "  <div class=\"card-header\">\n" +
-            item.name +
-            "  </div>\n" +
-            "  <div class=\"card-body\">\n";
-
-        html += "<p>" + item.description + "</p>";
-
-        console.log(item.license);
-        if(item.license === null)
-        {
+        if (item.license === null) {
             item.license = new Object();
-            item.license.name = 'none';
+            item.license.name = 'None';
         }
 
-        html += "<div class='row'><div class=\"col-6\">\n" +
-            "        <ul class=\"list-group\">\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Fork Count</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            item.forks +
-            "</div>\n" +
-            "            </li>\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Languages</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            item.language+
-            "</div>\n" +
-            "            </li>\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Liscense</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            item.license.name +
-            "</div></li>";
-            if(item.homepage !== null)
-            {
-                html +=
-                "            <li class=\"row\">\n" +
-                "                <div class=\"col-md-6\"><b>Home Page</b></div>\n" +
-                "                <div class=\"col-md-6\">" +
-                "<a href='" + item.homepage + "'>" +item.homepage + "</a>" +
-                "</div>\n" +
-                "            </li>\n" +
-                "        </ul>\n";
-            }
-
-
-        html += "</div><div class=\"col-6\">\n" +
-            "        <ul class=\"list-group\">\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Repository URL</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            "<a href='" + item.html_url + "'>" +item.html_url + "</a>" +
-            "</div>\n" +
-            "            </li>\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Open Issues</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            item.open_issues_count +
-            "</div>\n" +
-            "            </li>\n" +
-            "            <li class=\"row\">\n" +
-            "                <div class=\"col-md-6\"><b>Watchers</b></div>\n" +
-            "                <div class=\"col-md-6\">" +
-            item.watchers +
-            "</div>\n" +
-            "            </li>\n" +
-            "        </ul>\n" +
-            "    </div></div>";
-
-        html +="  </div>\n" +
-            "</div>";
+        var html = `
+            <div class="card shadow" style="font-size: 16px">
+                <div class="card-body">
+                    <h5 class="card-title">${item.name}</h5>
+                    <p class="card-subtitle text-muted">${item.description ? item.description : 'No description'}</p>
+                    <div class="row py-3">
+                        <div class="col-12 col-md-8">
+                            ${item.homepage ? `<p class="mb-0">Homepage: <a href="${item.license.name}">${item.license.name}</a></p>` : ''}
+                            <p class="mb-0">Repository URL: <a href="${item.html_url}">${item.html_url}</a></p>
+                            <p class="mb-0">Languages: ${item.language}</p>
+                            <p class="mb-0">License: ${item.license.name}</p>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0">Fork Count: ${item.forks}</p>
+                            <p class="mb-0">Open Issues: ${item.open_issues_count}</p>
+                            <p class="mb-0">Watchers: ${item.watchers}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
 
         $("#repositoryInformation").html(html);
     }
