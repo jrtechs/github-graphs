@@ -8,149 +8,119 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="./about.css" />
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous">
+    </script>
 </head>
 <body>
-    <div id="header-bar" class="d-flex flex-column flex-md-row shadow-sm align-items-center">
-        <div id="header-title">
-            <a href="./index.html">
-                <img id="logo" src="./logo.svg" />
-            </a>
-        </div>
-        <div id="navigation">
-            <ul class="nav">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <a class="navbar-brand" href="/"><img src="img/githubgraph-logo.svg" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="main-menu" class="collapse navbar-collapse">
+            <ul class="navbar-nav flex-fill justify-content-end">
                 <li class="nav-item">
-                    <a href="./GraphGenerator.html">
-                        Generate graphs
-                    </a>
+                    <a class="nav-link" href="./GraphGenerator.html">Generate graphs</a>
                 </li>
-                <div class="nav-sep"></div>
                 <li class="nav-item">
-                    <a href="https://github.com/jrtechs/github-graphs">
-                        View on GitHub
-                    </a>
+                    <a class="nav-link" href="https://github.com/jrtechs/github-graphs/">View on GitHub</a>
                 </li>
-                <div class="nav-sep"></div>
-                <li class="nav-item">
-                    <a href="./about.html">
-                        About
-                    </a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="./about.html">About</a>
                 </li>
             </ul>
         </div>
-    </div>
-    <div>
-        <div id="content" class="container">
-            <div id="content-title">
-                <h1 class="big-title text-center">What is this?</h1>
+    </nav>
+
+    <div class="main">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-md-6 offset-md-3 text-center text-white">
+                    <h1 class="font-weight-bold">What is this?</h1>
+                    <p>This is an interactive website which allows you to make various graphs of information from
+                    the GitHub network. Currently the site generates three types of graphs-- the most popular and entertaining of which is the friends graph. The friends graph helps you visualize clusters of friends/collaborators on GitHub.This can be used to spot clusters within organizations and schools.</p>
+                    <p>This is an open source project, all the source code can be found on GitHub. New collaborators are always welcomed; look at our GitHub repository for contributing guidelines.</p>
+                </div>
             </div>
-            <div id="content-body" class="container">
-                <p style="padding: 10px;">
-                    This is an interactive website which allows you to make various graphs of information from 
-                    the GitHub network. Currently the site generates three types of graphs-- the most popular and entertaining 
-                    of which is the friends graph. The friends graph helps you visualize clusters of friends/collaborators on GitHub.
-                    This can be used to spot clusters within organizations and schools.
-                </p>
-                <p style="padding: 10px;">
-                    This is an open source project, all the source code can be found on GitHub.
-                    New collaborators are always welcomed; look at our GitHub repository for contributing guidelines.
-                </p>
+            <div class="row py-5">
+                <div class="col-md-6 offset-md-3 text-center">
+                    <h2 class="font-weight-bold">Why did you make this?</h2>
+                    <p>This project was completed in 24 hours for participation in <a class="plink" href="https://brickhack.io/">BrickHack V</a> at the Rochester Institute of Technology. We hope that this project will make people more interested in learning about big data analytics. The visual aspect of this website makes learning about topics such as clustering and graph databases more intuitive.</p>
+                </div>
             </div>
-            <div id="content-title">
-                <h1 class="big-title text-center">Why did you make this?</h1>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h2 class="h1 font-weight-bold text-center">Developers</h2>
+                </div>
             </div>
-            <div id="content-body" class="container">
-                <p style="padding: 10px;">
-                    This project was completed in 24 hours for participation in <a class="plink" href="https://brickhack.io/">BrickHack V</a> at the Rochester Institute of Technology.
-                    We hope that this project will make people more interested in learning about big data analytics.
-                    The visual aspect of this website makes learning about topics such as clustering and graph databases more intuitive.
-                </p>
-            </div>
-            <div id="content-title" style="border-radius: 20px;">
-                <h1 class="big-title text-center">Developers</h1>
-            </div>
-            <div class="card-deck">
-                <div class="card rounder">
-                    <img class="avatar mx-auto d-block" src="https://avatars0.githubusercontent.com/u/13894625?s=400&v=4" />
-                    <div class="card-header text-center m-title">
-                        Jeff
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            Managed a majority of the work with the backend, pulling data from GitHub and generating the graphs with visJS.
-                        </p>
-                    </div>
-                    <div class="links row text-center">
-                        <div class="col">
-                            <a href="https://github.com/jrtechs">
-                                <img class="link-ico" src="./img/github.png" />
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.linkedin.com/in/jrtechs/">
-                                <img class="link-ico" src="./img/linkedin.png" />
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="mailto:jeffery@jrtechs.net">
-                                <img class="link-ico" src="./img/email.png" />
-                            </a>
+            <div class="row py-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img" src="https://avatars0.githubusercontent.com/u/13894625?s=400&v=4" alt="Jeff">
+                        <div class="card-body">
+                            <h3 class="card-title">Jeff</h3>
+                            <p>Managed a majority of the work with the backend, pulling data from GitHub and generating the graphs with visJS.</p>
+                            <div class="d-flex text-decoration-none">
+                                <a class="mr-3" href="https://github.com/jrtechs">
+                                    <img src="img/github-circle.svg" alt="">
+                                </a>
+                                <a class="mr-3" href="https://www.linkedin.com/in/jrtechs/">
+                                    <img src="img/linkedin-box.svg" alt="">
+                                </a>
+                                <a href="mailto:jeffery@jrtechs.net">
+                                    <img src="img/email.svg" alt="">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card rounder">
-                    <img class="avatar mx-auto d-block" src="https://avatars0.githubusercontent.com/u/32306409?s=400&v=4" />
-                    <div class="card-header text-center m-title">
-                        Bryce
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            Worked on pulling API data from GitHub to create the mini-profile display and some graph work.
-                        </p>
-                    </div>
-                    <div class="links row text-center">
-                        <div class="col">
-                            <a href="https://github.com/theshmurph">
-                                <img class="link-ico" src="./img/github.png" />
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.linkedin.com/in/theshmurph">
-                                <img class="link-ico" src="./img/linkedin.png" />
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="mailto:brshmurphy@gmail.com">
-                                <img class="link-ico" src="./img/email.png" />
-                            </a>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img" src="https://avatars0.githubusercontent.com/u/32306409?s=400&v=4" alt="Bryce">
+                        <div class="card-body">
+                            <h3 class="card-title">Bryce</h3>
+                            <p>Worked on pulling API data from GitHub to create the mini-profile display and some graph work.</p>
+                            <div class="d-flex text-decoration-none">
+                                <a class="mr-3" href="https://github.com/theshmurph">
+                                    <img src="img/github-circle.svg" alt="">
+                                </a>
+                                <a class="mr-3" href="https://www.linkedin.com/in/theshmurph">
+                                    <img src="img/linkedin-box.svg" alt="">
+                                </a>
+                                <a href="mailto:brshmurphy@gmail.com">
+                                    <img src="img/email.svg" alt="">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card rounder">
-                    <img class="avatar mx-auto d-block" src="https://avatars3.githubusercontent.com/u/32624140?s=400&v=4" />
-                    <div class="card-header text-center m-title">
-                        Alex
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            Worked on the front-end design of the website, responsible for a majority of the html and css elements.
-                        </p>
-                    </div>
-                    <div class="links row text-center">
-                        <div class="col">
-                            <a href="https://github.com/CetaceanNation">
-                                <img class="link-ico" src="./img/github.png" />
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="https://www.linkedin.com/in/a-noel/">
-                                <img class="link-ico" src="./img/linkedin.png" />
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="mailto:axn5966@rit.edu">
-                                <img class="link-ico" src="./img/email.png" />
-                            </a>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img" src="https://avatars3.githubusercontent.com/u/32624140?s=400&v=4" alt="Alex">
+                        <div class="card-body">
+                            <h3 class="card-title">Alex</h3>
+                            <p>Worked on the front-end design of the website, responsible for a majority of the html and css elements.</p>
+                            <div class="d-flex text-decoration-none">
+                                <a class="mr-3" href="https://github.com/CetaceanNation">
+                                    <img src="img/github-circle.svg" alt="">
+                                </a>
+                                <a class="mr-3" href="https://www.linkedin.com/in/a-noel/">
+                                    <img src="img/linkedin-box.svg" alt="">
+                                </a>
+                                <a href="mailto:axn5966@rit.edu">
+                                    <img src="img/email.svg" alt="">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

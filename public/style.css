@@ -1,263 +1,116 @@
-@font-face {
-    font-family: Comfortaa;
-    src: url(./fonts/Comfortaa-Regular.ttf);
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: Comfortaa;
-    src: url(./fonts/Comfortaa-Light.ttf);
-    font-weight: lighter;
-}
-
-@font-face {
-    font-family: Comfortaa;
-    src: url(./fonts/Comfortaa-Bold.ttf);
-    font-weight: bold;
-}
-
-#header-bar {
-    height: 10%;
-    width: 100%;
-    background-color: rgb(208, 208, 208);
-}
-
-#header-title {
-    font-size: 25px;
-}
-
-#logo {
-    height: 60px;
-}
-
-#error-code {
-    font-family: Comfortaa;
-    font-size: 200px;
-    color: rgb(208, 208, 208);
-}
-
-#navigation {
-    position: absolute;
-    right: 20px;
-}
-
-#dcimg {
-    width: 300px;
-}
-
-#mainCarousel {
-    height: 500px;
-    background-color: #232323;
-}
-
-.carousel-item {
-    height: 500px;
-    overflow: hidden;
-    vertical-align: middle;
-}
-
-.carousel-img {
-    width: 100%;
-    min-height: 300px;
-    display: inline-block;
-    top: 0%;
-    left: 0%;
-    position: absolute;
-}
-
-.img-vert {
-    display: inline-block;
-    height: 100%;
-}
-
-.error {
-    color: rgb(208, 208, 208);
-}
-
-.big-title {
-    font-family: Comfortaa;
-    font-weight: bold;
-    font-size: 60px;
-}
-
-.l-title {
-    font-family: Comfortaa;
-    font-weight: normal;
-    font-size: 40px;
-}
-
-.m-title {
-    font-family: Comfortaa;
-    font-weight: normal;
-    font-size: 150%;
-}
-
-.nav-sep {
-    position: relative;
-    left: 10px;
-    top: 6px;
-    padding-left: 20px;
-    border-left: 2px solid #232323;
-    height: 30px;
-}
-
-.nav-item {
-    padding: 5px;
-    font-size: 20px;
-}
-
-.nav-item a {
-    color: #232323;
-    text-decoration: none;
-}
-
-.nav-item a:hover {
-    color: rgb(250, 152, 33);
-    text-decoration: none;
-}
-
-.home-content {
-    padding: 20px;
-    width: 100%;
-    max-height: 40px;
-}
-
-.side-img {
-    display: block;
-    position: relative;
-    width: 50%;
-    height: 100%;
-    max-height: 400px;
-    max-width: 400px;
-}
-
-.side-txt {
-    display: block;
-    position: relative;
-    width: 50%;
-}
-
-.text-title {
-    background-color: rgb(208, 208, 208);
-    border-radius: 20px 20px 0px 0px;
-}
-
-.text-content {
-    background-color: rgb(242, 242, 242);
-    border-radius: 0px 0px 20px 20px;
-}
-
-.card-deck {
-    position: relative;
-    padding-top: 20px;
-}
-
-.card {
-    background-color: rgb(208, 208, 208);
-}
-
-.card-header {
-    background-color: rgb(208, 208, 208);
-}
-
-.card-body {
-    background-color: rgb(242, 242, 242);
-}
-
-.rounder {
-    border-radius: 20px !important;
-}
-
-.main {
-    position: relative;
-    top: 10px;
-}
-
-.footer {
-    background-color: rgb(208, 208, 208);
-    position: absolute;
-    height: 70px;
-    width: 100%;
-    bottom: 0px;
-}
-
-.footer-text {
-    position: relative;
-    top: 15px;
-    left: 70px;
-}
-
-.plink {
-    color: rgb(250, 152, 33);
+:root {
+    --primary:rgba(16,116,231,1);
+    --secondary:rgba(46,188,79,1);
+    --dark:rgba(36,41,46,1);
+    --dark-2:rgba(43,49,55,1);
+    --white:rgba(255,255,255,1);
 }
 
 body {
-    background-color: #232323;
+    font-size: 18px;
+    color: var(--dark-2);
 }
 
-@media (max-width: 767px) {
-    .big-title {
-        font-size: 30px;
-    }
 
-    .side-img {
-        display: none;
-    }
+/* Bootstrap overides
+----------------------------------------------- */
 
-    .side-txt {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        width: 100%;
-    }
+.bg-dark {
+    background-color: var(--dark) !important;
+}
 
-    #navigation {
-        position: absolute;
-        top: 50px;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        width: 400px
-    }
+.bg-dark-2 {
+    background-color: var(--dark-2);
+}
 
-    .nav-item {
-        font-size: 19px;
-    }
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
 
-    #header-bar {
-        height: 100px;
-    }
+.btn-secondary {
+    background-color: var(--dark-2);
+    border-color: var(--dark-2);
+}
 
-    #header-title {
-        left: 0px;
-        width: 20%;
-    }
+.navbar-dark .navbar-nav .nav-item.active .nav-link {
+    font-weight: 600;
+}
 
-    #logo {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        height: 60px;
-    }
+.container-xl {
+    max-width: 1280px;
+    margin: auto;
+}
 
-    .card {
-        align-self: center;
-        width: 80%;
-    }
 
-    .carousel-img {
-        width: 100%;
-        min-height: 200px;
-        display: inline-block;
-        top: 10px;
-        position: relative;
+.main {
+    background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 420px, var(--white) 420px);
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 360px, var(--white) 360px);
     }
 }
 
-.containerCustom {
-    width: 100%;
-    padding-right: 0px;
-    padding-left: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
+@media screen and (min-width: 992px) {
+    .main {
+        background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 420px, var(--white) 420px);
+    }
+
+    .home-page .main::before {
+        display: block;
+        content: '';
+        position: absolute;
+        right: 0;
+        height: 90vh;
+        width: 50vw;
+        background-image: url(./img/home-image.png);
+        background-repeat: no-repeat;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .friends-graph-page #profileGen,
+    .timeline-graph-page #profileGen {
+        margin-top: -84px
+    }
+}
+
+.card .actions {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+}
+
+.card .actions .btns {
+    display: inline-block;
+    padding: 8px;
+    margin-left: 8px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05), 0px 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: box-shadow .3s ease-out;
+}
+
+.card .actions .btns:hover {
+    box-shadow: 0px 10px 16px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.06);
+}
+
+.card .actions .btns svg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 24px;
+    width: 24px;
+    fill: var(--dark-2);
+    opacity: 0.64;
+    transition: opacity .3s ease-out;
+}
+
+.card .actions .btns:hover svg {
+    fill: var(--primary);
+    opacity: 1;
 }
