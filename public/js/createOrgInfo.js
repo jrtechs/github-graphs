@@ -1,17 +1,23 @@
-function createOrgInfo(orgName, container) {    
+function createOrgInfo(orgName, container) {
     queryAPIByOrg("", orgName, (orgData) => {
-        console.log("called");
-        var html = "<div class=\"card\" style=\"w-100;\"><div class='row m-0'><div class='col-2 col-centered p-auto'>"+
-            "<img src='" + orgData.avatar_url + "' width='100%'/>" +
-        "</div><div class='col-10'>\
-            <div class=\"card-body\"> \
-                <center><b><h3 class=\"card-title\">"+orgData.name+"</h3><b><center> " +
-                (orgData.description != null ? "<div class=\"card-text\"><p>"+orgData.description+"</p></div>" : "") + " \
-            </div> \
-            <ul class=\"list-group list-group-flush\">"+
-                (orgData.location !=null ? "<li class=\"list-group-item\">Location: "+orgData.location+"</li>" : "") + " \
-            </ul> \
-        </div></div></div>";
+        var html = `
+            <div class="card shadow py-4 px-3">
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center">
+                        <img src="${orgData.avatar_url}" alt="${orgData.name}" class="img-fluid" style="max-width: 100px"/>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="media-body">
+                            <h1 class="h4">${orgData.name}</h1>
+                            <p class="text-muted">${orgData.description}</p>
+                            <ul class="d-flex list-unstyled mb-0">
+                                <li>${orgData.location}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
 
         $("#" + container).html(html);
 
