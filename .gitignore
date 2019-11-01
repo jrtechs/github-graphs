@@ -5,4 +5,4 @@
 /.vs
 /node_modules/.bin
 /node_modules
-/package-lock 
+/package-lock.json
