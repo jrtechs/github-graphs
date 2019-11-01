@@ -55,7 +55,7 @@ function timeLineClickEvent(properties)
                         <div class="col-12 col-md-8">
                             ${item.homepage ? `<p class="mb-0">Homepage: <a href="${item.license.name}">${item.license.name}</a></p>` : ''}
                             <p class="mb-0">Repository URL: <a href="${item.html_url}">${item.html_url}</a></p>
-                            <p class="mb-0">Languages: ${item.language}</p>
+                            <p class="mb-0">Languages: ${item.language ? item.language : 'Not specified'}</p>
                             <p class="mb-0">License: ${item.license.name}</p>
                         </div>
                         <div class="col-12 col-md-4">
