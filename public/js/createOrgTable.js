@@ -5,7 +5,7 @@ function generateHtmlRow(repoData) {
                 ${repoData.language === 'null'
                     ? '<div class="bg-light d-inline-block" style="height: 14px; width: 14px; border-radius: 7px"></div>'
                     : `<i class="devicon-${repoData.language}-plain colored"></i>`}
-                <a class="text-reset ml-1" href="${repoData.url}">${repoData.name}</a>
+                <a class="text-reset ml-1" href="${repoData.html_url}" target="_blank">${repoData.name}</a>
             </td>
             <td class="text-right">${repoData.forks}</td>
         </tr>
