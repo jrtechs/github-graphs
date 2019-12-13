@@ -66,7 +66,8 @@ function parseOrgs(name) {
                 prom.push( new Promise( (res, rej) => {
                         url = orgs[i].url;
                         queryUrl(url, (orgData) => {
-                            orgs_final.push("<a href=\""+orgData.html_url+"\"><img src=\""+orgData.avatar_url+"\" class=\"img-fluid\" style=\"max-width:35px\"></img></a>");
+                            console.log(orgData);
+                            orgs_final.push("<a href=\"OrgRepoGraph.html?name="+orgData.login+"\"><img src=\""+orgData.avatar_url+"\" class=\"img-fluid\" style=\"max-width:35px\"></img></a>");
                             res();
                         }, (error) => {
                             console.log(error);
