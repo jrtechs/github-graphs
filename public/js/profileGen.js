@@ -8,6 +8,11 @@ function profileGen(username, container)
             window.location.href = "./GraphGenerator.html";
         }
         parseOrgs(user.login).then( (orgsReturn) => {
+            if (user.blog) {
+                const rx = new RegExp("^(http|https)://", "i");
+                const match = rx.test(user.blog);
+                user.blog = match ? user.blog : `http://${user.blog}`;
+            }
             let html = `
                 <div class="card shadow-sm" style="font-size: 16px;">
                     <div class="card-img-top" style="position: relative;">
