@@ -11,10 +11,7 @@ body {
     color: var(--dark-2);
 }
 
-
-/* Bootstrap overides
------------------------------------------------ */
-
+/* Bootstrap overides */
 .bg-dark {
     background-color: var(--dark) !important;
 }
@@ -42,39 +39,8 @@ body {
     margin: auto;
 }
 
-
 .main {
     background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 420px, var(--white) 420px);
-}
-
-@media screen and (min-width: 768px) {
-    .main {
-        background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 360px, var(--white) 360px);
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .main {
-        background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 420px, var(--white) 420px);
-    }
-
-    .home-page .main::before {
-        display: block;
-        content: '';
-        position: absolute;
-        right: 0;
-        height: 90vh;
-        width: 50vw;
-        background-image: url(./img/home-image.png);
-        background-repeat: no-repeat;
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .friends-graph-page #profileGen,
-    .timeline-graph-page #profileGen {
-        margin-top: -84px
-    }
 }
 
 .card .actions {
@@ -113,4 +79,31 @@ body {
 .card .actions .btns:hover svg {
     fill: var(--primary);
     opacity: 1;
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 360px, var(--white) 360px);
+    }
+    .friends-graph-page #profileGen,
+    .timeline-graph-page #profileGen {
+        margin-top: -84px
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .main {
+        background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark-2) 420px, var(--white) 420px);
+    }
+
+    .home-page .main::before {
+        display: block;
+        content: '';
+        position: absolute;
+        right: 0;
+        height: 90vh;
+        width: 50vw;
+        background-image: url(./img/home-image.png);
+        background-repeat: no-repeat;
+    }
 }
