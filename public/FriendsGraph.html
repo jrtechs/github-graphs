@@ -53,36 +53,39 @@
                 <div class="col-lg-3 col-md-4 col-12"></div>
                 <div class="col-lg-9 col-md-8 col-12">
                     <div class="d-flex align-items-baseline justify-content-between my-4">
-                         <div class="d-flex align-items-center">
-                              <svg class="mr-3" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M18 0C8.064 0 0 8.064 0 18C0 27.936 8.064 36 18 36C27.936 36 36 27.936 36 18C36 8.064 27.936 0 18 0ZM18 5.4C20.988 5.4 23.4 7.812 23.4 10.8C23.4 13.788 20.988 16.2 18 16.2C15.012 16.2 12.6 13.788 12.6 10.8C12.6 7.812 15.012 5.4 18 5.4ZM18 30.96C15.8613 30.96 13.7559 30.4308 11.8715 29.4194C9.98707 28.4081 8.3822 26.9462 7.2 25.164C7.254 21.582 14.4 19.62 18 19.62C21.582 19.62 28.746 21.582 28.8 25.164C27.6178 26.9462 26.0129 28.4081 24.1285 29.4194C22.2441 30.4308 20.1387 30.96 18 30.96Z" fill="white"/>
-                              </svg>
-                             <h1 class="text-white font-weight-bold">Interactive friend chart</h1>
-                         </div>
-                         <div>
-                             <a id="TimelineLink" class="text-light" href="#">View repo timeline</a>
-                         </div>
+                        <div class="d-flex align-items-center">
+                            <svg class="mr-3" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M18 0C8.064 0 0 8.064 0 18C0 27.936 8.064 36 18 36C27.936 36 36 27.936 36 18C36 8.064 27.936 0 18 0ZM18 5.4C20.988 5.4 23.4 7.812 23.4 10.8C23.4 13.788 20.988 16.2 18 16.2C15.012 16.2 12.6 13.788 12.6 10.8C12.6 7.812 15.012 5.4 18 5.4ZM18 30.96C15.8613 30.96 13.7559 30.4308 11.8715 29.4194C9.98707 28.4081 8.3822 26.9462 7.2 25.164C7.254 21.582 14.4 19.62 18 19.62C21.582 19.62 28.746 21.582 28.8 25.164C27.6178 26.9462 26.0129 28.4081 24.1285 29.4194C22.2441 30.4308 20.1387 30.96 18 30.96Z"
+                                    fill="white" />
+                            </svg>
+                            <h1 class="text-white font-weight-bold">Interactive friend chart</h1>
+                        </div>
+                        <div>
+                            <a id="TimelineLink" class="text-light" href="#">View repo timeline</a>
+                        </div>
                     </div>
                 </div>
             </div>
-           <div class="row pb-4">
-               <div class="col-lg-3 col-md-4 col-12">
-                   <div id="profileGen"></div>
-               </div>
-               <div class="col-lg-9 col-md-8 col-12">
-                   <div class="card shadow text-white bg-dark border-white">
+            <div class="row pb-4">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div id="profileGen"></div>
+                </div>
+                <div class="col-lg-9 col-md-8 col-12">
+                    <div class="card shadow text-white bg-dark border-white">
                         <h2 id="graphLoading"></h2>
                         <div id="myGraph" class="w-100"></div>
-                   </div>
-               </div>
-           </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
 </body>
 <script>
     $(function () {
-      $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
     function createGraphs(username)
