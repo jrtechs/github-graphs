@@ -23,10 +23,10 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/);
 Create a .env file with the code below filled in.
 
 ```
-CLIENT_ID =
-CLIENT_SECRET =
-SESSION_SECRET =
-PORT =
+CLIENT_ID = <your_github_username>
+CLIENT_SECRET = <your_generated_personal_access>
+SESSION_SECRET = <any_string_you_want>
+PORT = <any_number>
 ```
 
 ```bash
