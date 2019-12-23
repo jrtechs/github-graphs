@@ -1,8 +1,0 @@
-{
-  "port": 7000,
-  "sessionSecret": "superDuperSecret for session stuff",
-
-  "user": "github-user-used-with-api-account",
-  "clientID": "github client id",
-  "clientSecret": "clientSecret"
-}
