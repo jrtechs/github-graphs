@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jrtechs/github-graphs#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",
