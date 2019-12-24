@@ -1,20 +1,9 @@
 const routes = require('express').Router();
-
-
 const got = require("got");
-
-
-const GITHUB_API = "https://api.github.com";
-
-
-const configLoader = require('../configManager');
-
-const authenticate = "client_id=" + configLoader.getClientID() +
-    "&client_secret=" + configLoader.getClientSecret();
-
-
-//caching program to make the application run faster
 const cache = require('memory-cache');
+const dotenv = require("dotenv").config();
+const GITHUB_API = "https://api.github.com";
+const authenticate = `client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
 
 
 function queryGitHubAPI(requestURL)
