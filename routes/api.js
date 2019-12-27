@@ -62,17 +62,20 @@ function queryGitHubAPI(requestURL)
 const API_FOLLOWING = "/following";
 const API_FOLLOWERS = "/followers";
 const API_USER_PATH = "/users/";
+const API_PAGINATION_SIZE = 100;
+const API_MAX_PAGES = 3;
+const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
 
 function fetchAllUsers(username, apiPath, page, lst)
 {
     return new Promise((resolve, reject)=>
     {
-        queryGitHubAPI(API_USER_PATH + username + apiPath + "?page=" + page).then((data)=>
+        queryGitHubAPI(API_USER_PATH + username + apiPath + "?page=" + page + API_PAGINATION).then((data)=>
         {
             if(data.hasOwnProperty("length"))
             {
                 lst = lst.concat(data)
-                if(page < 5 && data.length === 30)
+                if(page < API_MAX_PAGES && data.length === API_PAGINATION_SIZE)
                 {
                     fetchAllUsers(username, apiPath, page + 1, lst).then((l)=>
                     {
@@ -124,28 +127,18 @@ function queryFriends(user)
 }
 
 
-routes.get("/friends", (request, result)=>
+routes.get("/friends/:name", (request, result)=>
 {
-    if(request.query.hasOwnProperty("name"))
+    queryFriends(request.params.name).then(friends=>
     {
-        result.setHeader('Content-Type', 'application/json');
-        queryFriends(request.query.name).then(friends=>
-        {
-            result.write(JSON.stringify(friends));
-            result.end();
-        }).catch(error=>
-        {
-            result.status(500);
-            result.write("API error fetching friends.")
-            result.end();
-        });
-    }
-    else
+        result.json(friends)
+            .end();
+    }).catch(error=>
     {
-        result.status(400);
-        result.write("Must provide the name get parameter");
-        result.end();
-    }
+        result.status(500)
+            .json({error: 'API error fetching friends'})
+            .end();
+    });
 })
 
 
