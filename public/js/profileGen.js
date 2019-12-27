@@ -31,7 +31,7 @@ function profileGen(username, container)
                         </div>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title mb-1">${user.name}</h5>
+                        ${user.name ? `<h5 class="card-title mb-1">${user.name}</h5>` : ""}
                         <a href="${user.html_url}" class="card-subtitle text-muted">${user.login}</a>
                         ${user.bio != null ? `<p class="my-2">${user.bio}</p>` : ""}
                         <ul class="list-unstyled">
