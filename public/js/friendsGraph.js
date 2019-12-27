@@ -75,12 +75,12 @@ function addPersonToGraph(profileData)
  * @param apiPath
  * @returns {Promise<any>}
  */
-function addFriends(username, apiPath, page)
+function addFriends(username)
 {
     updateProgress();
-    return new Promise(function(resolve, reject)
+    return new Promise((resolve, reject)=>
     {
-        queryAPIByUser(apiPath + "?page=" + page, username, function(data)
+        getFriendsAPI(username, (data)=>
         {
             for(var i = 0; i < data.length; i++)
             {
@@ -89,20 +89,9 @@ function addFriends(username, apiPath, page)
                     addPersonToGraph(data[i]);
                 }
             }
-
-            if(page < 50 && data.length === 30)
-            {
-                addFriends(username, apiPath, page+ 1).then(function()
-                {
-                    resolve();
-                })
-            }
-            else
-            {
-                resolve();
-            }
+            resolve();
         },
-        function(error)
+        (error)=>
         {
             reject(error);
         })
@@ -156,37 +145,6 @@ function addConnection(person1, person2)
 }
 
 
-function processConnections(user, apiPoint, page)
-{
-    return new Promise(function(resolve, reject)
-    {
-        queryAPIByUser(apiPoint + "?page=" + page, user.name,
-            function(data)
-            {
-                for(var i = 0; i < data.length; i++)
-                {
-                    addConnection(user, data[i])
-                }
-                if(page < 50 && data.length === 30)
-                {
-                    processConnections(user, apiPoint, page + 1).then(function()
-                    {
-                        resolve();
-                    });
-                }
-                else
-                {
-                    resolve();
-                }
-            }, function(error)
-            {
-                console.log(error);
-                resolve();
-            })
-    })
-}
-
-
 /**
  * Processes all the connections of a user and adds them to the graph
  *
@@ -197,25 +155,20 @@ function processUserConnections(user)
 {
     return new Promise(function(resolve, reject)
     {
-        if(user.id === baseID)
-        {
-            processConnections(user, API_FOLLOWING, 1).then(function()
+        updateProgress();
+        getFriendsAPI(user.name,
+            (data)=>
             {
-                processConnections(user, API_FOLLOWERS, 1).then(function()
+                for(var i = 0; i < data.length; i++)
                 {
-                    updateProgress();
-                    resolve();
-                })
-            })
-        }
-        else
-        {
-            processConnections(user, API_FOLLOWING, 1).then(function()
+                    addConnection(user, data[i])
+                }
+                resolve();
+            }, (error)=>
             {
-                updateProgress();
+                console.log(error);
                 resolve();
             })
-        }
     });
 }
 
@@ -228,7 +181,7 @@ function processUserConnections(user)
  */
 function createConnections()
 {
-    return new Promise(function(resolve, reject)
+    return new Promise((resolve, reject)=>
     {
         var prom = [];
         for(var i = 0; i < nodes.length; i++)
@@ -248,6 +201,9 @@ function createConnections()
 }
 
 
+/**
+ * Updates progress bar for loading the JS graph
+ */
 function updateProgress()
 {
     indexed++;
@@ -267,16 +223,16 @@ function updateProgress()
  */
 function addSelfToGraph(username)
 {
-    return new Promise(function(resolve, reject)
+    return new Promise((resolve, reject)=>
     {
-        queryAPIByUser("", username, function(data)
+        queryAPIByUser("", username, (data)=>
         {
             baseID = data.id;
             total = (data.followers + data.following);
             addPersonToGraph(data);
             resolve();
         },
-        function(error)
+        (error)=>
         {
            reject(error);
         });
@@ -313,35 +269,32 @@ function createFriendsGraph(username, containerName, progressBarID)
 
     nodes = [];
     edges = [];
-    addSelfToGraph(username).then(function()
+    addSelfToGraph(username).then(()=>
     {
-        addFriends(username, API_FOLLOWERS,1).then(function()
+        addFriends(username).then(()=>
         {
-            addFriends(username, API_FOLLOWING,1).then(function()
+            createConnections().then(()=>
             {
-                createConnections().then(function()
-                {
-                    $("#" + progressID).html("");
+                $("#" + progressID).html("");
 
-                    var container = document.getElementById(containerName);
-                    var data =
-                        {
-                            nodes: nodes,
-                            edges: edges
-                        };
-                    var network = new vis.Network(container, data, options);
-
-                    network.on("click", function (params)
+                var container = document.getElementById(containerName);
+                var data =
                     {
-                        if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
-                        {
-                            bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
-                        }
-                    });
+                        nodes: nodes,
+                        edges: edges
+                    };
+                var network = new vis.Network(container, data, options);
+
+                network.on("click", function (params)
+                {
+                    if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
+                    {
+                        bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                    }
                 });
             });
         })
-    }).catch(function(error)
+    }).catch((error)=>
     {
         $("#" + graphsTitle).html("Error Fetching Data From API");
         alert("Invalid User");
