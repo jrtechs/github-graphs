@@ -37,11 +37,11 @@ var options = {
  * @param userID
  * @returns {boolean}
  */
-function alreadyInGraph(userID)
+function alreadyInGraph(username)
 {
     for(var i = 0; i < nodes.length; i++)
     {
-        if(nodes[i].id === userID)
+        if(nodes[i].id === username)
         {
             return true;
         }
@@ -59,8 +59,7 @@ function addPersonToGraph(profileData)
 {
     nodes.push(
         {
-            id:profileData.id,
-            name:profileData.login,
+            id:profileData.login,
             shape: 'circularImage',
             image:profileData.avatar_url
         });
@@ -84,7 +83,7 @@ function addFriends(username)
         {
             for(var i = 0; i < data.length; i++)
             {
-                if(!alreadyInGraph(data[i].id))
+                if(!alreadyInGraph(data[i].login))
                 {
                     addPersonToGraph(data[i]);
                 }
@@ -110,11 +109,8 @@ function edgeInGraph(id1, id2)
 {
     for(var i = 0;i < edges.length; i++)
     {
-        if(edges[i].from === id1 && edges[i].to === id2)
-        {
-            return true;
-        }
-        if(edges[i].to === id1 && edges[i].from === id2)
+        if((edges[i].to === id1 && edges[i].from === id2) || 
+            (edges[i].from === id1 && edges[i].to === id2))
         {
             return true;
         }
@@ -131,14 +127,14 @@ function edgeInGraph(id1, id2)
  */
 function addConnection(person1, person2)
 {
-    if(person1.id !== person2.id)
+    if(person1.login !== person2.login)
     {
-        if(alreadyInGraph(person2.id) && !edgeInGraph(person1.id, person2.id))
+        if(alreadyInGraph(person2.login) && !edgeInGraph(person1.id, person2.login))
         {
             edges.push(
                 {
                     from: person1.id,
-                    to: person2.id
+                    to: person2.login
                 });
         }
     }
@@ -156,7 +152,7 @@ function processUserConnections(user)
     return new Promise(function(resolve, reject)
     {
         updateProgress();
-        getFriendsAPI(user.name,
+        getFriendsAPI(user.id,
             (data)=>
             {
                 for(var i = 0; i < data.length; i++)
@@ -168,7 +164,7 @@ function processUserConnections(user)
             {
                 console.log(error);
                 resolve();
-            })
+            });
     });
 }
 
@@ -227,7 +223,7 @@ function addSelfToGraph(username)
     {
         queryAPIByUser("", username, (data)=>
         {
-            baseID = data.id;
+            baseID = data.login;
             total = (data.followers + data.following);
             addPersonToGraph(data);
             resolve();
@@ -245,13 +241,13 @@ function addSelfToGraph(username)
  *
  * @param github id
  */
-function bringUpProfileView(id)
+function bringUpProfileView(uname)
 {
     for(var i = 0; i < nodes.length; i++)
     {
-        if(nodes[i].id === id)
+        if(nodes[i].id === uname)
         {
-            profileGen(nodes[i].name, "profileGen");
+            profileGen(nodes[i].id, "profileGen");
         }
     }
 }
@@ -289,7 +285,7 @@ function createFriendsGraph(username, containerName, progressBarID)
                 {
                     if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN)
                     {
-                        bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                        bringUpProfileView(this.getNodeAt(params.pointer.DOM));
                     }
                 });
             });

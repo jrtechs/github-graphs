@@ -16,29 +16,22 @@ function generateHtmlRow(repoData) {
 
 var repos = [];
 
-function fetchAllRepositories(orgName, page)
+function fetchAllRepositories(orgName)
 {
-    return new Promise(function(resolve, reject)
+    console.log("Going for it");
+    return new Promise((resolve, reject)=>
     {
-        queryAPIByOrg(API_REPOSITORIES + "?page=" + page, orgName,
-            function(data)
+        getOrganizationRepositories(orgName,
+            (data)=>
             {
+                console.log("Dam did got it");
                 repos.push(...data);
-
-                if (data.length === 30)
-                {
-                    fetchAllRepositories(orgName, page + 1).then(function ()
-                    {
-                        resolve();
-                    })
-                }
-                else {
-                    resolve();
-                }
+                resolve();
             },
-            function(error)
+            (error)=>
             {
-                //console.log("Unable to load table data");
+                console.log("Unable to load table data");
+                reject("Error fetching repositories");
             });
     });
 }
@@ -48,7 +41,7 @@ function createOrgTable(orgName, tableContainer)
 {
     var html = "";
 
-    fetchAllRepositories(orgName, 1).then(function() {
+    fetchAllRepositories(orgName).then(function() {
         for (var i=0; i < repos.length; i++) {
             let icon = repos[i].language;
             icon === null
@@ -81,6 +74,6 @@ function createOrgTable(orgName, tableContainer)
         }, 1500);
     }).catch(function(error)
     {
-        //console.log("Unable to create table");
+        console.log("Unable to create table");
     });
 }

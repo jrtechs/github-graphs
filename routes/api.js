@@ -5,6 +5,17 @@ const dotenv = require("dotenv").config();
 const GITHUB_API = "https://api.github.com";
 const authenticate = `client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
 
+const API_FOLLOWING = "/following";
+const API_FOLLOWERS = "/followers";
+const API_USER_PATH = "/users/";
+const API_ORGS_PATH = "/orgs/";
+const API_PAGINATION_SIZE = 100; // 100 is the max, 30 is the default
+// if this is too large, it would be infeasible to make graphs for people following popular people
+const API_MAX_PAGES = 2;
+const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
+
+const REPOS_PATH = "/repos";
+
 
 /**
  * Queries data from the github APi server and returns it as
@@ -73,40 +84,27 @@ function queryGitHubAPI(requestURL)
 }
 
 
-const API_FOLLOWING = "/following";
-const API_FOLLOWERS = "/followers";
-const API_USER_PATH = "/users/";
-const API_PAGINATION_SIZE = 100; // 100 is the max, 30 is the default
-// if this is too large, it would be infeasible to make graphs for people following popular people
-const API_MAX_PAGES = 3;
-const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
-
-
 /**
- * This will fetch all of the either followers or following of a
- * github user.
- * 
- * This function is recursive to traverse all the pagination so we
- * can get a complete list of all the friends. The max amount of 
- * followers/following you can get at once is 100.
+ * Fetches all content from a particular github api endpoint
+ * using their pagination schema.
  * 
  * @param {*} username username of github client
  * @param {*} apiPath following or followers
  * @param {*} page current pagination page
  * @param {*} lst list we are building on
  */
-function fetchAllUsers(username, apiPath, page, lst)
+function fetchAllWithPagination(apiPath, page, lst)
 {
     return new Promise((resolve, reject)=>
     {
-        queryGithubAPIRaw(API_USER_PATH + username + apiPath + "?page=" + page + API_PAGINATION).then((data)=>
+        queryGithubAPIRaw(apiPath + "?page=" + page + API_PAGINATION).then((data)=>
         {
             if(data.hasOwnProperty("length"))
             {
                 lst = lst.concat(data)
                 if(page < API_MAX_PAGES && data.length === API_PAGINATION_SIZE)
                 {
-                    fetchAllUsers(username, apiPath, page + 1, lst).then((l)=>
+                    fetchAllWithPagination(apiPath, page + 1, lst).then((l)=>
                     {
                         resolve(l);
                     });
@@ -118,6 +116,7 @@ function fetchAllUsers(username, apiPath, page, lst)
             }
             else
             {
+                console.log(data);
                 reject("Malformed data");
             }
         }).catch((err)=>
@@ -133,6 +132,23 @@ function fetchAllUsers(username, apiPath, page, lst)
             resolve(lst);
         }
     });
+}
+
+
+/**
+ * Makes a copy of a JS object with certain properties
+ * 
+ * @param {*} props 
+ * @param {*} obj 
+ */
+function copyWithProperties(props, obj)
+{
+    var newO = new Object();
+    for(var i =0; i < props.length; i++)
+    {
+        newO[props[i]] = obj[props[i]];
+    }
+    return newO;
 }
 
 
@@ -156,9 +172,8 @@ function minimizeFriends(people)
         {
             ids.add(people[i].id);
             friendLst.push({
-                id: people[i].id,
-                 login: people[i].login, 
-                 avatar_url: people[i].avatar_url
+                login: people[i].login, 
+                avatar_url: people[i].avatar_url
             });
         }
     }
@@ -180,9 +195,9 @@ function queryFriends(user)
     {
         if(cacheHit == null)
         {
-            fetchAllUsers(user, API_FOLLOWERS, 1, []).then((followers)=>
+            fetchAllWithPagination(API_USER_PATH + user + API_FOLLOWERS, 1, []).then((followers)=>
             {
-                fetchAllUsers(user, API_FOLLOWING, 1, []).then((following)=>
+                fetchAllWithPagination(API_USER_PATH + user + API_FOLLOWING, 1, []).then((following)=>
                 {
                     var fList = minimizeFriends(following.concat(followers));
                     resolve(fList);
@@ -190,10 +205,12 @@ function queryFriends(user)
                 }).catch((err)=>
                 {
                     console.log(err);  
+                    reject("API ERROR");
                 })
             }).catch((error)=>
             {
                 console.log(error);
+                resolve("API Error");
             })
         }
         else
@@ -205,6 +222,97 @@ function queryFriends(user)
 }
 
 
+/**
+ * 
+ * Fetches all of the members of an organization from the
+ * API or cache
+ *
+ * /orgs/RITlug/members?page=1
+ *
+ * @param {*} orgName 
+ */
+function getOrganizationMembers(orgName)
+{
+    const cacheHit = cache.get("/org/users/" + orgName);
+    return new Promise((resolve, reject)=>
+    {
+        if(cacheHit == null)
+        {
+            fetchAllWithPagination(API_ORGS_PATH + orgName + "/members", 1, []).then((mems)=>
+            {
+                var minimized = minimizeFriends(mems);
+                resolve(minimized);
+                cache.put("/org/users/" + orgName, minimized);
+            }).catch((err)=>
+            {
+                console.log(err)
+            })
+        }
+        else
+        {
+            console.log("Org members cache hit");
+            resolve(cacheHit);
+        }
+    });
+}
+
+
+/**
+ * Minimizes the JSON for a list of repositories
+ * 
+ * @param {*} repositories 
+ */
+function minimizeRepositories(repositories)
+{
+    var rList = [];
+
+    for(var i = 0; i < repositories.length; i++)
+    {
+        rList.push(copyWithProperties(["name", "created_at", "homepage", 
+            "description", "language", "forks", "watchers",
+             "open_issues_count", "license", "html_url"],
+            repositories[i]));
+    }
+    return rList;
+}
+
+
+/**
+ * Fetches all repositories from the API
+ * 
+ * @param {*} user name of org/user
+ * @param {*} orgsOrUsers  either /users/ or /orgs/
+ */
+function queryRepositories(user, orgsOrUsers)
+{
+    const cacheHit = cache.get(user + REPOS_PATH);
+    return new Promise((resolve, reject)=>
+    {
+        if(cacheHit == null)
+        {
+            fetchAllWithPagination(orgsOrUsers + user + REPOS_PATH, 1, []).then((repos)=>
+            {
+                var minimized = minimizeRepositories(repos);
+                resolve(minimized);
+                cache.put(user + REPOS_PATH, minimized);
+            }).catch((err)=>
+            {
+                console.log(err)
+                console.log("bad things went down");
+            })
+        }
+        else
+        {
+            console.log("Repositories cache hit");
+            resolve(cacheHit);
+        }
+    });
+}
+
+
+/**
+ * /users/name/following/followers
+ */
 routes.get("/friends/:name", (request, result)=>
 {
     queryFriends(request.params.name).then(friends=>
@@ -217,7 +325,54 @@ routes.get("/friends/:name", (request, result)=>
             .json({error: 'API error fetching friends'})
             .end();
     });
-})
+});
+
+
+
+routes.get("/org/users/:name", (request, result)=>
+{
+    getOrganizationMembers(request.params.name).then(friends=>
+        {
+            result.json(friends)
+                .end();
+        }).catch(error=>
+        {
+            result.status(500)
+                .json({error: 'API error fetching friends'})
+                .end();
+        });
+});
+
+
+
+routes.get("/repositories/:name", (request, result)=>
+{
+    queryRepositories(request.params.name, API_USER_PATH).then(repos=>
+        {
+            result.json(repos)
+                .end();
+        }).catch(error=>
+        {
+            result.status(500)
+                .json({error: 'API error fetching friends'})
+                .end();
+        });
+});
+
+
+routes.get("/org/repositories/:name", (request, result)=>
+{
+    queryRepositories(request.params.name, API_ORGS_PATH).then(repos=>
+        {
+            result.json(repos)
+                .end();
+        }).catch(error=>
+        {
+            result.status(500)
+                .json({error: 'API error fetching friends'})
+                .end();
+        });
+});
 
 
 routes.get('/*', (request, result) =>

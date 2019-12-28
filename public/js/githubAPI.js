@@ -67,6 +67,29 @@ function getFriendsAPI(userName, suc, err)
 }
 
 
+function getUserRepositories(userName, suc, err)
+{
+    //ex: http://localhost:7000/api/repositories/jwflory
+    const urlpath = APIROOT + "/repositories/" + userName;
+    runAjax(urlpath, suc, err);
+}
+
+
+function getOrganizationRepositories(orgName, suc, err)
+{
+    //ex: http://localhost:7000/api/org/repositories/ComputerScienceHouse
+    const urlpath = APIROOT + "/org/repositories/" + orgName;
+    runAjax(urlpath, suc, err);
+}
+
+
+function getOrganizationMembers(orgName, suc, err)
+{
+    const urlpath = APIROOT + "/org/users/" + orgName;
+    runAjax(urlpath, suc, err);
+}
+
+
 /**
  * Queries github API end points with the backend
  * proxy server for github graphs.
