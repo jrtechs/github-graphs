@@ -6,37 +6,26 @@
  * @param page
  * @returns {Promise<any>}
  */
-function addOrgUsers(orgname, page)
+function addOrgUsers(orgname)
 {
     return new Promise(function(resolve, reject)
     {
-        queryAPIByOrg(API_ORG_MEMBERS + "?page=" + page, orgname, function(data)
+        getOrganizationMembers(orgname, (data)=>
         {
             for(var i = 0;i < data.length; i++)
             {
                 addPersonToGraph(data[i]);
             }
-
-            if(data.length === 30)
-            {
-                addOrgUsers(orgname, page + 1).then(function()
-                {
-                    resolve();
-                });
-            }
-            else
-            {
-                total = 2*(data.length + (page * 30));
-                resolve();
-            }
-
-        }, function(error)
+            total = data.length;
+            resolve();
+        }, (error)=>
         {
             console.log(error);
             resolve();
         })
     })
 }
+
 
 /**
  * Creates a graph
@@ -51,7 +40,7 @@ function createOrgRepoGraph(orgname, containerName, graphsTitle)
     nodes = [];
     edges = [];
 
-    addOrgUsers(orgname, 1).then(function()
+    addOrgUsers(orgname).then(function()
     {
         createConnections().then( () => {
             var container = document.getElementById(containerName);

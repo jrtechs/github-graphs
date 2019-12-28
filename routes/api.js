@@ -223,6 +223,41 @@ function queryFriends(user)
 
 
 /**
+ * 
+ * Fetches all of the members of an organization from the
+ * API or cache
+ *
+ * /orgs/RITlug/members?page=1
+ *
+ * @param {*} orgName 
+ */
+function getOrganizationMembers(orgName)
+{
+    const cacheHit = cache.get("/org/users/" + orgName);
+    return new Promise((resolve, reject)=>
+    {
+        if(cacheHit == null)
+        {
+            fetchAllWithPagination(API_ORGS_PATH + orgName + "/members", 1, []).then((mems)=>
+            {
+                var minimized = minimizeFriends(mems);
+                resolve(minimized);
+                cache.put("/org/users/" + orgName, minimized);
+            }).catch((err)=>
+            {
+                console.log(err)
+            })
+        }
+        else
+        {
+            console.log("Org members cache hit");
+            resolve(cacheHit);
+        }
+    });
+}
+
+
+/**
  * Minimizes the JSON for a list of repositories
  * 
  * @param {*} repositories 
@@ -275,6 +310,9 @@ function queryRepositories(user, orgsOrUsers)
 }
 
 
+/**
+ * /users/name/following/followers
+ */
 routes.get("/friends/:name", (request, result)=>
 {
     queryFriends(request.params.name).then(friends=>
@@ -288,6 +326,23 @@ routes.get("/friends/:name", (request, result)=>
             .end();
     });
 });
+
+
+
+routes.get("/org/users/:name", (request, result)=>
+{
+    getOrganizationMembers(request.params.name).then(friends=>
+        {
+            result.json(friends)
+                .end();
+        }).catch(error=>
+        {
+            result.status(500)
+                .json({error: 'API error fetching friends'})
+                .end();
+        });
+});
+
 
 
 routes.get("/repositories/:name", (request, result)=>

@@ -79,8 +79,13 @@ function getOrganizationRepositories(orgName, suc, err)
 {
     //ex: http://localhost:7000/api/org/repositories/ComputerScienceHouse
     const urlpath = APIROOT + "/org/repositories/" + orgName;
-    console.log("what is even happening rn.");
-    console.log(urlpath);
+    runAjax(urlpath, suc, err);
+}
+
+
+function getOrganizationMembers(orgName, suc, err)
+{
+    const urlpath = APIROOT + "/org/users/" + orgName;
     runAjax(urlpath, suc, err);
 }
 
