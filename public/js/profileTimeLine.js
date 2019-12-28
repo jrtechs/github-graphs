@@ -15,7 +15,7 @@ function addRepositories(userName, groupID)
 {
     return new Promise(function(resolve, reject)
     {
-        queryAPIByUser(API_REPOSITORIES, userName,
+        getUserRepositories(userName,
             function(data)
             {
                 repositoryData = data;
@@ -75,7 +75,6 @@ function timeLineClickEvent(properties)
 function createProfileTimeLine(username, containerName)
 {
     var container = document.getElementById(containerName);
-
 
     var prom = [addRepositories(username, 1)];
 

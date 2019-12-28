@@ -190,10 +190,12 @@ function queryFriends(user)
                 }).catch((err)=>
                 {
                     console.log(err);  
+                    reject("API ERROR");
                 })
             }).catch((error)=>
             {
                 console.log(error);
+                resolve("API Error");
             })
         }
         else
@@ -217,7 +219,71 @@ routes.get("/friends/:name", (request, result)=>
             .json({error: 'API error fetching friends'})
             .end();
     });
-})
+});
+
+
+function copyWithProperties(props, obj)
+{
+    var newO = new Object();
+    for(var i =0; i < props.length; i++)
+    {
+        newO[props[i]] = obj[props[i]];
+    }
+    return newO;
+}
+
+function minimizeRepositories(repositories)
+{
+    var rList = [];
+
+    for(var i = 0; i < repositories.length; i++)
+    {
+        rList.push(copyWithProperties(["name", "created_at", "homepage", 
+            "description", "language", "forks", "watchers",
+             "open_issues_count", "license"],
+            repositories[i]));
+    }
+    return rList;
+}
+
+const REPOS_PATH = "/repos";
+
+function queryRepositories(user)
+{
+    const cacheHit = cache.get(user + REPOS_PATH);
+    return new Promise((resolve, reject)=>
+    {
+        if(cacheHit == null)
+        {
+            fetchAllUsers(user, REPOS_PATH, 1, []).then((repos)=>
+            {
+                var minimized = minimizeRepositories(repos);
+                resolve(minimized);
+                cache.put(user + REPOS_PATH, minimized);
+            });
+        }
+        else
+        {
+            console.log("Repositories cache hit");
+            resolve(cacheHit);
+        }
+    });
+}
+
+
+routes.get("/repositories/:name", (request, result)=>
+{
+    queryRepositories(request.params.name).then(repos=>
+        {
+            result.json(repos)
+                .end();
+        }).catch(error=>
+        {
+            result.status(500)
+                .json({error: 'API error fetching friends'})
+                .end();
+        });
+});
 
 
 routes.get('/*', (request, result) =>

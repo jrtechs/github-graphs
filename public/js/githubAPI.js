@@ -67,6 +67,14 @@ function getFriendsAPI(userName, suc, err)
 }
 
 
+function getUserRepositories(userName, suc, err)
+{
+    //ex: http://localhost:7000/api/repositories/jwflory
+    const urlpath = APIROOT + "/repositories/" + userName;
+    runAjax(urlpath, suc, err);
+}
+
+
 /**
  * Queries github API end points with the backend
  * proxy server for github graphs.
