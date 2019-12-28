@@ -75,6 +75,16 @@ function getUserRepositories(userName, suc, err)
 }
 
 
+function getOrganizationRepositories(orgName, suc, err)
+{
+    //ex: http://localhost:7000/api/org/repositories/ComputerScienceHouse
+    const urlpath = APIROOT + "/org/repositories/" + orgName;
+    console.log("what is even happening rn.");
+    console.log(urlpath);
+    runAjax(urlpath, suc, err);
+}
+
+
 /**
  * Queries github API end points with the backend
  * proxy server for github graphs.
