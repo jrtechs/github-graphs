@@ -62,8 +62,9 @@ function createOrgRepoGraph(orgname, containerName, graphsTitle)
             var network = new vis.Network(container, data, options);
             network.on("click", function (params) {
                 params.event = "[original event]";
-                if(Number(this.getNodeAt(params.pointer.DOM)) !== NaN) {
-                    bringUpProfileView(Number(this.getNodeAt(params.pointer.DOM)));
+                if(this.getNodeAt(params.pointer.DOM) !== NaN) 
+                {
+                    bringUpProfileView(this.getNodeAt(params.pointer.DOM));
                 }
             });
 

@@ -78,7 +78,7 @@ const API_FOLLOWERS = "/followers";
 const API_USER_PATH = "/users/";
 const API_PAGINATION_SIZE = 100; // 100 is the max, 30 is the default
 // if this is too large, it would be infeasible to make graphs for people following popular people
-const API_MAX_PAGES = 3;
+const API_MAX_PAGES = 2;
 const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
 
 
@@ -118,6 +118,7 @@ function fetchAllUsers(username, apiPath, page, lst)
             }
             else
             {
+                console.log(data);
                 reject("Malformed data");
             }
         }).catch((err)=>
@@ -156,9 +157,8 @@ function minimizeFriends(people)
         {
             ids.add(people[i].id);
             friendLst.push({
-                id: people[i].id,
-                 login: people[i].login, 
-                 avatar_url: people[i].avatar_url
+                login: people[i].login, 
+                avatar_url: people[i].avatar_url
             });
         }
     }
