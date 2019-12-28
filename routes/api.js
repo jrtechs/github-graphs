@@ -6,42 +6,218 @@ const GITHUB_API = "https://api.github.com";
 const authenticate = `client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
 
 
+/**
+ * Queries data from the github APi server and returns it as
+ * a json object in a promise.
+ * 
+ * This makes no attempt to cache
+ * 
+ * @param {*} requestURL endpoint on githubapi: ex: /users/jrtechs/following
+ */
+function queryGithubAPIRaw(requestURL)
+{
+    return new Promise((resolve, reject)=>
+    {
+        var queryURL;
+        if(requestURL.includes("?page="))
+        {
+            queryURL = GITHUB_API + requestURL + "&" + authenticate;
+        }
+        else
+        {
+            queryURL = GITHUB_API + requestURL + "?" + authenticate;
+        }
+        console.log(queryURL);
+
+        got(queryURL, { json: true }).then(response =>
+        {
+            resolve(response.body);
+            cache.put(requestURL, response.body);
+        }).catch(error =>
+        {
+            resolve(error);
+            cache.put(requestURL, error);
+        });
+    });
+}
+
+
+/**
+ * Queries data from the github api server
+ * and caches the results locally.
+ * 
+ * @param {*} requestURL 
+ */
 function queryGitHubAPI(requestURL)
 {
     const apiData = cache.get(requestURL);
 
-    return new Promise(function(reject, resolve)
+    return new Promise(function(resolve, reject)
     {
         if(apiData == null)
         {
-            var queryURL;
-            if(requestURL.includes("?page="))
+            queryGithubAPIRaw(requestURL).then((dd)=>
             {
-                queryURL = GITHUB_API + requestURL + "&" + authenticate;
-            }
-            else
+                resolve(dd);
+            }).catch((err)=>
             {
-                queryURL = GITHUB_API + requestURL + "?" + authenticate;
-            }
-            console.log(queryURL);
-
-            got(queryURL, { json: true }).then(response =>
-            {
-                resolve(response.body);
-                cache.put(requestURL, response.body);
-            }).catch(error =>
-            {
-                resolve(error);
-                cache.put(requestURL, error);
-            });
+                resolve(err);
+            })
         }
         else
         {
-            console.log("Fetched From Cahce");
+            console.log("Fetched From Cache");
             resolve(apiData);
         }
     })
 }
+
+
+const API_FOLLOWING = "/following";
+const API_FOLLOWERS = "/followers";
+const API_USER_PATH = "/users/";
+const API_PAGINATION_SIZE = 100; // 100 is the max, 30 is the default
+// if this is too large, it would be infeasible to make graphs for people following popular people
+const API_MAX_PAGES = 3;
+const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
+
+
+/**
+ * This will fetch all of the either followers or following of a
+ * github user.
+ * 
+ * This function is recursive to traverse all the pagination so we
+ * can get a complete list of all the friends. The max amount of 
+ * followers/following you can get at once is 100.
+ * 
+ * @param {*} username username of github client
+ * @param {*} apiPath following or followers
+ * @param {*} page current pagination page
+ * @param {*} lst list we are building on
+ */
+function fetchAllUsers(username, apiPath, page, lst)
+{
+    return new Promise((resolve, reject)=>
+    {
+        queryGithubAPIRaw(API_USER_PATH + username + apiPath + "?page=" + page + API_PAGINATION).then((data)=>
+        {
+            if(data.hasOwnProperty("length"))
+            {
+                lst = lst.concat(data)
+                if(page < API_MAX_PAGES && data.length === API_PAGINATION_SIZE)
+                {
+                    fetchAllUsers(username, apiPath, page + 1, lst).then((l)=>
+                    {
+                        resolve(l);
+                    });
+                }
+                else
+                {
+                    resolve(lst);
+                }
+            }
+            else
+            {
+                reject("Malformed data");
+            }
+        }).catch((err)=>
+        {
+            reject("error with api request");
+        });
+    },
+    (error)=>
+    {
+        if(error.hasOwnProperty("length"))
+        {
+            lst.concat(data);
+            resolve(lst);
+        }
+    });
+}
+
+
+/**
+ * Combines the list of friends and followers ignoring duplicates
+ * that are already in the list. (person is both following and followed by someone)
+ * 
+ * This also removes any unused properties like events_url and organizations_url
+ * 
+ * @param {*} followingAndFollowers 
+ */
+function minimizeFriends(people)
+{
+    var friendLst = [];
+
+    var ids = new Set();
+
+    for(var i = 0; i < people.length; i++)
+    {
+        if(!ids.has(people[i].id))
+        {
+            ids.add(people[i].id);
+            friendLst.push({
+                id: people[i].id,
+                 login: people[i].login, 
+                 avatar_url: people[i].avatar_url
+            });
+        }
+    }
+    return friendLst;
+}
+
+
+/**
+ * Fetches all the people that are either following or is followed
+ * by a person on github. This will cache the results to make simultaneous
+ * connections easier and less demanding on the github API.
+ * 
+ * @param {*} user 
+ */
+function queryFriends(user)
+{
+    const cacheHit = cache.get("/friends/" + user);
+    return new Promise((resolve, reject)=>
+    {
+        if(cacheHit == null)
+        {
+            fetchAllUsers(user, API_FOLLOWERS, 1, []).then((followers)=>
+            {
+                fetchAllUsers(user, API_FOLLOWING, 1, []).then((following)=>
+                {
+                    var fList = minimizeFriends(following.concat(followers));
+                    resolve(fList);
+                    cache.put("/friends/" + user, fList);
+                }).catch((err)=>
+                {
+                    console.log(err);  
+                })
+            }).catch((error)=>
+            {
+                console.log(error);
+            })
+        }
+        else
+        {
+            console.log("Friends cache hit");
+            resolve(cacheHit);
+        }
+    });
+}
+
+
+routes.get("/friends/:name", (request, result)=>
+{
+    queryFriends(request.params.name).then(friends=>
+    {
+        result.json(friends)
+            .end();
+    }).catch(error=>
+    {
+        result.status(500)
+            .json({error: 'API error fetching friends'})
+            .end();
+    });
+})
 
 
 routes.get('/*', (request, result) =>
@@ -49,7 +225,7 @@ routes.get('/*', (request, result) =>
     var gitHubAPIURL = request.url;
 
     result.setHeader('Content-Type', 'application/json');
-    queryGitHubAPI(gitHubAPIURL).then(function(data)
+    queryGitHubAPI(gitHubAPIURL).then((data)=>
     {
         if(data.hasOwnProperty("id") || data[0].hasOwnProperty("id"))
         {
@@ -60,7 +236,7 @@ routes.get('/*', (request, result) =>
             result.write("[]");
         }
         result.end();
-    }).catch(function(error)
+    }).catch((error)=>
     {
         try
         {
@@ -74,7 +250,8 @@ routes.get('/*', (request, result) =>
             }
 
         }
-        catch(error) {
+        catch(error) 
+        {
             result.write("[]");
         };
         result.end();
