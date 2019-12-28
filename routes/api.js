@@ -6,6 +6,14 @@ const GITHUB_API = "https://api.github.com";
 const authenticate = `client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
 
 
+/**
+ * Queries data from the github APi server and returns it as
+ * a json object in a promise.
+ * 
+ * This makes no attempt to cache
+ * 
+ * @param {*} requestURL endpoint on githubapi: ex: /users/jrtechs/following
+ */
 function queryGithubAPIRaw(requestURL)
 {
     return new Promise((resolve, reject)=>
@@ -33,6 +41,13 @@ function queryGithubAPIRaw(requestURL)
     });
 }
 
+
+/**
+ * Queries data from the github api server
+ * and caches the results locally.
+ * 
+ * @param {*} requestURL 
+ */
 function queryGitHubAPI(requestURL)
 {
     const apiData = cache.get(requestURL);
@@ -58,19 +73,33 @@ function queryGitHubAPI(requestURL)
 }
 
 
-
 const API_FOLLOWING = "/following";
 const API_FOLLOWERS = "/followers";
 const API_USER_PATH = "/users/";
-const API_PAGINATION_SIZE = 100;
+const API_PAGINATION_SIZE = 100; // 100 is the max, 30 is the default
+// if this is too large, it would be infeasible to make graphs for people following popular people
 const API_MAX_PAGES = 3;
 const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
 
+
+/**
+ * This will fetch all of the either followers or following of a
+ * github user.
+ * 
+ * This function is recursive to traverse all the pagination so we
+ * can get a complete list of all the friends. The max amount of 
+ * followers/following you can get at once is 100.
+ * 
+ * @param {*} username username of github client
+ * @param {*} apiPath following or followers
+ * @param {*} page current pagination page
+ * @param {*} lst list we are building on
+ */
 function fetchAllUsers(username, apiPath, page, lst)
 {
     return new Promise((resolve, reject)=>
     {
-        queryGitHubAPI(API_USER_PATH + username + apiPath + "?page=" + page + API_PAGINATION).then((data)=>
+        queryGithubAPIRaw(API_USER_PATH + username + apiPath + "?page=" + page + API_PAGINATION).then((data)=>
         {
             if(data.hasOwnProperty("length"))
             {
@@ -106,23 +135,72 @@ function fetchAllUsers(username, apiPath, page, lst)
     });
 }
 
+
+/**
+ * Combines the list of friends and followers ignoring duplicates
+ * that are already in the list. (person is both following and followed by someone)
+ * 
+ * This also removes any unused properties like events_url and organizations_url
+ * 
+ * @param {*} followingAndFollowers 
+ */
+function minimizeFriends(people)
+{
+    var friendLst = [];
+
+    var ids = new Set();
+
+    for(var i = 0; i < people.length; i++)
+    {
+        if(!ids.has(people[i].id))
+        {
+            ids.add(people[i].id);
+            friendLst.push({
+                id: people[i].id,
+                 login: people[i].login, 
+                 avatar_url: people[i].avatar_url
+            });
+        }
+    }
+    return friendLst;
+}
+
+
+/**
+ * Fetches all the people that are either following or is followed
+ * by a person on github. This will cache the results to make simultaneous
+ * connections easier and less demanding on the github API.
+ * 
+ * @param {*} user 
+ */
 function queryFriends(user)
 {
+    const cacheHit = cache.get("/friends/" + user);
     return new Promise((resolve, reject)=>
     {
-        fetchAllUsers(user, API_FOLLOWERS, 1, []).then((followers)=>
+        if(cacheHit == null)
         {
-            fetchAllUsers(user, API_FOLLOWING, 1, []).then((following)=>
+            fetchAllUsers(user, API_FOLLOWERS, 1, []).then((followers)=>
             {
-                resolve(following.concat(followers));
-            }).catch((err)=>
+                fetchAllUsers(user, API_FOLLOWING, 1, []).then((following)=>
+                {
+                    var fList = minimizeFriends(following.concat(followers));
+                    resolve(fList);
+                    cache.put("/friends/" + user, fList);
+                }).catch((err)=>
+                {
+                    console.log(err);  
+                })
+            }).catch((error)=>
             {
-                console.log(err);  
+                console.log(error);
             })
-        }).catch((error)=>
+        }
+        else
         {
-            console.log(error);
-        })
+            console.log("Friends cache hit");
+            resolve(cacheHit);
+        }
     });
 }
 
