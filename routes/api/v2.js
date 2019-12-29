@@ -265,18 +265,15 @@ routes.get("/repositories/:name", async (req, res) => {
 });
 
 
-routes.get("/org/repositories/:name", (request, result)=>
-{
-    queryRepositories(request.params.name, API_ORGS_PATH).then(repos=>
-        {
-            result.json(repos)
-                .end();
-        }).catch(error=>
-        {
-            result.status(500)
-                .json({error: 'API error fetching friends'})
-                .end();
-        });
+routes.get("/org/repositories/:name", async (req, res) => {
+    try {
+        const repos = await queryRepositories(req.params.name, API_ORGS_PATH);
+        res.json(repos).end();
+    } catch (error) {
+        res.status(500)
+            .json({error: 'API error fetching friends'})
+            .end();
+    }
 });
 
 
