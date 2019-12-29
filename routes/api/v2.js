@@ -75,7 +75,7 @@ const queryGitHubAPI = async requestURL => {
 const fetchAllWithPagination = async (apiPath, page, lst) => {
     try {
         const req = await queryGithubAPIRaw(`${apiPath}?page=${page}${API_PAGINATION}`);
-        if (req) {
+        if (req.body.hasOwnProperty("length")) {
             const list = lst.concat(req.body);
             if(page < API_MAX_PAGES && req.length === API_PAGINATION_SIZE) {
                 const redo = await fetchAllWithPagination(apiPath, page + 1, list);
@@ -165,29 +165,21 @@ const queryFriends = async user => {
  *
  * @param {*} orgName 
  */
-function getOrganizationMembers(orgName)
-{
+const getOrganizationMembers = async orgName => {
     const cacheHit = cache.get("/org/users/" + orgName);
-    return new Promise((resolve, reject)=>
-    {
-        if(cacheHit == null)
-        {
-            fetchAllWithPagination(API_ORGS_PATH + orgName + "/members", 1, []).then((mems)=>
-            {
-                var minimized = minimizeFriends(mems);
-                resolve(minimized);
-                cache.put("/org/users/" + orgName, minimized);
-            }).catch((err)=>
-            {
-                console.log(err)
-            })
-        }
-        else
-        {
-            console.log("Org members cache hit");
-            resolve(cacheHit);
-        }
-    });
+    if (cacheHit){
+        console.log("Org members cache hit");
+        return cacheHit;
+    }
+
+    try {
+        const members = await fetchAllWithPagination(API_ORGS_PATH + orgName + "/members", 1, []);
+        const membersMin = minimizeFriends(members);
+        cache.put("/org/users/" + orgName, membersMin);
+        return membersMin;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 
@@ -258,20 +250,17 @@ routes.get("/friends/:name", async (req, res)=> {
 
 
 
-routes.get("/org/users/:name", (request, result)=>
-{
-    getOrganizationMembers(request.params.name).then(friends=>
-        {
-            result.json(friends)
-                .end();
-        }).catch(error=>
-        {
-            result.status(500)
-                .json({error: 'API error fetching friends'})
-                .end();
-        });
+routes.get("/org/users/:name", async (request, res) => {
+    try {
+        const orgMembers = await getOrganizationMembers(request.params.name);
+        res.json(orgMembers).end();
+    } catch (error) {
+        res
+            .status(500)
+            .json({error: 'API error fetching friends'})
+            .end();
+    }
 });
-
 
 
 routes.get("/repositories/:name", (request, result)=>
