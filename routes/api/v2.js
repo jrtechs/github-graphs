@@ -26,9 +26,7 @@ const REPOS_PATH = "/repos";
  * @param {*} requestURL endpoint on githubapi: ex: /users/jrtechs/following
  */
 const queryGithubAPIRaw = async requestURL => {
-    let queryURL = requestURL.includes("?page=") 
-        ? `${GITHUB_API}${requestURL}&${authenticate}` 
-        :`${GITHUB_API}${requestURL}?${authenticate}`;
+    let queryURL = requestURL.includes("?page=") ? `${GITHUB_API}${requestURL}&${authenticate}` :`${GITHUB_API}${requestURL}?${authenticate}`;
     console.log(queryURL);
     try {
         const req = await got(queryURL, { json: true });
@@ -49,7 +47,6 @@ const queryGithubAPIRaw = async requestURL => {
  */
 const queryGitHubAPI = async requestURL => {
     const apiData = cache.get(requestURL);
-
     if (apiData) {
         console.log("Fetched From Cache");
         return apiData
@@ -237,16 +234,12 @@ routes.get("/friends/:name", async (req, res)=> {
 });
 
 
-
 routes.get("/org/users/:name", async (request, res) => {
     try {
         const orgMembers = await getOrganizationMembers(request.params.name);
         res.json(orgMembers).end();
     } catch (error) {
-        res
-            .status(500)
-            .json({error: 'API error fetching friends'})
-            .end();
+        res.status(500).json({error: 'API error fetching friends'}).end();
     }
 });
 
@@ -256,9 +249,7 @@ routes.get("/repositories/:name", async (req, res) => {
         const repos = await queryRepositories(req.params.name, API_USER_PATH);
         res.json(repos).end();
     } catch (error) {
-        res.status(500)
-            .json({error: 'API error fetching friends'})
-            .end();
+        res.status(500).json({error: 'API error fetching friends'}).end();
     }
 });
 
@@ -268,9 +259,7 @@ routes.get("/org/repositories/:name", async (req, res) => {
         const repos = await queryRepositories(req.params.name, API_ORGS_PATH);
         res.json(repos).end();
     } catch (error) {
-        res.status(500)
-            .json({error: 'API error fetching friends'})
-            .end();
+        res.status(500).json({error: 'API error fetching friends'}).end();
     }
 });
 
