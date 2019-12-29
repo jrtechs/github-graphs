@@ -209,30 +209,22 @@ function minimizeRepositories(repositories)
  * @param {*} user name of org/user
  * @param {*} orgsOrUsers  either /users/ or /orgs/
  */
-function queryRepositories(user, orgsOrUsers)
-{
+const queryRepositories = async (user, orgsOrUsers) => {
     const cacheHit = cache.get(user + REPOS_PATH);
-    return new Promise((resolve, reject)=>
-    {
-        if(cacheHit == null)
-        {
-            fetchAllWithPagination(orgsOrUsers + user + REPOS_PATH, 1, []).then((repos)=>
-            {
-                var minimized = minimizeRepositories(repos);
-                resolve(minimized);
-                cache.put(user + REPOS_PATH, minimized);
-            }).catch((err)=>
-            {
-                console.log(err)
-                console.log("bad things went down");
-            })
-        }
-        else
-        {
-            console.log("Repositories cache hit");
-            resolve(cacheHit);
-        }
-    });
+    if (cacheHit) {
+        console.log("Repositories cache hit");
+        return cacheHit;
+    }
+
+    try {
+        const repos = await fetchAllWithPagination(orgsOrUsers + user + REPOS_PATH, 1, []);
+        const minRepos = minimizeRepositories(repos);
+        cache.put(`${user}${REPOS_PATH}`, minRepos);
+        return minRepos;
+    } catch (error) {
+        console.log(error)
+        console.log("bad things went down");
+    }
 }
 
 
