@@ -114,23 +114,18 @@ function copyWithProperties(props, obj)
  * 
  * @param {*} followingAndFollowers 
  */
-function minimizeFriends(people)
-{
-    var friendLst = [];
-
-    var ids = new Set();
-
-    for(var i = 0; i < people.length; i++)
-    {
-        if(!ids.has(people[i].id))
-        {
-            ids.add(people[i].id);
+const minimizeFriends = people => {
+    let friendLst = [];
+    let ids = new Set();
+    people.forEach(person => {
+        if(!ids.has(person.id)) {
+            ids.add(person.id);
             friendLst.push({
-                login: people[i].login, 
-                avatar_url: people[i].avatar_url
+                login: person.login, 
+                avatar_url: person.avatar_url
             });
         }
-    }
+    });
     return friendLst;
 }
 
