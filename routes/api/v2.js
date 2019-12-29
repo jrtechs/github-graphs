@@ -95,13 +95,11 @@ const fetchAllWithPagination = async (apiPath, page, lst) => {
  * @param {*} props 
  * @param {*} obj 
  */
-function copyWithProperties(props, obj)
-{
-    var newO = new Object();
-    for(var i =0; i < props.length; i++)
-    {
-        newO[props[i]] = obj[props[i]];
-    }
+const copyWithProperties = (props, obj) => {
+    let newO = new Object();
+    props.forEach(prop => {
+        newO[prop] = obj[prop];
+    })
     return newO;
 }
 
