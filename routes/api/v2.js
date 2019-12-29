@@ -188,17 +188,15 @@ const getOrganizationMembers = async orgName => {
  * 
  * @param {*} repositories 
  */
-function minimizeRepositories(repositories)
-{
-    var rList = [];
-
-    for(var i = 0; i < repositories.length; i++)
-    {
+const minimizeRepositories = repositories => {
+    let rList = [];
+    repositories.forEach(repo => {
         rList.push(copyWithProperties(["name", "created_at", "homepage", 
             "description", "language", "forks", "watchers",
             "open_issues_count", "license", "html_url"],
-            repositories[i]));
-    }
+            repo));
+    })
+
     return rList;
 }
 
