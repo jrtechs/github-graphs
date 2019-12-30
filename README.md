@@ -6,15 +6,13 @@ Website for visualizing a persons github network.
 
 If you are lucky, you can find the site live [here](https://github-graphs.com/);
 
-
 # Built With
 
 - [BootStrap](https://getbootstrap.com/)
 - [jQuery](https://jquery.com/)
 - [Vis JS](http://visjs.org/)
-- [Github v3 API](https://developer.github.com/v3/) 
+- [Github v3 API](https://developer.github.com/v3/)
 - [Node.js](https://nodejs.org/en/)
-
 
 ![javascript](./doc/javaScript.jpg)
 
@@ -37,7 +35,15 @@ npm install
 node server.js
 ```
 
-
 # Contributing
 
-We are very open to new contributors. If you want to contribute to this project, and don't know where to start, look at the [open issues](https://github.com/jrtechs/github-graphs/issues). Once you know what you want to work on, comment on the issue and file a pull request. 
+We are very open to new contributors. If you want to contribute to this project, and don't know where to start, look at the [open issues](https://github.com/jrtechs/github-graphs/issues). Once you know what you want to work on, comment on the issue and file a pull request.
+
+# API Reference
+
+| Custom API Route                                            | GitHub API Route                                                                                                                                                                                                   |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `https://github-graphs.com/api/friends/<username>`          | `https://api.github.com/users/<username>` <br />`https://api.github.com/users/<username>/followers` <br />`https://api.github.com/users/<username>/following` <br />`https://api.github.com/users/<username>/orgs` |
+| `https://github-graphs.com/api/repositories/<username>`     | `https://api.github.com/users/<username>/repos`                                                                                                                                                                    |
+| `https://github-graphs.com/api/org/users/<username>`        | `https://api.github.com/orgs/<username>/members`                                                                                                                                                                   |
+| `https://github-graphs.com/api/org/repositories/<username>` | `https://api.github.com/orgs/<username>/repos`                                                                                                                                                                     |
