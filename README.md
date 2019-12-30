@@ -41,9 +41,21 @@ We are very open to new contributors. If you want to contribute to this project,
 
 # API Reference
 
-| Custom API Route                                            | GitHub API Route                                                                                                                                                                                                   |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `https://github-graphs.com/api/friends/<username>`          | `https://api.github.com/users/<username>` <br />`https://api.github.com/users/<username>/followers` <br />`https://api.github.com/users/<username>/following` <br />`https://api.github.com/users/<username>/orgs` |
-| `https://github-graphs.com/api/repositories/<username>`     | `https://api.github.com/users/<username>/repos`                                                                                                                                                                    |
-| `https://github-graphs.com/api/org/users/<username>`        | `https://api.github.com/orgs/<username>/members`                                                                                                                                                                   |
-| `https://github-graphs.com/api/org/repositories/<username>` | `https://api.github.com/orgs/<username>/repos`                                                                                                                                                                     |
+`https://github-graphs.com/api/friends/<username>`
+
+- `https://api.github.com/users/<username>`
+- `https://api.github.com/users/<username>/followers`
+- `https://api.github.com/users/<username>/following`
+- `https://api.github.com/users/<username>/orgs`
+
+`https://github-graphs.com/api/repositories/<username>`
+
+- `https://api.github.com/users/<username>/repos`
+
+`https://github-graphs.com/api/org/users/<username>`
+
+- `https://api.github.com/orgs/<username>/members`
+
+`https://github-graphs.com/api/org/repositories/<username>`
+
+- `https://api.github.com/orgs/<username>/repos`
