@@ -46,7 +46,6 @@ We are very open to new contributors. If you want to contribute to this project,
 - `https://api.github.com/users/<username>`
 - `https://api.github.com/users/<username>/followers`
 - `https://api.github.com/users/<username>/following`
-- `https://api.github.com/users/<username>/orgs`
 
 `https://github-graphs.com/api/repositories/<username>`
 
