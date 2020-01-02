@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const apiV1 = require('./api/v1');
+const apiV1 = require('./api/v2');
 routes.use('/api', apiV1);
 
 routes.get("/", (request, response) => {

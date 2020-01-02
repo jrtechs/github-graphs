@@ -72,9 +72,12 @@ const queryGitHubAPI = async requestURL => {
 const fetchAllWithPagination = async (apiPath, page, lst) => {
     try {
         const req = await queryGithubAPIRaw(`${apiPath}?page=${page}${API_PAGINATION}`);
-        if (req.body.hasOwnProperty("length")) {
+        if (req.body.hasOwnProperty("length")) 
+        {
             const list = lst.concat(req.body);
-            if(page < API_MAX_PAGES && req.length === API_PAGINATION_SIZE) {
+            console.log(req.body.length);
+            //console.log(req.body);
+            if(page < API_MAX_PAGES && req.body.length === API_PAGINATION_SIZE) {
                 const redo = await fetchAllWithPagination(apiPath, page + 1, list);
                 return redo;
             }
@@ -219,6 +222,105 @@ const queryRepositories = async (user, orgsOrUsers) => {
         console.log("bad things went down");
     }
 }
+
+const EVENTS_PATH = "/events";
+
+
+/**
+ * 
+ * @param {https://api.github.com/repos/jrtechs/bash_manager/events?page=1&per_page=100} repositoryName 
+ */
+const queryRepositoryEvents = async(user, repositoryName) =>
+{
+    console.log()
+    try {
+        const repo_events = await fetchAllWithPagination(`${REPOS_PATH}/${user}/${repositoryName}${EVENTS_PATH}`, 1, []);
+        // const minRepos = minimizeRepositories(repos);
+        // cache.put(`${user}${REPOS_PATH}`, minRepos);
+        return repo_events;
+    } catch (error) {
+        console.log(error)
+        console.log("bad things went down");
+    }
+}
+
+
+/**
+ * Minimizes the JSON for a list of commits
+ * 
+ * @param {*} commits 
+ */
+const minimizeCommits = commits => {
+    let cList = [];
+    commits.forEach(c => 
+    {
+        let obj = new Object();
+        obj.message = c.commit.message;
+        obj.date = c.commit.author.date;
+        obj.sha = c.sha;
+        if(c.author == null)
+        {
+            obj.name = c.commit.author.name;
+        }
+        else
+        {
+            obj.name = c.author.login;
+        }
+        cList.push(obj);
+    });
+
+    return cList;
+}
+
+
+const COMMITS_PATH = "/commits";
+
+/**
+ * TODO figure out if we should cache this because commits
+ * frequently change opposed to friends
+ * 
+ * @param {https://api.github.com/repos/jrtechs/bash_manager/commits?page=1&per_page=100} repositoryName 
+ */
+const queryRepositoryCommits = async(user, repositoryName) =>
+{
+    try 
+    {
+        const path = `${REPOS_PATH}/${user}/${repositoryName}${COMMITS_PATH}`;
+
+        const repo_commits = await fetchAllWithPagination(path, 1, []);
+        const min_commits = minimizeCommits(repo_commits);
+        // cache.put(`${user}${REPOS_PATH}`, minRepos);
+        return min_commits;
+    } catch (error) {
+        console.log(error)
+        console.log("error fetching commits");
+    }
+}
+
+
+routes.get("/repositories/events/:name/:repository", async (req, res)=>
+{
+    try 
+    {
+        const query = await queryRepositoryEvents(req.params.name, req.params.repository);
+        res.json(query);
+    } catch (error) {
+        res.status(500).json({error: 'API error fetching repository events'});
+    }
+});
+
+
+
+routes.get("/repositories/commits/:name/:repository", async (req, res)=>
+{
+    try 
+    {
+        const query = await queryRepositoryCommits(req.params.name, req.params.repository);
+        res.json(query);
+    } catch (error) {
+        res.status(500).json({error: 'API error fetching repository events'});
+    }
+});
 
 
 /**
