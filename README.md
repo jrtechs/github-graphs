@@ -59,11 +59,11 @@ browser, check `localhost:8000` to visualize your Github network.
 node server.js
 ```
 
-# Contributing
+## Contributing
 
 We are very open to new contributors. If you want to contribute to this project, and don't know where to start, look at the [open issues](https://github.com/jrtechs/github-graphs/issues). Once you know what you want to work on, comment on the issue and file a pull request.
 
-# API Reference
+## API Reference
 
 `GET https://github-graphs.com/api/friends/<username>`
 
