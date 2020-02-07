@@ -21,14 +21,14 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/);
 The easiest way to get started with Github-Graphs is to fork this repository
 and follow the instructions below.
 
-### Create a new OAuth app
+#### Create a new OAuth app
 
 The objective of creating an app under your github account is to access an
 endpoint through the GitHub API and obtain credentials to set your environment
 file. For directives on how to create a new OAuth app, consult the corresponding
 Github developer documentation [here](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/);
 
-### Create a .env file
+#### Create a .env file
 
 Setup your environment credentials by creating a `.env file` inside the folder
 `/server` with the code below filled in.
@@ -40,7 +40,7 @@ SESSION_SECRET = <any_string_you_want>
 PORT = <any_number>
 ```
 
-### Install dependencies
+#### Install dependencies
 
 Dependencies are installed using `npm`. Therefore, please install the package manager
 before proceeding. If you already have `npm` installed, run the command below inside
@@ -50,7 +50,7 @@ before proceeding. If you already have `npm` installed, run the command below in
 npm install
 ```
 
-### Activate GitHub-Graphs
+#### Activate GitHub-Graphs
 
 Inside `/server`, run the following command to start the program, and in your
 browser, check `localhost:8000` to visualize your Github network.
