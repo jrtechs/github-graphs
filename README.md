@@ -4,7 +4,7 @@ Website for visualizing a persons github network.
 
 ![Example Graph](./doc/graphExample.png)
 
-If you are lucky, you can find the site live [here](https://github-graphs.com/);
+If you are lucky, you can find the site live [here](https://github-graphs.com/).
 
 ## Built With
 
@@ -16,7 +16,7 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/);
 
 ![javascript](./doc/javaScript.jpg)
 
-## Running
+## Native Development
 
 The easiest way to get started with Github-Graphs is to fork this repository
 and follow the instructions below.
@@ -26,7 +26,7 @@ and follow the instructions below.
 The objective of creating an app under your github account is to access an
 endpoint through the GitHub API and obtain credentials to set your environment
 file. For directives on how to create a new OAuth app, consult the corresponding
-Github developer documentation [here](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/);
+Github developer documentation [here](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/).
 
 #### Create a .env file
 
