@@ -16,7 +16,7 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/).
 
 ![javascript](./doc/javaScript.jpg)
 
-## Native Development
+## Native Deployment
 
 The easiest way to get started with Github-Graphs is to fork this repository
 and follow the instructions below.
