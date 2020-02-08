@@ -90,6 +90,14 @@ function getOrganizationMembers(orgName, suc, err)
 }
 
 
+function getRepoCommits(repository, suc, err)
+{
+    const urlpath = APIROOT + "/repositories/commits/" + repository;
+    runAjax(urlpath, suc, err);
+}
+
+
+
 /**
  * Queries github API end points with the backend
  * proxy server for github graphs.

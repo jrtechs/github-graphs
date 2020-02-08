@@ -1,0 +1,242 @@
+<html>
+  <head>
+    <title>Stack Overflow - Calendar Heatmap</title>
+    <style>
+      .body {
+        height: 97%;
+      }
+
+      svg {
+        height: 1800;
+        width: 97%;
+      }
+    </style>
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="js/githubAPI.js"></script>
+    <script src="js/utilities.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-color/1.2.1/d3-color.js"></script>
+  </head>
+  <body>
+    <h3>Stack Overflow - Calendar Heatmap</h3>
+    <h4>Daily Commits to RITlug/teleirc</h4>
+    <svg id="svg"></svg>
+    <script>
+
+
+      function countCommitsPerDay(commits)
+      {
+        var reduce = [];
+        console.log(commits);
+
+        var current_date = new Date(commits[0].date);
+        current_date.setHours(0,0,0,0);
+        var current_count = 0;
+        for(var i = 1; i < commits.length; i++)
+        {
+          var d = new Date(commits[i].date);
+          d.setHours(0,0,0,0);
+          console.log(d);
+          if(current_date.getTime() == d.getTime())
+          {
+            console.log("Stonks");
+            current_count++;
+          }
+          else
+          {
+            reduce.push({Date:current_date.toISOString(), AnswerCount: current_count});
+            current_count = 1;
+            current_date = d;
+          }
+          reduce.push({Date:current_date.toISOString(), AnswerCount: current_count});
+        }
+        console.log(reduce);
+        return reduce;
+      }
+
+
+      function createHeatmapGraph(commits, containerID)
+      {
+
+        var sample = countCommitsPerDay(commits);
+
+        sample.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+
+        const dateValues = sample.map(dv => ({
+          date: d3.timeDay(new Date(dv.Date)),
+          value: Number(dv.AnswerCount)
+        }));
+
+        const svg = d3.select("#" + containerID);
+        const { width, height } = document
+          .getElementById(containerID)
+          .getBoundingClientRect();
+
+
+        function draw() {
+          const years = d3
+            .nest()
+            .key(d => d.date.getUTCFullYear())
+            .entries(dateValues)
+            .reverse();
+
+          const values = dateValues.map(c => c.value);
+          const maxValue = d3.max(values);
+          const minValue = d3.min(values);
+
+          const cellSize = 15;
+          const yearHeight = cellSize * 7;
+
+          const group = svg.append("g");
+
+          const year = group
+            .selectAll("g")
+            .data(years)
+            .join("g")
+            .attr(
+              "transform",
+              (d, i) => `translate(50, ${yearHeight * i + cellSize * 1.5})`
+            );
+
+          year
+            .append("text")
+            .attr("x", -5)
+            .attr("y", -30)
+            .attr("text-anchor", "end")
+            .attr("font-size", 16)
+            .attr("font-weight", 550)
+            .attr("transform", "rotate(270)")
+            .text(d => d.key);
+
+          const formatDay = d =>
+            ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"][d.getUTCDay()];
+          const countDay = d => d.getUTCDay();
+          const timeWeek = d3.utcSunday;
+          const formatDate = d3.utcFormat("%x");
+          const colorFn = d3
+            .scaleSequential(d3.interpolateBuGn)
+            .domain([Math.floor(minValue) -1, Math.ceil(maxValue)]);
+          const format = d3.format("+.2%");
+
+          year
+            .append("g")
+            .attr("text-anchor", "end")
+            .selectAll("text")
+            .data(d3.range(7).map(i => new Date(1995, 0, i)))
+            .join("text")
+            .attr("x", -5)
+            .attr("y", d => (countDay(d) + 0.5) * cellSize)
+            .attr("dy", "0.31em")
+            .attr("font-size", 12)
+            .text(formatDay);
+
+          year
+            .append("g")
+            .selectAll("rect")
+            .data(d => d.values)
+            .join("rect")
+            .attr("width", cellSize - 1.5)
+            .attr("height", cellSize - 1.5)
+            .attr(
+              "x",
+              (d, i) => timeWeek.count(d3.utcYear(d.date), d.date) * cellSize + 10
+            )
+            .attr("y", d => countDay(d.date) * cellSize + 0.5)
+            .attr("fill", d => colorFn(d.value))
+            .append("title")
+            .text(d => `${formatDate(d.date)}: ${d.value.toFixed(2)}`);
+
+          const legend = group
+            .append("g")
+            .attr(
+              "transform",
+              `translate(10, ${years.length * yearHeight + cellSize * 4})`
+            );
+
+          const categoriesCount = 10;
+          const categories = [...Array(categoriesCount)].map((_, i) => {
+            const upperBound = (maxValue / categoriesCount) * (i + 1);
+            const lowerBound = (maxValue / categoriesCount) * i;
+
+            return {
+              upperBound,
+              lowerBound,
+              color: d3.interpolateBuGn(upperBound / maxValue),
+              selected: true
+            };
+          });
+
+          const legendWidth = 60;
+
+          function toggle(legend) {
+            const { lowerBound, upperBound, selected } = legend;
+
+            legend.selected = !selected;
+
+            const highlightedDates = years.map(y => ({
+              key: y.key,
+              values: y.values.filter(
+                v => v.value > lowerBound && v.value <= upperBound
+              )
+            }));
+
+            year
+              .data(highlightedDates)
+              .selectAll("rect")
+              .data(d => d.values, d => d.date)
+              .transition()
+              .duration(500)
+              .attr("fill", d => (legend.selected ? colorFn(d.value) : "white"));
+          }
+
+          legend
+            .selectAll("rect")
+            .data(categories)
+            .enter()
+            .append("rect")
+            .attr("fill", d => d.color)
+            .attr("x", (d, i) => legendWidth * i)
+            .attr("width", legendWidth)
+            .attr("height", 15)
+            .on("click", toggle);
+
+          legend
+            .selectAll("text")
+            .data(categories)
+            .join("text")
+            .attr("transform", "rotate(90)")
+            .attr("y", (d, i) => -legendWidth * i)
+            .attr("dy", -30)
+            .attr("x", 18)
+            .attr("text-anchor", "start")
+            .attr("font-size", 11)
+            .text(d => `${d.lowerBound.toFixed(2)} - ${d.upperBound.toFixed(2)}`);
+
+          legend
+            .append("text")
+            .attr("dy", -5)
+            .attr("font-size", 14)
+            .attr("text-decoration", "underline");
+        }
+
+        draw();
+      }
+
+      getRepoCommits("torvalds/linux", (data)=>
+      {
+        console.log(data);
+        createHeatmapGraph(data, "svg");
+      },
+      (error)=>
+      {
+        console.log(error);
+      })
+
+
+    </script>
+  </body>
+</html>

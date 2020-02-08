@@ -9,9 +9,9 @@ const API_FOLLOWING = "/following";
 const API_FOLLOWERS = "/followers";
 const API_USER_PATH = "/users/";
 const API_ORGS_PATH = "/orgs/";
-const API_PAGINATION_SIZE = 100; // 100 is the max, 30 is the default
+const API_PAGINATION_SIZE = 5; // 100 is the max, 30 is the default
 // if this is too large, it would be infeasible to make graphs for people following popular people
-const API_MAX_PAGES = 2;
+const API_MAX_PAGES = 30;
 const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
 
 const REPOS_PATH = "/repos";
@@ -21,20 +21,21 @@ const REPOS_PATH = "/repos";
  * Queries data from the github APi server and returns it as
  * a json object in a promise.
  * 
- * This makes no attempt to cache
+ * This makes **no attempt to cache**
  * 
  * @param {*} requestURL endpoint on githubapi: ex: /users/jrtechs/following
  */
 const queryGithubAPIRaw = async requestURL => {
     let queryURL = requestURL.includes("?page=") ? `${GITHUB_API}${requestURL}&${authenticate}` :`${GITHUB_API}${requestURL}?${authenticate}`;
     console.log(queryURL);
-    try {
+    try
+    {
         const req = await got(queryURL, { json: true });
-        cache.put(requestURL, req);
-        return req;
-    } catch (error) {
+        return req.body;
+    }
+    catch (error) 
+    {
         console.log(error);
-        cache.put(requestURL, `${error.statusCode} - ${error.statusMessage}`);
     }
 }
 
@@ -52,8 +53,11 @@ const queryGitHubAPI = async requestURL => {
         return apiData
     }
 
-    try {
-        return await queryGithubAPIRaw(requestURL);
+    try 
+    {
+        let d = await queryGithubAPIRaw(requestURL);
+        return d;
+        cache.put(requestURL, d);
     } catch (error) {
         console.log(error);
     }
@@ -72,12 +76,12 @@ const queryGitHubAPI = async requestURL => {
 const fetchAllWithPagination = async (apiPath, page, lst) => {
     try {
         const req = await queryGithubAPIRaw(`${apiPath}?page=${page}${API_PAGINATION}`);
-        if (req.body.hasOwnProperty("length")) 
+        if (req.hasOwnProperty("length")) 
         {
-            const list = lst.concat(req.body);
-            console.log(req.body.length);
+            const list = lst.concat(req);
+            console.log(req.length);
             //console.log(req.body);
-            if(page < API_MAX_PAGES && req.body.length === API_PAGINATION_SIZE) {
+            if(page < API_MAX_PAGES && req.length === API_PAGINATION_SIZE) {
                 const redo = await fetchAllWithPagination(apiPath, page + 1, list);
                 return redo;
             }
@@ -268,7 +272,7 @@ const minimizeCommits = commits => {
         }
         cList.push(obj);
     });
-
+    console.log("returning " + cList.length + " commits.")
     return cList;
 }
 
@@ -303,7 +307,7 @@ routes.get("/repositories/events/:name/:repository", async (req, res)=>
     try 
     {
         const query = await queryRepositoryEvents(req.params.name, req.params.repository);
-        res.json(query);
+        res.json(query).end();
     } catch (error) {
         res.status(500).json({error: 'API error fetching repository events'});
     }
@@ -316,7 +320,8 @@ routes.get("/repositories/commits/:name/:repository", async (req, res)=>
     try 
     {
         const query = await queryRepositoryCommits(req.params.name, req.params.repository);
-        res.json(query);
+        console.log("finished");
+        res.json(query).end();
     } catch (error) {
         res.status(500).json({error: 'API error fetching repository events'});
     }
@@ -329,7 +334,7 @@ routes.get("/repositories/commits/:name/:repository", async (req, res)=>
 routes.get("/friends/:name", async (req, res)=> {
     try {
         const query = await queryFriends(req.params.name);
-        res.json(query);
+        res.json(query).end();
     } catch (error) {
         res.status(500).json({error: 'API error fetching friends'});
     }
