@@ -4,9 +4,9 @@ Website for visualizing a persons github network.
 
 ![Example Graph](./doc/graphExample.png)
 
-If you are lucky, you can find the site live [here](https://github-graphs.com/);
+If you are lucky, you can find the site live [here](https://github-graphs.com/).
 
-# Built With
+## Built With
 
 - [BootStrap](https://getbootstrap.com/)
 - [jQuery](https://jquery.com/)
@@ -16,30 +16,54 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/);
 
 ![javascript](./doc/javaScript.jpg)
 
-# Running
+## Native Deployment
 
-Create a .env file with the code below filled in.
+The easiest way to get started with Github-Graphs is to fork this repository
+and follow the instructions below.
+
+#### Create a new OAuth app
+
+The objective of creating an app under your github account is to access an
+endpoint through the GitHub API and obtain credentials to set your environment
+file. For directives on how to create a new OAuth app, consult the corresponding
+Github developer documentation [here](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/).
+
+#### Create a .env file
+
+Setup your environment credentials by creating a `.env file` inside the folder
+`/server` with the code below filled in.
 
 ```
-CLIENT_ID = <your_github_username>
-CLIENT_SECRET = <your_generated_personal_access>
+CLIENT_ID = <your_client_ID_from_oauth_app>
+CLIENT_SECRET = <your_generated_personal_access_from_oauth_app>
 SESSION_SECRET = <any_string_you_want>
 PORT = <any_number>
 ```
+
+#### Install dependencies
+
+Dependencies are installed using `npm`. Therefore, please install the package manager
+before proceeding. If you already have `npm` installed, run the command below inside
+`/server` in order to install the dependencies in the package directory.
 
 ```bash
 npm install
 ```
 
+#### Activate GitHub-Graphs
+
+Inside `/server`, run the following command to start the program, and in your
+browser, check `localhost:8000` to visualize your Github network.
+
 ```bash
 node server.js
 ```
 
-# Contributing
+## Contributing
 
 We are very open to new contributors. If you want to contribute to this project, and don't know where to start, look at the [open issues](https://github.com/jrtechs/github-graphs/issues). Once you know what you want to work on, comment on the issue and file a pull request.
 
-# API Reference
+## API Reference
 
 `GET https://github-graphs.com/api/friends/<username>`
 
