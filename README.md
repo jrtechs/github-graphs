@@ -16,7 +16,7 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/).
 
 ![javascript](./doc/javaScript.jpg)
 
-## Native Deployment
+## Deployment
 
 The easiest way to get started with Github-Graphs is to fork this repository
 and follow the instructions below.
@@ -25,13 +25,13 @@ and follow the instructions below.
 
 The objective of creating an app under your github account is to access an
 endpoint through the GitHub API and obtain credentials to set your environment
-file. For directives on how to create a new OAuth app, consult the corresponding
+file. For more information on how to create a new OAuth app, consult the corresponding
 Github developer documentation [here](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/).
 
 #### Create a .env file
 
-Setup your environment credentials by creating a `.env file` inside the folder
-`/server` with the code below filled in.
+After forking this repository, run the command `cd server/`. Inside that folder,
+setup your environment credentials by creating a `.env file` with the code below filled in.
 
 ```
 CLIENT_ID = <your_client_ID_from_oauth_app>
@@ -40,34 +40,60 @@ SESSION_SECRET = <any_string_you_want>
 PORT = <any_number>
 ```
 
+The creation of your OAuth app and the .env file are required steps,
+irrespective of your desired deployment environment. For specific directions,
+continue by following the steps specified below.
+
+### Deployment on the local machine
+
 #### Install dependencies
 
 Dependencies are installed using `npm`. Therefore, please install the package manager
 before proceeding. If you already have `npm` installed, run the command below inside
-`/server` in order to install the dependencies in the package directory.
+`server/` in order to install the dependencies in the package directory.
 
 ```bash
 npm install
 ```
 
-#### Activate GitHub-Graphs
+#### Explore GitHub-Graphs
 
-Inside `/server`, run the following command to start the program, and in your
+Inside `server/`, run the following command to start the program, and in your
 browser, check `localhost:8000` to visualize your Github network.
 
 ```bash
 node server.js
 ```
 
+### Deployment in a Docker container
+
+Github-graphs can also be deployed inside a docker container and displayed in
+your browser through port mapping. To get started run the following commands
+inside your forked repository.
+
+```
+    docker build -t graph-app .
+    docker run -d --name github-graphs -p <local_port_num>:<port_num_from_env_file> graph-app
+```
+
+If you are willing to read the debugging statement on the CLI, do not add `-d` to the `docker run` statement.
+
+At this step, you can now visualize Github graphs at `localhost:<local_port_num>`.
+
+
 ## Contributing
 
-We are very open to new contributors. If you want to contribute to this project, and don't know where to start, look at the [open issues](https://github.com/jrtechs/github-graphs/issues). Once you know what you want to work on, comment on the issue and file a pull request.
+We are very open to new contributors. If you want to contribute to this project,
+and don't know where to start, look at the [open issues](https://github.com/jrtechs/github-graphs/issues).
+Once you know what you want to work on, comment on the issue and file a pull request.
 
 ## API Reference
 
 `GET https://github-graphs.com/api/friends/<username>`
 
-Fetches `https://api.github.com/users/<username>/followers` [(GitHub Reference)](https://developer.github.com/v3/users/followers/#list-followers-of-a-user) and `https://api.github.com/users/<username>/following` [(GitHub Reference)](https://developer.github.com/v3/users/followers/#list-users-followed-by-another-user) to generate an array of users following `<username>` and that `<username>` follows each with values `login` and `avatar_url`.
+Fetches `https://api.github.com/users/<username>/followers` [(GitHub Reference)](https://developer.github.com/v3/users/followers/#list-followers-of-a-user)
+and `https://api.github.com/users/<username>/following` [(GitHub Reference)](https://developer.github.com/v3/users/followers/#list-users-followed-by-another-user)
+to generate an array of users following `<username>` and that `<username>` follows each with values `login` and `avatar_url`.
 
 Example result:
 
@@ -115,7 +141,8 @@ Example result:
 
 `GET https://github-graphs.com/api/org/users/<organization_name>`
 
-Fetches `https://api.github.com/orgs/<organization_name>/members` [(GitHub Reference)](https://developer.github.com/v3/orgs/members/#members-list) to generate an array of users that are in `<organization_name>` each with values `login` and `avatar_url`.
+Fetches `https://api.github.com/orgs/<organization_name>/members` [(GitHub Reference)](https://developer.github.com/v3/orgs/members/#members-list)
+to generate an array of users that are in `<organization_name>` each with values `login` and `avatar_url`.
 
 Example result:
 
@@ -132,7 +159,8 @@ Example result:
 
 `GET https://github-graphs.com/api/org/repositories/<organization_name>`
 
-Fetches `https://api.github.com/orgs/<organization_name>/repos` [(GitHub Reference)](https://developer.github.com/v3/repos/#list-organization-repositories) to return an array of repositories `<organization_name>` owns.
+Fetches `https://api.github.com/orgs/<organization_name>/repos` [(GitHub Reference)](https://developer.github.com/v3/repos/#list-organization-repositories)
+to return an array of repositories `<organization_name>` owns.
 
 Example result:
 
