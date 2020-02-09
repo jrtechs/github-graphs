@@ -71,10 +71,32 @@ Github-graphs can also be deployed inside a docker container and displayed in
 your browser through port mapping. To get started run the following commands
 inside your forked repository.
 
+The easiest way to deploy in a docker container is through the use of our proposed
+`docker-compose.yml` file. If you choose this methodology, make sure the port numbers
+in your `.env` file matches the docker-compose file. Note that this approach will work
+only on systems which have Docker and Docker-compose both installed.
+Considering the example provided in our provided docker-compose,
+the port number of the .env file should be `PORT= 8000`. Therefore, you could
+visualize the Github-Graphs page at `localhost:8080` after running:
+
+```
+    docker-compose up -d --build
+```
+
+In order to clean the environment, you can run the following command.
+
+```
+    docker-compose down --rmi all
+
+```
+
+Besides the use of docker-compose, deployment with just docker is possible with the following commands:\
+
 ```
     docker build -t <choose_name_for_image> .
     docker run -d --name <choose_name_for_container> -p <local_port_num>:<port_num_from_env_file> <name_of_image>
 ```
+
 For instance, assume I name my image `graph-app`, my container `github-graphs`,
 and set the port number in my .env file to `8000`, I can decide to listen on my localhost at port `8080`.
 Therefore, my commands are:
