@@ -72,8 +72,16 @@ your browser through port mapping. To get started run the following commands
 inside your forked repository.
 
 ```
+    docker build -t <choose_name_for_image> .
+    docker run -d --name <choose_name_for_container> -p <local_port_num>:<port_num_from_env_file> <name_of_image>
+```
+For instance, assume I name my image `graph-app`, my container `github-graphs`,
+and set the port number in my .env file to `8000`, I can decide to listen on my localhost at port `8080`.
+Therefore, my commands are:
+
+```
     docker build -t graph-app .
-    docker run -d --name github-graphs -p <local_port_num>:<port_num_from_env_file> graph-app
+    docker run -d --name github-graphs -p 8080:8000 graph-app
 ```
 
 If you are willing to read the debugging statement on the CLI, do not add `-d` to the `docker run` statement.
