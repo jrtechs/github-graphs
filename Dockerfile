@@ -1,5 +1,5 @@
 FROM ubuntu
-MAINTAINER Jeffery Russell
+LABEL maintainer="Jeffery Russell"
 
 # install all dependencies
 RUN apt-get update && \
@@ -24,4 +24,4 @@ WORKDIR /github-graphs/server
 
 # Install dependencies and start the program at RUN
 RUN npm install
-ENTRYPOINT ["node", "server.js"]
+CMD ["node", "server.js"]
