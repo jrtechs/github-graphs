@@ -4,10 +4,8 @@ version: '3.7'
 services:
     github-graphs:
         build:
-            context: .
             dockerfile: Dockerfile
         image: graph-app:latest
         container_name: github-graphs
         ports:
             - "8080:8000"
-        command: /bin/bash
