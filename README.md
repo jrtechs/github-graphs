@@ -16,6 +16,7 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/).
 
 ![javascript](./doc/javaScript.jpg)
 
+
 ## Deployment
 
 The easiest way to get started with Github-Graphs is to fork this repository
@@ -109,6 +110,7 @@ Therefore, my commands are:
 If you are willing to read the debugging statement on the CLI, do not add `-d` to the `docker run` statement.
 
 At this step, you can now visualize Github graphs at `localhost:<local_port_num>`.
+
 
 
 ## Contributing
