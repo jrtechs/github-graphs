@@ -4,14 +4,15 @@
   "description": "Generates graphs of github things.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "test": "mocha --exit --reporter spec",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jrtechs/github-graphs.git"
   },
-  "author": "Jeffery Russell",
+  "author": "Jeffery Russell, Eric Lang",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jrtechs/github-graphs/issues"
@@ -25,4 +26,8 @@
     "got": "^9.6.0",
     "memory-cache": "^0.2.0"
   }
+  "devDependencies": {
+    "coveralls": "*",
+    "mocha": "*",
+    "nyc": "*"
 }
