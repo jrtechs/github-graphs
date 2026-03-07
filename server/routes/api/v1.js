@@ -3,7 +3,6 @@ const got = require("got");
 const cache = require('memory-cache');
 const dotenv = require("dotenv").config();
 const GITHUB_API = "https://api.github.com";
-const authenticate = `client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
 
 const API_FOLLOWING = "/following";
 const API_FOLLOWERS = "/followers";
@@ -18,8 +17,10 @@ const REPOS_PATH = "/repos";
 
 const got_options  = {
     json: true,
-    username : process.env.CLIENT_ID,
-    password : process.env.CLIENT_SECRET
+    headers: {
+        'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+        'User-Agent': 'github-graphs-app'
+    }
 };
 
 /**
@@ -34,15 +35,7 @@ function queryGithubAPIRaw(requestURL)
 {
     return new Promise((resolve, reject)=>
     {
-        var queryURL;
-        if(requestURL.includes("?page="))
-        {
-            queryURL = GITHUB_API + requestURL + "&" + authenticate;
-        }
-        else
-        {
-            queryURL = GITHUB_API + requestURL + "?" + authenticate;
-        }
+        var queryURL = GITHUB_API + requestURL;
         console.log(queryURL);
 
         got(queryURL, got_options).then(response =>

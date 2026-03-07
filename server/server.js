@@ -1,11 +1,9 @@
 const crypto = require('crypto');
-
-const app = express();
-
 const dotenv = require("dotenv").config();
 const express = require("express");
 const session = require('express-session');
 
+const app = express();
 
 const sessionProperties = {
     secret: process.env.SESSION_SECRET || crypto.randomBytes(64), 
@@ -22,4 +20,4 @@ const routes = require('./routes');
 app.use('/', routes);
 
 
-app.listen(process.env.PORT || 8100, () => console.log(`App listening on port ${process.env.PORT  || 8100}!`));
+app.listen(process.env.PORT || 4002, () => console.log(`App listening on port ${process.env.PORT  || 4002}!`));

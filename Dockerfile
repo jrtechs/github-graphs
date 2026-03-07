@@ -1,15 +1,5 @@
-FROM ubuntu
+FROM node:bookworm-slim
 LABEL maintainer="Jeffery Russell"
-
-# install all dependencies
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y build-essential && \
-    apt-get install -y sudo curl && \
-    curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && \
-    apt-get install -y nodejs && \
-    apt-get update && \
-    apt-get clean
 
 # Create a working directory for the container
 RUN mkdir /github-graphs

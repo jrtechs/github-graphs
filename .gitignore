@@ -1,9 +1,28 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# Dependencies
+node_modules/
+package-lock.json
 
-*/.vs
-*/node_modules/.bin
-*/node_modules
-*/package-lock.json
-*/.env
+# Environment variables
+.env
+server/.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime / OS
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vs/
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Docker volumes
+volumes/
