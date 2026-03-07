@@ -1,6 +1,6 @@
 const routes = require('express').Router();
-const api = require('./api');
-routes.use('/api', api);
+const apiV1 = require('./api/v1');
+routes.use('/api', apiV1);
 
 routes.get("/", (request, response) => {
     response.redirect("index.html");

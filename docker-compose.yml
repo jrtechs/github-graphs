@@ -1,0 +1,11 @@
+
+version: '3.7'
+
+services:
+    github-graphs:
+        build:
+            dockerfile: Dockerfile
+        image: graph-app:latest
+        container_name: github-graphs
+        ports:
+            - "8080:8000"

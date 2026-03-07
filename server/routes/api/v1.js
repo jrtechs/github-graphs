@@ -16,13 +16,18 @@ const API_PAGINATION = "&per_page=" + API_PAGINATION_SIZE;
 
 const REPOS_PATH = "/repos";
 
+const got_options  = {
+    json: true,
+    username : process.env.CLIENT_ID,
+    password : process.env.CLIENT_SECRET
+};
 
 /**
  * Queries data from the github APi server and returns it as
  * a json object in a promise.
- * 
+ *
  * This makes no attempt to cache
- * 
+ *
  * @param {*} requestURL endpoint on githubapi: ex: /users/jrtechs/following
  */
 function queryGithubAPIRaw(requestURL)
@@ -40,7 +45,7 @@ function queryGithubAPIRaw(requestURL)
         }
         console.log(queryURL);
 
-        got(queryURL, { json: true }).then(response =>
+        got(queryURL, got_options).then(response =>
         {
             resolve(response.body);
             cache.put(requestURL, response.body);
@@ -56,8 +61,8 @@ function queryGithubAPIRaw(requestURL)
 /**
  * Queries data from the github api server
  * and caches the results locally.
- * 
- * @param {*} requestURL 
+ *
+ * @param {*} requestURL
  */
 function queryGitHubAPI(requestURL)
 {
@@ -87,7 +92,7 @@ function queryGitHubAPI(requestURL)
 /**
  * Fetches all content from a particular github api endpoint
  * using their pagination schema.
- * 
+ *
  * @param {*} username username of github client
  * @param {*} apiPath following or followers
  * @param {*} page current pagination page
@@ -137,9 +142,9 @@ function fetchAllWithPagination(apiPath, page, lst)
 
 /**
  * Makes a copy of a JS object with certain properties
- * 
- * @param {*} props 
- * @param {*} obj 
+ *
+ * @param {*} props
+ * @param {*} obj
  */
 function copyWithProperties(props, obj)
 {
@@ -155,10 +160,10 @@ function copyWithProperties(props, obj)
 /**
  * Combines the list of friends and followers ignoring duplicates
  * that are already in the list. (person is both following and followed by someone)
- * 
+ *
  * This also removes any unused properties like events_url and organizations_url
- * 
- * @param {*} followingAndFollowers 
+ *
+ * @param {*} followingAndFollowers
  */
 function minimizeFriends(people)
 {
@@ -172,7 +177,7 @@ function minimizeFriends(people)
         {
             ids.add(people[i].id);
             friendLst.push({
-                login: people[i].login, 
+                login: people[i].login,
                 avatar_url: people[i].avatar_url
             });
         }
@@ -185,8 +190,8 @@ function minimizeFriends(people)
  * Fetches all the people that are either following or is followed
  * by a person on github. This will cache the results to make simultaneous
  * connections easier and less demanding on the github API.
- * 
- * @param {*} user 
+ *
+ * @param {*} user
  */
 function queryFriends(user)
 {
@@ -204,7 +209,7 @@ function queryFriends(user)
                     cache.put("/friends/" + user, fList);
                 }).catch((err)=>
                 {
-                    console.log(err);  
+                    console.log(err);
                     reject("API ERROR");
                 })
             }).catch((error)=>
@@ -223,13 +228,13 @@ function queryFriends(user)
 
 
 /**
- * 
+ *
  * Fetches all of the members of an organization from the
  * API or cache
  *
  * /orgs/RITlug/members?page=1
  *
- * @param {*} orgName 
+ * @param {*} orgName
  */
 function getOrganizationMembers(orgName)
 {
@@ -259,8 +264,8 @@ function getOrganizationMembers(orgName)
 
 /**
  * Minimizes the JSON for a list of repositories
- * 
- * @param {*} repositories 
+ *
+ * @param {*} repositories
  */
 function minimizeRepositories(repositories)
 {
@@ -268,7 +273,7 @@ function minimizeRepositories(repositories)
 
     for(var i = 0; i < repositories.length; i++)
     {
-        rList.push(copyWithProperties(["name", "created_at", "homepage", 
+        rList.push(copyWithProperties(["name", "created_at", "homepage",
             "description", "language", "forks", "watchers",
              "open_issues_count", "license", "html_url"],
             repositories[i]));
@@ -279,7 +284,7 @@ function minimizeRepositories(repositories)
 
 /**
  * Fetches all repositories from the API
- * 
+ *
  * @param {*} user name of org/user
  * @param {*} orgsOrUsers  either /users/ or /orgs/
  */
@@ -405,7 +410,7 @@ routes.get('/*', (request, result) =>
             }
 
         }
-        catch(error) 
+        catch(error)
         {
             result.write("[]");
         };
