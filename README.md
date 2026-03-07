@@ -22,26 +22,30 @@ If you are lucky, you can find the site live [here](https://github-graphs.com/).
 The easiest way to get started with Github-Graphs is to fork this repository
 and follow the instructions below.
 
-#### Create a new OAuth app
+#### Create a GitHub Personal Access Token (PAT)
 
-The objective of creating an app under your github account is to access an
-endpoint through the GitHub API and obtain credentials to set your environment
-file. For more information on how to create a new OAuth app, consult the corresponding
-Github developer documentation [here](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/).
+Authentication is handled via a GitHub Personal Access Token (PAT). The old
+OAuth App `client_id`/`client_secret` query parameter method is no longer used,
+as GitHub deprecated unauthenticated and OAuth-param-based requests.
+
+To create a PAT:
+1. Go to **GitHub → Settings → Developer settings → Personal access tokens**
+2. Choose **Fine-grained tokens** (recommended) or **Tokens (classic)**
+3. For a classic token, grant the `public_repo` and `read:user` scopes (read-only is sufficient)
+4. Copy the generated token — it will only be shown once
 
 #### Create a .env file
 
 After forking this repository, run the command `cd server/`. Inside that folder,
-setup your environment credentials by creating a `.env file` with the code below filled in.
+setup your environment credentials by creating a `.env` file with the values below filled in.
 
 ```
-CLIENT_ID = <your_client_ID_from_oauth_app>
-CLIENT_SECRET = <your_generated_personal_access_from_oauth_app>
+GITHUB_TOKEN = <your_personal_access_token>
 SESSION_SECRET = <any_string_you_want>
 PORT = <any_number>
 ```
 
-The creation of your OAuth app and the .env file are required steps,
+The creation of your PAT and the `.env` file are required steps,
 irrespective of your desired deployment environment. For specific directions,
 continue by following the steps specified below.
 
